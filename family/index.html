@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Big Spell Energy · practice at home</title>
+<meta name="apple-mobile-web-app-title" content="Sound Adventure">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cpath%20d%3D%22M9%209%20L25%2026%20L39%2026%20L55%209%20L53%2033%20Q47%2050%2032%2057%20Q17%2050%2011%2033%20Z%22%20fill%3D%22%23E8772E%22/%3E%3Cpath%20d%3D%22M13%2015%20L22%2026%20L16%2027%20Z%20M51%2015%20L42%2026%20L48%2027%20Z%22%20fill%3D%22%233A2A20%22/%3E%3Cpath%20d%3D%22M14%2036%20Q32%2041%2050%2036%20Q43%2052%2032%2056%20Q21%2052%2014%2036%20Z%22%20fill%3D%22%23FFF8F0%22/%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2233%22%20r%3D%222.4%22%20fill%3D%22%2323304A%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2233%22%20r%3D%222.4%22%20fill%3D%22%2323304A%22/%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2248%22%20rx%3D%223.2%22%20ry%3D%222.4%22%20fill%3D%22%2323304A%22/%3E%3Cpath%20d%3D%22M32%2050.5%20L32%2053%20M29%2054%20Q32%2056%2035%2054%22%20stroke%3D%22%2323304A%22%20stroke-width%3D%221.3%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
+<meta name="theme-color" content="#FFFDF7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="speechgames.css">
+<style>
+:root{--k:#1E2226;--m:#5B6570;--l:#D7DBD9;--g:#2F6B66;--gs:#DCE9E7;--y:#A07A35;--ys:#F1E8D6;--r:#8A2B3D;--rs:#F2E1E4;--bg:#FFFDF7;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--k:#ECEEEC;--m:#A7AEB4;--l:#3A4048;--bg:#181B1E;--card:#22262A;--gs:#1F3533;--ys:#3A3222;--rs:#3A2229;--g:#7FC4BC;--y:#D9AE5F;--r:#E38FA0}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--k);font:16px/1.45 "Atkinson Hyperlegible",system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top h1{margin:0;font-size:1.6rem;line-height:1.1}.top small{display:block;font-size:.85rem;color:var(--m);font-weight:400}
+.top .sp{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--l);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:700;font-size:.9rem}
+.btn.g{background:var(--g);color:#fff;border-color:var(--g)}
+.lv{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;margin:14px 0}
+@media (max-width:760px){.lv{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.lv button{background:var(--card);border:1px solid var(--l);border-radius:14px;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.lv button small{font-size:.68rem;color:var(--m);font-weight:700}
+.lv button[aria-pressed="true"]{border:2px solid var(--g);background:var(--gs)}
+.lv .st{position:absolute;top:-6px;right:-4px;font-size:.62rem;background:var(--ys);color:var(--y);border-radius:999px;padding:0 5px;font-weight:700}
+.main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px;align-items:start}
+@media (max-width:760px){.main{grid-template-columns:minmax(0,1fr)}.par{order:2}}
+.par{background:var(--gs);border-radius:18px;padding:14px 16px;font-size:.95rem}
+.par h2{margin:0 0 6px;font-size:1.05rem;color:var(--g);display:flex;align-items:center;gap:8px}
+.par p{margin:0 0 8px}.par p:last-child{margin:0}
+.par .key{background:var(--card);border-radius:12px;padding:8px 10px;font-size:.88rem}
+.card{background:var(--card);border:1px solid var(--l);border-radius:24px;padding:22px 18px 18px;text-align:center;position:relative;box-shadow:0 6px 22px rgba(0,0,0,.05)}
+.card .n{position:absolute;top:14px;left:18px;color:var(--m);font-weight:700;font-size:.85rem}
+.q{font-size:clamp(1.5rem,5vw,2.2rem);font-weight:800;line-height:1.25;margin:18px 0 6px;text-wrap:balance}
+.q u{text-decoration-thickness:3px;text-underline-offset:4px}
+.ans{display:inline-block;margin:8px 0 4px;padding:8px 18px;border-radius:999px;background:var(--ys);color:var(--y);font-weight:800;border:0;font-size:1rem}
+.stars{font-size:1.4rem;letter-spacing:2px;margin:10px 0 14px;min-height:1.6em}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{border:0;border-radius:16px;padding:13px 4px;font-weight:800;font-size:.98rem;line-height:1.2}
+.rate button small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.rate .x{background:var(--rs)}.rate .s{background:var(--ys)}.rate .f{background:var(--gs)}
+.rate button:active{transform:scale(.97)}
+.fin h2{margin:6px 0;font-size:1.6rem}
+.foot{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:14px;font-size:.85rem;color:var(--m)}
+.panel{background:var(--card);border:1px solid var(--l);border-radius:18px;padding:14px 16px;margin-top:14px}
+.panel h3{margin:0 0 8px;font-size:1rem}
+.panel label{display:block;font-size:.85rem;font-weight:700;margin-bottom:4px}
+.panel input{width:100%;max-width:280px;padding:8px 10px;border:1px solid var(--l);border-radius:10px;background:var(--bg);color:var(--k);font:inherit}
+.panel .hint{font-size:.8rem;color:var(--m);margin:6px 0 0}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);background:var(--k);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;z-index:99}
+.pop{animation:pop .4s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{40%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script src="speechgames.js"></script>
+<script>
+const ANIMALS=[
+["Snail",`<path d="M3 53 C3 47 9 46 15 46 L45 46 C51 46 53 42 53 36 L55 29 L60 29 L60 40 C60 49 56 53 47 53 Z" fill="#F2B36B"/><path d="M55 31 L52 19 M58 31 L61 20" stroke="#F2B36B" stroke-width="3" stroke-linecap="round"/><circle cx="52" cy="18" r="3" fill="#F2B36B"/><circle cx="61" cy="19" r="3" fill="#F2B36B"/><circle cx="52.5" cy="18" r="1.3" fill="#23304A"/><circle cx="61.5" cy="19" r="1.3" fill="#23304A"/><circle cx="28" cy="32" r="16" fill="#B06B2E"/><path d="M27.0 32.0 L26.9 31.9 L26.8 31.7 L26.8 31.5 L26.8 31.3 L26.8 31.1 L26.9 30.8 L27.0 30.6 L27.2 30.4 L27.4 30.2 L27.6 30.0 L27.8 29.9 L28.1 29.8 L28.5 29.7 L28.8 29.7 L29.1 29.8 L29.5 29.9 L29.8 30.0 L30.2 30.2 L30.5 30.5 L30.7 30.8 L31.0 31.1 L31.2 31.5 L31.3 32.0 L31.4 32.4 L31.4 32.9 L31.3 33.4 L31.2 33.9 L31.0 34.4 L30.7 34.8 L30.4 35.2 L29.9 35.6 L29.5 35.9 L28.9 36.2 L28.4 36.4 L27.8 36.5 L27.1 36.5 L26.5 36.5 L25.9 36.3 L25.2 36.1 L24.7 35.7 L24.1 35.3 L23.6 34.8 L23.2 34.2 L22.8 33.6 L22.6 32.9 L22.4 32.1 L22.3 31.3 L22.4 30.6 L22.5 29.8 L22.8 29.0 L23.2 28.3 L23.7 27.6 L24.2 26.9 L24.9 26.4 L25.7 25.9 L26.5 25.6 L27.4 25.3 L28.3 25.2 L29.2 25.2 L30.2 25.3 L31.1 25.6 L32.0 26.0 L32.8 26.5 L33.6 27.2 L34.3 27.9 L34.9 28.8 L35.3 29.7 L35.7 30.7 L35.9 31.8 L36.0 32.8 L35.9 33.9 L35.6 35.0 L35.2 36.1 L34.7 37.1 L34.0 38.0 L33.2 38.9 L32.3 39.6 L31.2 40.2 L30.1 40.6 L28.9 41.0 L27.7 41.1 L26.5 41.1 L25.2 40.9 L24.0 40.5 L22.8 40.0 L21.7 39.3 L20.7 38.4 L19.8 37.4 L19.1 36.3 L18.5 35.1 L18.1 33.8 L17.8 32.4 L17.7 31.0 L17.9 29.6 L18.2 28.2 L18.7 26.9 L19.4 25.6 L20.3 24.4 L21.3 23.4 L22.5 22.5 L23.8 21.7 L25.2 21.2 L26.7 20.8 L28.2 20.6 L29.8 20.6 L31.4 20.9 L32.9 21.4 L34.3 22.0 L35.7 22.9 L36.9 24.0 L38.0 25.2 L38.9 26.6 L39.7 28.1 L40.2 29.7 L40.5 31.3 L40.6 33.1 L40.4 34.8 L40.0 36.5 L39.4 38.1 L38.5 39.6" fill="none" stroke="#7A4417" stroke-width="2.4" stroke-linecap="round"/><path d="M53 40 Q56 42 59 40" stroke="#B8763A" stroke-width="1.5" fill="none" stroke-linecap="round"/>`],
+["Frog",`<ellipse cx="13" cy="55" rx="8" ry="3.5" fill="#4A9E4A"/><ellipse cx="51" cy="55" rx="8" ry="3.5" fill="#4A9E4A"/><ellipse cx="32" cy="41" rx="23" ry="16" fill="#5CB85C"/><circle cx="20" cy="23" r="8.5" fill="#5CB85C"/><circle cx="44" cy="23" r="8.5" fill="#5CB85C"/><circle cx="20" cy="22" r="5.5" fill="#fff"/><circle cx="44" cy="22" r="5.5" fill="#fff"/><circle cx="21" cy="23" r="2.6" fill="#23304A"/><circle cx="45" cy="23" r="2.6" fill="#23304A"/><ellipse cx="32" cy="47" rx="13" ry="8" fill="#BDE5A8"/><path d="M23 35 Q32 42 41 35" stroke="#2E6B2E" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="16" cy="36" rx="3.5" ry="2" fill="#F4A6A6"/><ellipse cx="48" cy="36" rx="3.5" ry="2" fill="#F4A6A6"/>`],
+["Rabbit",`<ellipse cx="40" cy="13" rx="4.8" ry="12" transform="rotate(-14 40 13)" fill="#D9D4CF"/><ellipse cx="40" cy="14" rx="2.2" ry="8.5" transform="rotate(-14 40 14)" fill="#F4B6C2"/><ellipse cx="49" cy="14" rx="4.8" ry="12" transform="rotate(14 49 14)" fill="#D9D4CF"/><ellipse cx="49" cy="15" rx="2.2" ry="8.5" transform="rotate(14 49 15)" fill="#F4B6C2"/><ellipse cx="27" cy="44" rx="17" ry="14" fill="#D9D4CF"/><circle cx="10" cy="43" r="5.5" fill="#FFFFFF" stroke="#C9C3BD" stroke-width="1.5"/><ellipse cx="38" cy="56" rx="9" ry="3.5" fill="#C9C3BD"/><circle cx="45" cy="31" r="11.5" fill="#D9D4CF"/><circle cx="48" cy="28" r="2.1" fill="#23304A"/><circle cx="56" cy="33" r="2" fill="#E98A9A"/><ellipse cx="50" cy="35" rx="2.6" ry="1.6" fill="#F4B6C2"/><path d="M56 35 L56 38" stroke="#B5ADA6" stroke-width="1.2"/>`],
+["Hedgehog",`<ellipse cx="28" cy="43" rx="22" ry="13" fill="#9C6B3F"/><path d="M6 46 L3 37 L11 38 L8 28 L17 32 L17 21 L24 28 L28 17 L32 27 L38 19 L39 29 L46 24 L44 35 L50 35 L45 45 Z" fill="#6E4628"/><path d="M38 36 Q52 33 61 44 Q55 53 41 53 Q34 47 38 36 Z" fill="#EBCDA2"/><circle cx="49" cy="40" r="2" fill="#23304A"/><circle cx="61" cy="44.5" r="2.4" fill="#23304A"/><ellipse cx="46" cy="47" rx="2.5" ry="1.5" fill="#F4A6A6"/><ellipse cx="22" cy="56" rx="4" ry="2.5" fill="#6E4628"/><ellipse cx="36" cy="56" rx="4" ry="2.5" fill="#6E4628"/>`],
+["Fox",`<path d="M9 9 L25 26 L39 26 L55 9 L53 33 Q47 50 32 57 Q17 50 11 33 Z" fill="#E8772E"/><path d="M13 15 L22 26 L16 27 Z M51 15 L42 26 L48 27 Z" fill="#3A2A20"/><path d="M14 36 Q32 41 50 36 Q43 52 32 56 Q21 52 14 36 Z" fill="#FFF8F0"/><circle cx="24" cy="33" r="2.4" fill="#23304A"/><circle cx="40" cy="33" r="2.4" fill="#23304A"/><ellipse cx="32" cy="48" rx="3.2" ry="2.4" fill="#23304A"/><path d="M32 50.5 L32 53 M29 54 Q32 56 35 54" stroke="#23304A" stroke-width="1.3" fill="none" stroke-linecap="round"/>`],
+["Owl",`<path d="M15 19 L17 6 L25 16 Z M49 19 L47 6 L39 16 Z" fill="#8C6239"/><ellipse cx="32" cy="36" rx="19" ry="22" fill="#8C6239"/><ellipse cx="32" cy="44" rx="12" ry="13" fill="#E1C394"/><path d="M26 41 l3 2.5 l3 -2.5 l3 2.5 l3 -2.5 M26 47 l3 2.5 l3 -2.5 l3 2.5 l3 -2.5" stroke="#B08A5E" stroke-width="1.4" fill="none" stroke-linejoin="round"/><circle cx="24.5" cy="26" r="7.5" fill="#fff" stroke="#F2B544" stroke-width="2.2"/><circle cx="39.5" cy="26" r="7.5" fill="#fff" stroke="#F2B544" stroke-width="2.2"/><circle cx="25" cy="26.5" r="3.4" fill="#23304A"/><circle cx="39" cy="26.5" r="3.4" fill="#23304A"/><path d="M29.5 31 L34.5 31 L32 37 Z" fill="#F2B544"/><path d="M27 58 L27 61 M30 58 L30 61 M34 58 L34 61 M37 58 L37 61" stroke="#F2B544" stroke-width="2" stroke-linecap="round"/>`],
+["Butterfly",`<path d="M31 16 Q27 7 22 5 M33 16 Q37 7 42 5" stroke="#3A3348" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="22" cy="5" r="2" fill="#3A3348"/><circle cx="42" cy="5" r="2" fill="#3A3348"/><ellipse cx="19" cy="23" rx="14" ry="11.5" transform="rotate(-22 19 23)" fill="#8E6CD9"/><ellipse cx="45" cy="23" rx="14" ry="11.5" transform="rotate(22 45 23)" fill="#8E6CD9"/><ellipse cx="22" cy="44" rx="10" ry="11" transform="rotate(20 22 44)" fill="#4FB3BF"/><ellipse cx="42" cy="44" rx="10" ry="11" transform="rotate(-20 42 44)" fill="#4FB3BF"/><circle cx="16" cy="21" r="3.5" fill="#fff" opacity=".85"/><circle cx="48" cy="21" r="3.5" fill="#fff" opacity=".85"/><circle cx="20" cy="46" r="2.5" fill="#fff" opacity=".85"/><circle cx="44" cy="46" r="2.5" fill="#fff" opacity=".85"/><ellipse cx="32" cy="35" rx="3.2" ry="17" fill="#3A3348"/>`],
+["Octopus",`<path d="M17 33 Q10 46 4 43 M23 37 Q21 52 13 56 M32 38 Q33 53 28 59 M41 37 Q43 52 51 56 M47 33 Q54 46 60 43" stroke="#C46BAE" stroke-width="6.5" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="23" rx="18" ry="17" fill="#C46BAE"/><circle cx="23" cy="13" r="2.2" fill="#E3A3D3"/><circle cx="41" cy="12" r="1.6" fill="#E3A3D3"/><circle cx="36" cy="9" r="1.3" fill="#E3A3D3"/><circle cx="25" cy="24" r="4.5" fill="#fff"/><circle cx="39" cy="24" r="4.5" fill="#fff"/><circle cx="25.5" cy="25" r="2.2" fill="#23304A"/><circle cx="39.5" cy="25" r="2.2" fill="#23304A"/><path d="M28 31 Q32 34 36 31" stroke="#7E3A6E" stroke-width="2" fill="none" stroke-linecap="round"/>`],
+["Unicorn",`<circle cx="22" cy="21" r="6.5" fill="#F49AC1"/><circle cx="17" cy="31" r="6.5" fill="#A8D8F0"/><circle cx="15" cy="42" r="6.5" fill="#C6B4F2"/><circle cx="15" cy="53" r="6" fill="#F7D774"/><path d="M15 61 L19 34 Q21 18 37 16 Q51 15 57 28 Q59 35 52 37 L41 37 L35 61 Z" fill="#fff" stroke="#C9D1DC" stroke-width="1.6" stroke-linejoin="round"/><path d="M31 19 L29 8 L37 16 Z" fill="#fff" stroke="#C9D1DC" stroke-width="1.6" stroke-linejoin="round"/><path d="M38 16 L47 1 L43 18 Z" fill="#F5C24C"/><path d="M40 13 L44 12 M41 9 L45 8" stroke="#D99A1E" stroke-width="1.2"/><circle cx="40" cy="25" r="2.3" fill="#23304A"/><circle cx="53" cy="31" r="1.4" fill="#9AA6B5"/><ellipse cx="45" cy="31" rx="2.6" ry="1.6" fill="#F7C6D9"/>`],
+["Eagle",`<path d="M32 30 L3 16 L10 29 L1 31 L12 37 L5 42 L32 45 Z" fill="#7A4E2D"/><path d="M32 30 L61 16 L54 29 L63 31 L52 37 L59 42 L32 45 Z" fill="#7A4E2D"/><path d="M10 29 L20 33 M12 37 L22 39 M54 29 L44 33 M52 37 L42 39" stroke="#5C3820" stroke-width="1.3"/><ellipse cx="32" cy="42" rx="9.5" ry="13" fill="#6A4226"/><path d="M26 52 L32 61 L38 52 Z" fill="#fff" stroke="#D8DDE3" stroke-width="1.2"/><circle cx="32" cy="21" r="9" fill="#fff" stroke="#D8DDE3" stroke-width="1.2"/><path d="M29 23 L37 23 Q37 29 33 31 L33 27 Z" fill="#F2B544"/><circle cx="28.5" cy="19.5" r="1.7" fill="#23304A"/><circle cx="35.5" cy="19.5" r="1.7" fill="#23304A"/><path d="M28 55 L27 58 M36 55 L37 58" stroke="#F2B544" stroke-width="2.2" stroke-linecap="round"/>`],
+["Lion",`<g fill="#C8742A"><circle cx="32" cy="32" r="22"/><circle cx="32" cy="9" r="7"/><circle cx="43.5" cy="12" r="7"/><circle cx="52" cy="20.5" r="7"/><circle cx="55" cy="32" r="7"/><circle cx="52" cy="43.5" r="7"/><circle cx="43.5" cy="52" r="7"/><circle cx="32" cy="55" r="7"/><circle cx="20.5" cy="52" r="7"/><circle cx="12" cy="43.5" r="7"/><circle cx="9" cy="32" r="7"/><circle cx="12" cy="20.5" r="7"/><circle cx="20.5" cy="12" r="7"/></g><circle cx="21" cy="19" r="5" fill="#F2C46D"/><circle cx="43" cy="19" r="5" fill="#F2C46D"/><circle cx="21" cy="19" r="2.5" fill="#E0A84E"/><circle cx="43" cy="19" r="2.5" fill="#E0A84E"/><circle cx="32" cy="33" r="15" fill="#F2C46D"/><ellipse cx="32" cy="40" rx="7.5" ry="5.5" fill="#FBE3B0"/><circle cx="26" cy="30" r="2.1" fill="#23304A"/><circle cx="38" cy="30" r="2.1" fill="#23304A"/><path d="M29 36 L35 36 L32 39.5 Z" fill="#6B3E1E"/><path d="M32 39.5 Q29.5 43.5 26.5 41.5 M32 39.5 Q34.5 43.5 37.5 41.5" stroke="#6B3E1E" stroke-width="1.4" fill="none" stroke-linecap="round"/>`],
+["Dragon",`<path d="M30 30 L16 6 L22 20 L9 13 L19 33 Z" fill="#2B8A5E"/><path d="M18 42 Q4 50 6 38 L1 35 L10 35" fill="none" stroke="#3CB878" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="31" cy="41" rx="16" ry="11" fill="#3CB878"/><ellipse cx="33" cy="45" rx="9" ry="5.5" fill="#F5D68A"/><rect x="21" y="47" width="5" height="9" rx="2" fill="#2B8A5E"/><rect x="36" y="47" width="5" height="9" rx="2" fill="#2B8A5E"/><path d="M40 36 Q44 28 45 24" stroke="#3CB878" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="47" cy="21" r="8.5" fill="#3CB878"/><ellipse cx="55" cy="24" rx="6.5" ry="4.5" fill="#3CB878"/><path d="M43 14 L40 6 L46 13 Z M49 13 L50 5 L53 14 Z" fill="#F5B82E"/><circle cx="49" cy="19" r="1.8" fill="#23304A"/><circle cx="59" cy="23" r="1" fill="#23304A"/><path d="M33 31 L39 8 L42 21 L52 12 L45 33 Z" fill="#2B8A5E"/>`]
+];
+const LEVELS=[
+ {id:'D1',skill:'saying a compound word without one part',how:'Say the whole word, then say it again leaving one part out.',items:[
+  ['Say rainbow without rain.','bow'],['Say football without foot.','ball'],['Say toothbrush without tooth.','brush'],['Say cupcake without cup.','cake'],['Say starfish without star.','fish'],['Say snowman without snow.','man'],
+  ['Say bathtub without bath.','tub'],['Say popcorn without pop.','corn'],['Say sunflower without sun.','flower'],['Say raincoat without coat.','rain'],['Say doorbell without bell.','door'],['Say playground without ground.','play']]},
+ {id:'D2',skill:'saying a two-beat word without one beat (syllable)',how:'Clap the two beats first, then leave one beat out.',items:[
+  ['Say monkey without mon.','key'],['Say rabbit without rab.','bit'],['Say garden without gar.','den'],['Say tiger without ti.','ger'],['Say carpet without car.','pet'],['Say button without but.','ton'],
+  ['Say pillow without pil.','low'],['Say magnet without mag.','net'],['Say kitten without kit.','ten'],['Say basket without ket.','bas'],['Say window without dow.','win'],['Say sandwich without sand.','wich']]},
+ {id:'E2',skill:'saying a longer word without its first beat',how:'Clap the beats, then leave the first beat off.',items:[
+  ['Say tomato without to.','mato'],['Say kangaroo without kan.','garoo'],['Say computer without com.','puter'],['Say potato without po.','tato'],['Say umbrella without um.','brella'],['Say dinosaur without di.','nosaur'],
+  ['Say octopus without oc.','topus'],['Say butterfly without but.','terfly'],['Say hamburger without ham.','burger'],['Say spaghetti without spa.','ghetti'],['Say koala without ko.','ala'],['Say volcano without vol.','cano']]},
+ {id:'E3',skill:'saying a longer word without its first beat (trickier words)',how:'Say it slowly in beats first if it helps, then leave the first beat off.',items:[
+  ['Say crocodile without croc.','odile'],['Say elephant without el.','ephant'],['Say telephone without tel.','ephone'],['Say tricycle without tri.','cycle'],['Say lemonade without lem.','onade'],['Say kookaburra without kook.','aburra'],
+  ['Say avocado without av.','ocado'],['Say yesterday without yes.','terday'],['Say family without fam.','ily'],['Say holiday without hol.','iday'],['Say vegetable without veg.','etable'],['Say Saturday without Sat.','urday']]},
+ {id:'F',skill:'taking away the first sound in a word',how:'Say the word, then say it without the first sound. Listen for sounds, not letters.',items:[
+  ['Say meat without the /m/.','eat'],['Say coat without the /k/.','oat'],['Say gold without the /g/.','old'],['Say sit without the /s/.','it'],['Say nice without the /n/.','ice'],['Say lamp without the /l/.','amp'],
+  ['Say bark without the /b/.','ark'],['Say farm without the /f/.','arm'],['Say seal without the /s/.','eel'],['Say bend without the /b/.','end'],['Say take without the /t/.','ache'],['Say fan without the /f/.','an']]},
+ {id:'G',skill:'swapping the first sound to make a new word',how:'Say the word, swap the first sound, and say the new word.',items:[
+  ['Say sun. Change /s/ to /f/.','fun'],['Say cat. Change /k/ to /h/.','hat'],['Say dog. Change /d/ to /l/.','log'],['Say bed. Change /b/ to /r/.','red'],['Say fish. Change /f/ to /d/.','dish'],['Say house. Change /h/ to /m/.','mouse'],
+  ['Say pig. Change /p/ to /w/.','wig'],['Say mat. Change /m/ to /b/.','bat'],['Say car. Change /k/ to /j/.','jar'],['Say top. Change /t/ to /h/.','hop'],['Say boat. Change /b/ to /g/.','goat'],['Say fox. Change /f/ to /b/.','box']]},
+ {id:'H',skill:'pulling the first sound off a sound cluster (blend)',how:'Stretch the start of the word so you can hear both sounds, then leave the first one off.',items:[
+  ['Say snail without the /s/.','nail'],['Say stop without the /s/.','top'],['Say play without the /p/.','lay'],['Say price without the /p/.','rice'],['Say bring without the /b/.','ring'],['Say clock without the /k/.','lock'],
+  ['Say train without the /t/.','rain'],['Say spot without the /s/.','pot'],['Say grow without the /g/.','row'],['Say blink without the /b/.','link'],['Say slip. Change /s/ to /f/.','flip'],['Say play. Change /p/ to /k/.','clay']]},
+ {id:'I',skill:'taking away the last sound in a word',how:'Say the word, then say it again and stop before the last sound.',items:[
+  ['Say seat without the /t/.','sea'],['Say cart without the /t/.','car'],['Say nose without the /z/.','no'],['Say tight without the /t/.','tie'],['Say plate without the /t/.','play'],['Say soap without the /p/.','sew'],
+  ['Say bike without the /k/.','buy'],['Say moon without the /n/.','moo'],['Say tent without the /t/.','ten'],['Say farm without the /m/.','far'],['Say wheat without the /t/.','wee'],['Say rope without the /p/.','row']]},
+ {id:'J',skill:'swapping the middle vowel sound to make a new word',how:'Say the word slowly and listen for the middle sound, then swap it.',items:[
+  ['Say pat. Change /a/ to /i/.','pit'],['Say hot. Change /o/ to /a/.','hat'],['Say bed. Change /e/ to /a/.','bad'],['Say big. Change /i/ to /a/.','bag'],['Say ten. Change /e/ to /i/.','tin'],['Say hop. Change /o/ to /i/.','hip'],
+  ['Say mud. Change /u/ to /a/.','mad'],['Say pen. Change /e/ to /a/.','pan'],['Say sock. Change /o/ to /a/.','sack'],['Say fun. Change /u/ to /a/.','fan'],['Say log. Change /o/ to /e/.','leg'],['Say pin. Change /i/ to /e/.','pen']]},
+ {id:'K',skill:'pulling out the second sound of a cluster (blend)',how:'Stretch the start of the word so you can hear both sounds, then leave out the second one.',items:[
+  ['Say glow without the /l/.','go'],['Say play without the /l/.','pay'],['Say smell without the /m/.','sell'],['Say spin without the /p/.','sin'],['Say stack without the /t/.','sack'],['Say black without the /l/.','back'],
+  ['Say brag without the /r/.','bag'],['Say crab without the /r/.','cab'],['Say slow without the /l/.','sew'],['Say clap without the /l/.','cap'],['Say blue without the /l/.','boo'],['Say swing without the /w/.','sing']]},
+ {id:'L',skill:'swapping the last sound to make a new word',how:'Say the word, swap the last sound, and say the new word.',items:[
+  ['Say pig. Change /g/ to /n/.','pin'],['Say bed. Change /d/ to /l/.','bell'],['Say dog. Change /g/ to /t/.','dot'],['Say cup. Change /p/ to /t/.','cut'],['Say man. Change /n/ to /p/.','map'],['Say bat. Change /t/ to /g/.','bag'],
+  ['Say hop. Change /p/ to /t/.','hot'],['Say ham. Change /m/ to /t/.','hat'],['Say rug. Change /g/ to /n/.','run'],['Say web. Change /b/ to /t/.','wet'],['Say sun. Change /n/ to /b/.','sub'],['Say cat. Change /t/ to /p/.','cap']]},
+ {id:'M',skill:'hearing sounds tucked inside end clusters',how:'Say the word very slowly so you can hear every sound, then leave the tucked-in sound out.',items:[
+  ['Say bend without the /n/.','bed'],['Say band without the /n/.','bad'],['Say desk without the /s/.','deck'],['Say lift without the /f/.','lit'],['Say past without the /s/.','pat'],['Say risk without the /s/.','rick'],
+  ['Say pink without the /ng/.','pick'],['Say sink without the /ng/.','sick'],['Say camp without the /m/.','cap'],['Say lamp without the /m/.','lap'],['Say west without the /s/.','wet'],['Say list without the /s/.','lit']]}
+];
+
+const icon=(i,px)=>`<svg width="${px}" height="${px}" viewBox="0 0 64 64" role="img" aria-label="${ANIMALS[i][0]}">${ANIMALS[i][1]}</svg>`;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let ST={name:'',log:[],games:{}};
+try{Object.assign(ST,JSON.parse(localStorage.getItem('bse-family')||'{}'))}catch(e){}
+function save(){try{localStorage.setItem('bse-family',JSON.stringify(ST))}catch(e){}}
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const V={li:null,deck:[],i:0,res:[],show:false,fin:false,setup:false};
+const L=()=>LEVELS[V.li];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function newDeck(){V.deck=shuffle(L().items).slice(0,10);V.i=0;V.res=[];V.show=false;V.fin=false}
+function readHash(){const m=decodeURIComponent(location.hash.slice(1)).match(/^([A-Z][0-9]?)(?:&n=(.*))?$/);if(!m)return;const i=LEVELS.findIndex(l=>l.id===m[1]);if(i>=0){V.li=i;if(m[2]&&!ST.name){ST.name=m[2].slice(0,20);save()}}}
+function pick(i){V.li=i;newDeck();history.replaceState(null,'','#'+L().id);render()}
+function levelStars(id){return ST.log.filter(x=>x.l===id&&x.r==='f').length}
+function weekStars(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));d.setHours(0,0,0,0);return ST.log.filter(x=>new Date(x.d+'T12:00')>=d&&x.r==='f').length}
+function render(){
+  const app=document.getElementById('app');
+  let h=`<div class="top">${icon(V.li??4,48)}<h1>My Sound Adventure<small>Big Spell Energy · practice at home${ST.name?' · '+esc(ST.name):''}</small></h1>
+   <div class="sp"><b>⚡ ${weekStars()} this week</b>${V.li!=null?`<button class="btn" data-a="games">🎮 Games</button>`:''}<button class="btn g" data-a="share">📤 Send to my speechie</button></div></div>`;
+  h+=`<div class="lv" role="group" aria-label="Level">${LEVELS.map((l,i)=>{const s=levelStars(l.id);return `<button data-a="lv" data-i="${i}" aria-pressed="${i===V.li}" title="Level ${i+1}: ${ANIMALS[i][0]}">${s?`<span class="st">⚡${s}</span>`:''}${icon(i,34)}<small>${i+1}</small></button>`}).join('')}</div>`;
+  if(V.li==null){h+=`<div class="card" style="padding:40px 20px"><div style="font-size:64px">👆</div><p style="font-size:1.15rem;margin:8px 0 0">Pick the level your speech pathologist gave you.</p></div>`}
+  else{const lv=L();
+    h+=`<div class="main"><div class="par"><h2>${icon(V.li,30)} Level ${V.li+1} · ${ANIMALS[V.li][0]}</h2><p>This level practises <b>${esc(lv.skill)}</b>.</p><p>${esc(lv.how)}</p>
+      <div class="key"><b>Marking:</b> ⚡ <b>Quick!</b> = right in under 2 seconds · ✓ <b>Right but slow</b> · ✗ <b>Not yet</b> = wrong or needed help. Quick answers are the goal, so keep it fun and fast.</div></div><div class="card">`;
+    if(V.fin){const c=k=>V.res.filter(x=>x===k).length;
+      h+=`<div class="fin"><div style="font-size:84px">🏆</div><h2>${c('f')} quick ⚡ out of ${V.res.length}!</h2><div class="stars">${V.res.map(r=>r==='f'?'⚡':r==='s'?'✓':'·').join(' ')}</div><p>${c('f')} quick · ${c('s')} right but slow · ${c('x')} not yet</p><button class="btn g" data-a="again">Play again</button></div>`}
+    else{const [q,a]=V.deck[V.i];
+      h+=`<span class="n">${V.i+1} of ${V.deck.length}</span><div class="q">${esc(q).replace(/^Say (\S+?)(?=[ .,])/,'Say <u>$1</u>')}</div>
+        ${V.show?`<div class="ans pop">${esc(a)}</div>`:`<button class="ans" data-a="reveal">Tap to see the answer</button>`}
+        <div class="stars">${V.deck.map((_,j)=>V.res[j]==='f'?'⚡':V.res[j]==='s'?'✓':V.res[j]==='x'?'✗':'☆').join('')}</div>
+        <div class="rate"><button class="x" data-a="rate" data-v="x">✗ Not yet</button><button class="s" data-a="rate" data-v="s">✓ Right<small>but slow</small></button><button class="f" data-a="rate" data-v="f">⚡ Quick!<small>under 2 seconds</small></button></div>`}
+    h+=`</div></div>`;
+  }
+  h+=`<div class="foot"><span>Practice stays on this device until you send it.</span><button class="btn" data-a="setup">${V.setup?'Close':'⚙︎ For speech pathologists'}</button></div>`;
+  if(V.setup)h+=`<div class="panel"><h3>Set up a link for a family</h3><label for="nm">Child's first name or initials (optional)</label><input id="nm" maxlength="20" value="${esc(ST.name)}" placeholder="e.g. Sam or S.T.">
+    <p class="hint">Pick the level above, then copy the link. It opens straight onto that level. Practice items are fresh examples, not the PAST test items.</p>
+    <div style="margin-top:10px"><button class="btn g" data-a="copy" ${V.li==null?'disabled':''}>📋 Copy link for family</button></div></div>`;
+  app.innerHTML=h;
+}
+function summary(){
+  const since=new Date();since.setDate(since.getDate()-13);const s0=since.toISOString().slice(0,10);
+  const Lg=ST.log.filter(x=>x.d>=s0);if(!Lg.length)return null;
+  const days=[...new Set(Lg.map(x=>x.d))].sort();const fmt=d=>new Date(d+'T12:00').toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'});
+  let t=`Big Spell Energy home practice${ST.name?' – '+ST.name:''}\n${fmt(days[0])} to ${fmt(days[days.length-1])}: practised on ${days.length} day${days.length>1?'s':''} (${days.map(fmt).join(', ')})\n`;
+  const by={};Lg.forEach(x=>(by[x.l]=by[x.l]||[]).push(x));
+  Object.entries(by).forEach(([id,arr])=>{const i=LEVELS.findIndex(l=>l.id===id);const c=r=>arr.filter(x=>x.r===r).length;
+    const miss={};arr.filter(x=>x.r!=='f').forEach(x=>miss[x.q]=(miss[x.q]||0)+1);const tk=Object.entries(miss).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([q])=>q);
+    t+=`\nLevel ${i+1} ${ANIMALS[i][0]} (${id}): ${arr.length} tries\n  Quick ${c('f')} · Right but slow ${c('s')} · Not yet ${c('x')}`+(tk.length?`\n  Still tricky: ${tk.join(' | ')}`:'')+'\n'});
+  return t;
+}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+async function share(){const t=summary();if(!t){toast('No practice yet in the last 2 weeks.');return}
+  if(navigator.share){try{await navigator.share({title:'Home practice',text:t});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(t);toast('Copied. Paste it into a text or email to your speechie.')}catch(e){location.href='mailto:?subject='+encodeURIComponent('Home practice')+'&body='+encodeURIComponent(t)}}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b||b.closest('.sgk'))return;const a=b.dataset.a;
+  if(a==='lv')pick(+b.dataset.i);
+  if(a==='reveal'){V.show=true;render()}
+  if(a==='rate'){const [q]=V.deck[V.i];V.res[V.i]=b.dataset.v;ST.log.push({d:today(),l:L().id,q,r:b.dataset.v});if(ST.log.length>3000)ST.log=ST.log.slice(-3000);save();V.i++;V.show=false;if(V.i>=V.deck.length)V.fin=true;render()}
+  if(a==='again'){newDeck();render()}
+  if(a==='share')share();
+  if(a==='setup'){V.setup=!V.setup;render()}
+  if(a==='copy'){const n=(document.getElementById('nm')?.value||'').trim().slice(0,20);ST.name=n;save();const url=location.origin+location.pathname+'#'+L().id+(n?'&n='+encodeURIComponent(n):'');
+    try{await navigator.clipboard.writeText(url);toast('Link copied')}catch(e){prompt('Copy this link:',url)}render()}
+  if(a==='games'){if(!window.SpeechGames){toast('Games are still loading.');return}const lv=L();
+    SpeechGames.open({items:lv.items.map(([q])=>({key:q,text:q})),who:ST.name.split(' ')[0],title:'Level '+(V.li+1)+' '+ANIMALS[V.li][0],state:ST.games||{},
+      onSave:st=>{ST.games=st;save()},onFinish:res=>{(res||[]).forEach(r=>ST.log.push({d:today(),l:lv.id,q:r.key,r:r.k==='clear'?'f':r.k==='near'?'s':'x'}));save();render()}})}
+});
+window.addEventListener('hashchange',()=>{readHash();if(V.li!=null)newDeck();render()});
+readHash();if(V.li!=null)newDeck();
+render();
+</script>
+</body>
+</html>
