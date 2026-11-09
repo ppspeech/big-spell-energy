@@ -15258,6 +15258,14 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 /* overview row fix: one set of rules, high specificity */
 @media(max-width:900px){.v2 .tri{grid-template-columns:repeat(3,minmax(0,1fr))}.v2 .tri>.grp.g1{grid-column:1}.v2 .tri>.grp.g2{grid-column:2/4}.v2 .tri>.grp.g1,.v2 .tri>.grp.g2,.v2 .tri>.k1,.v2 .tri>.k2,.v2 .tri>.k3{order:0}}
 @media(max-width:700px){.v2 .tri{grid-template-columns:minmax(0,1fr)}.v2 .tri>.grp.g1,.v2 .tri>.grp.g2{grid-column:1}.v2 .tri>.grp.g1{order:1}.v2 .tri>.k1{order:2}.v2 .tri>.grp.g2{order:3}.v2 .tri>.k2{order:4}.v2 .tri>.k3{order:5}}
+
+.sdq{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:#fff;border-radius:22px;padding:12px 20px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:center;box-shadow:0 6px 20px #0003;max-width:calc(100% - 24px);animation:sdqin .3s cubic-bezier(.3,1.5,.5,1)}
+.sdq:after{content:"";position:absolute;left:50%;bottom:-10px;margin-left:-10px;border:10px solid transparent;border-bottom:0;border-top-color:#fff}
+.sdq b{font:700 2.2rem Andika,"Atkinson Hyperlegible",sans-serif;color:#1F2433}.sdq .sdop{font-size:1.1rem}
+.sdq .sdans{background:#F4F1EA}
+@keyframes sdqin{from{opacity:0;transform:translate(-50%,10px) scale(.9)}}
+.sdadult .sdbtns{margin:0 auto}
+.sdadult.wait .sb-a,.sdadult.wait .sb-c,.sdadult.wait .sb-x{opacity:.35}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15392,11 +15400,12 @@ function sdDraw(){ const o=document.getElementById("sdov"); if(!o||!SD||!drill) 
   let bar;
   if(drill.done){ bar=`<div class="sdend"><div class="sdendt"><b>You kept ${kept} animal${kept===1?"":"s"}!</b><span>${drill.results.filter(v=>v!=="x").length} of ${n} right · ${fmtSecs(drill.secs)}</span></div>
       <div class="sdendb">${canWrite?`<button class="sdsave" data-sd="save">Save</button>`:""}<button data-sd="guide">📖 Field guide</button><button data-sd="close">Close</button></div></div>`; }
-  else { const it=set.items[drill.idx];
-    bar=`<div class="sdadult"><div class="sdw"><b>${esc(it.w||"?")}</b><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>
-      <div class="sdbtns"><button class="sb-a" data-sd="a" aria-label="Quick">✓</button><button class="sb-c" data-sd="c" aria-label="Slow">🐢</button><button class="sb-x" data-sd="x" aria-label="Not yet">🙈</button><button class="sb-u" data-sd="undo" aria-label="Undo" ${drill.idx?"":"disabled"}>↶</button></div></div>`; }
+  let q="";
+  if(!drill.done){ const it=set.items[drill.idx];
+    if(SD.out) q=`<div class="sdq"><b>${esc(it.w||"?")}</b><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>`;
+    bar=`<div class="sdadult ${SD.out?"":"wait"}"><div class="sdbtns"><button class="sb-a" data-sd="a" aria-label="Quick">✓</button><button class="sb-c" data-sd="c" aria-label="Slow">🐢</button><button class="sb-x" data-sd="x" aria-label="Not yet">🙈</button><button class="sb-u" data-sd="undo" aria-label="Undo" ${drill.idx?"":"disabled"}>↶</button></div></div>`; }
   o.innerHTML=`<div class="sdbox"><div class="sdtop"><b>${esc(name)}'s safari</b><span class="sdrule">${esc(lvText(drill.level))}</span><span class="sdkeep" title="Animals kept">🐾 ${kept}</span><span class="sdtime ${(drill.secs||0)>60?"over":""}" id="sd-time">${fmtSecs(drill.secs||0)}</span><button class="sdguide" data-sd="guide" aria-label="Field guide">📖</button><button class="sdx" data-sd="close" aria-label="Close safari">✕</button></div>
-    <div class="sddots">${dots}</div><div class="sdstage">${sdScene()}${SD.toast?`<div class="sdtoast ${SD.toast[0]}">${SD.toast[1]}</div>`:""}</div>${bar}</div>`; }
+    <div class="sddots">${dots}</div><div class="sdstage">${sdScene()}${q}${SD.toast?`<div class="sdtoast ${SD.toast[0]}">${SD.toast[1]}</div>`:""}</div>${bar}</div>`; }
 function sdAct(a){ if(!SD||!drill) return; const c=sdKid();
   if(a==="close") return sdClose();
   if(a==="guide"){ sfOpen(c,{view:"album",w:drill.sfW}); return; }
