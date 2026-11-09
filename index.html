@@ -6833,7 +6833,7 @@ function v2pa(c){
     <div class="track">${track}</div>
     <p class="v2status">${p.target===null?"All 12 levels are automatic.":`${p.solid>=0?`Solid up to <b>${LVL(p.solid)}</b>. `:""}Now working on <b>${LVL(p.target)}</b>.`}</p>
     <p class="sub">${p.res.length>1?(p.gain>0?`<span class="up">↑ ${p.gain} level${p.gain===1?"":"s"} since ${esc(monthOf(p.first.s.date))}</span>`:`No change since ${esc(monthOf(p.first.s.date))}`):`First check ${esc(fmtDate(p.last.s.date))}`}${p.aim!==null?` · By the end of ${esc(c.year)} aim for <b>${LVL(p.aim)}</b>${g&&g.cls!=="ok"?`, ${g.t}`:", on track"}.`:""}</p>
-    <h2 class="eyebrow">What to do next</h2><div class="todo-list">${acts.slice(0,3).join("")}</div>
+    <details class="wtdn"><summary><h2 class="eyebrow">What to do next <small>${Math.min(acts.length,3)}</small></h2></summary><div class="todo-list">${acts.slice(0,3).join("")}</div></details>
     <div class="cta">${p.target!==null?paDrillBtn(c,p.target,`▶ Start ${LVL(p.target)} drill`).replace('class="v2b"','class="v2b dark"'):""}${canWrite?`<button class="v2b" id="homeprac">Home practice sheet</button><button class="v2b" data-rep="parent">Parent report</button>`:""}${canWrite&&!p.rt?`<button class="v2b" id="newsess">New PAST check</button>`:""}</div>
   </section>
   ${paDetails(c,p.ss,p.res)}`;
@@ -6886,7 +6886,7 @@ function v2ok(c){
         <p class="sub" style="font-size:.85rem;margin-top:8px">${o.applied} of ${o.ruleTotal} rules used in their own writing</p></div>
     </div>
     <p class="v2status" style="margin-top:20px">${o.solidIC>=0?`IC solid up to <b>${esc(unitLabel(o.ic[o.solidIC]))}</b>. `:""}${o.cur?`Now working on <b>${esc(unitLabel(o.cur))}</b>`:"Every unit is secure"}${o.focus.length?`, plus <b>${o.focus.length} spelling rule${o.focus.length===1?"":"s"}</b>`:""}.</p>
-    <h2 class="eyebrow">What to do next</h2><div class="todo-list">${acts.slice(0,3).join("")||`<p class="sub">Nothing flagged.</p>`}</div>
+    <details class="wtdn"><summary><h2 class="eyebrow">What to do next <small>${Math.min(acts.length,3)||""}</small></h2></summary><div class="todo-list">${acts.slice(0,3).join("")||`<p class="sub">Nothing flagged.</p>`}</div></details>
     <div class="cta">${o.cur?codeBtn(o.cur,`▶ Open ${esc(unitLabel(o.cur))}`).replace('class="v2b"','class="v2b dark"'):""}${f0?ruleBtn(f0,`Rule drill: ${esc(rulePlain(f0))}`):""}</div>
   </section>
   ${okDetails(c,o)}`;
@@ -15266,6 +15266,11 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 @keyframes sdqin{from{opacity:0;transform:translate(-50%,10px) scale(.9)}}
 .sdadult .sdbtns{margin:0 auto}
 .sdadult.wait .sb-a,.sdadult.wait .sb-c,.sdadult.wait .sb-x{opacity:.35}
+
+.wtdn>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px}.wtdn>summary::-webkit-details-marker{display:none}
+.wtdn>summary:before{content:"▸";font-size:.8rem;color:var(--m,#6b6b6b);transition:transform .15s}.wtdn[open]>summary:before{transform:rotate(90deg)}
+.wtdn>summary .eyebrow{margin:0}.wtdn>summary small{background:#EDE9E0;border-radius:9px;padding:0 7px;margin-left:4px;font-size:.75rem}
+.wtdn{margin:14px 0 4px}.wtdn[open]>.todo-list{margin-top:10px}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
