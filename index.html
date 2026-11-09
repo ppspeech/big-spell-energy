@@ -15284,6 +15284,9 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 @keyframes sdcf{0%{opacity:1;transform:translate(-50%,-50%)}60%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy) + 160px)) rotate(var(--r))}}
 .sdq{flex-wrap:nowrap;white-space:nowrap}@media (max-width:760px){.sdq{flex-wrap:wrap;white-space:normal}}
 .sdsay{align-self:center;width:52px;height:52px;border-radius:50%;border:0;background:#FFF1C2;font-size:1.5rem;cursor:pointer;flex:none}.sdsay:active{transform:scale(.94)}
+.sdq{flex-direction:column;align-items:center;gap:6px;padding:14px 34px 16px;text-align:center}
+.sdqw{display:flex;align-items:center;gap:12px}.sdq{padding:14px 78px 16px}.sdqw .sdsay{position:absolute;left:14px;top:14px}
+@media (max-width:640px){.sdq{padding:12px 20px 14px 64px}.sdqw .sdsay{width:40px;height:40px;font-size:1.1rem;left:12px;top:12px}}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15427,7 +15430,7 @@ function sdDraw(){ const o=document.getElementById("sdov"); if(!o||!SD||!drill) 
       <div class="sdendb">${canWrite?`<button class="sdsave" data-sd="save">Save</button>`:""}<button data-sd="guide">📖 Field guide</button><button data-sd="close">Close</button></div></div>`; }
   let q="";
   if(!drill.done){ const it=set.items[drill.idx];
-    if(SD.out) q=`<div class="sdq"><button class="sdsay" data-sd="say" aria-label="Hear the word">🔊</button><b>${esc(it.w||"?")}</b><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>`;
+    if(SD.out) q=`<div class="sdq"><div class="sdqw"><button class="sdsay" data-sd="say" aria-label="Hear the word">🔊</button><b>${esc(it.w||"?")}</b></div><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>`;
     bar=`<div class="sdadult ${SD.out?"":"wait"}"><div class="sdbtns"><button class="sb-a" data-sd="a" aria-label="Quick">✓</button><button class="sb-c" data-sd="c" aria-label="Slow">🐢</button><button class="sb-x" data-sd="x" aria-label="Not yet">🙈</button><button class="sb-u" data-sd="undo" aria-label="Undo" ${drill.idx?"":"disabled"}>↶</button></div></div>`; }
   o.innerHTML=`<div class="sdbox"><div class="sdtop"><b>${esc(name)}'s safari</b><span class="sdrule">${esc(lvText(drill.level))}</span><span class="sdkeep" title="Animals kept">🐾 ${kept}</span><span class="sdtime ${(drill.secs||0)>60?"over":""}" id="sd-time">${fmtSecs(drill.secs||0)}</span><button class="sdguide" data-sd="guide" aria-label="Field guide">📖</button><button class="sdx" data-sd="close" aria-label="Close safari">✕</button></div>
     <div class="sddots">${dots}</div><div class="sdstage">${sdScene()}${q}${SD.toast?`<div class="sdtoast ${SD.toast[0]}">${SD.toast[1]}</div>`:""}</div>${bar}</div>`; }
