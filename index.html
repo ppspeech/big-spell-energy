@@ -15254,6 +15254,10 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .bhspot{border:0;background:#F6F2E8;border-radius:16px;padding:6px 6px 4px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font:inherit}
 .bhspot.u{background:#E0F4F1}.bhspot.r{background:#FDE6EE}.bhspot small{font-weight:800;font-size:.72rem;color:#5B5560}
 .bhempty{color:#8a8072;margin:10px 0 0}
+
+/* overview row fix: one set of rules, high specificity */
+@media(max-width:900px){.v2 .tri{grid-template-columns:repeat(3,minmax(0,1fr))}.v2 .tri>.grp.g1{grid-column:1}.v2 .tri>.grp.g2{grid-column:2/4}.v2 .tri>.grp.g1,.v2 .tri>.grp.g2,.v2 .tri>.k1,.v2 .tri>.k2,.v2 .tri>.k3{order:0}}
+@media(max-width:700px){.v2 .tri{grid-template-columns:minmax(0,1fr)}.v2 .tri>.grp.g1,.v2 .tri>.grp.g2{grid-column:1}.v2 .tri>.grp.g1{order:1}.v2 .tri>.k1{order:2}.v2 .tri>.grp.g2{order:3}.v2 .tri>.k2{order:4}.v2 .tri>.k3{order:5}}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
