@@ -15271,6 +15271,19 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .wtdn>summary:before{content:"▸";font-size:.8rem;color:var(--m,#6b6b6b);transition:transform .15s}.wtdn[open]>summary:before{transform:rotate(90deg)}
 .wtdn>summary .eyebrow{margin:0}.wtdn>summary small{background:#EDE9E0;border-radius:9px;padding:0 7px;margin-left:4px;font-size:.75rem}
 .wtdn{margin:14px 0 4px}.wtdn[open]>.todo-list{margin-top:10px}
+
+.sdq{padding:16px 30px;gap:16px;border-radius:28px}
+.sdq b{font-size:3.6rem;line-height:1}.sdq .sdop{font-size:1.6rem;color:#3E3A44}.sdq .sdans{font-size:1.8rem;padding:4px 16px}
+@media (max-width:640px){.sdq b{font-size:2.6rem}.sdq .sdop{font-size:1.2rem}}
+.sdname text{font:800 30px Fredoka,"Atkinson Hyperlegible",sans-serif;fill:#2B2A33;paint-order:stroke;stroke:#fff;stroke-width:9px;stroke-linejoin:round}
+.sdname.u text{fill:#2F6B66}.sdname.r text{fill:#C9557A}
+.sdname{animation:sdnm .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes sdnm{from{opacity:0;transform:translateY(12px)}}
+.sdconf{position:fixed;pointer-events:none;z-index:2147482450;overflow:hidden}
+.sdconf i{position:absolute;opacity:0;animation:sdcf 1.5s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes sdcf{0%{opacity:1;transform:translate(-50%,-50%)}60%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy) + 160px)) rotate(var(--r))}}
+.sdq{flex-wrap:nowrap;white-space:nowrap}@media (max-width:760px){.sdq{flex-wrap:wrap;white-space:normal}}
+.sdsay{align-self:center;width:52px;height:52px;border-radius:50%;border:0;background:#FFF1C2;font-size:1.5rem;cursor:pointer;flex:none}.sdsay:active{transform:scale(.94)}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15378,10 +15391,17 @@ function sdPick(i){ drill.sfCur=drill.sfCur||{}; if(drill.sfCur[i]) return drill
   const list=fresh.length&&R()<.7?fresh:notK.length?notK:pool; const a=list[Math.floor(R()*list.length)];
   return drill.sfCur[i]={w,id:a[0],name:a[1],tier:a[2]}; }
 function sdSlots(w){ return (SF_SLOTS[w]||[]).map((s,k)=>({s,k})).filter(o=>!(Math.abs(o.s[0]-SD_HX)<150&&o.s[1]>470)).map(o=>o.s); }
+function sdConfetti(n){ try{ if(matchMedia("(prefers-reduced-motion: reduce)").matches) return; const st=document.querySelector("#sdov .sdstage"); if(!st) return; const r=st.getBoundingClientRect();
+  const L=document.createElement("div"); L.className="sdconf"; L.style.cssText=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px`;
+  const C=["#F5B83D","#E86F7C","#2F6B66","#6C63D9","#4FA3D8","#7BC043","#FF8A5B"];
+  for(let i=0;i<n;i++){ const p=document.createElement("i"); const dx=(Math.random()-.5)*r.width*.9, dy=-(r.height*.25+Math.random()*r.height*.45);
+    p.style.cssText=`background:${C[i%C.length]};left:50%;top:62%;--dx:${dx}px;--dy:${dy}px;--r:${Math.round(Math.random()*720-360)}deg;animation-delay:${Math.random()*.08}s;width:${6+Math.random()*7}px;height:${8+Math.random()*8}px;border-radius:${Math.random()<.3?"50%":"2px"}`; L.appendChild(p); }
+  document.body.appendChild(L); setTimeout(()=>L.remove(),1700); }catch(e){} }
 function sdAnimalAt(w,id,x,y,sc,cls,flip){ const Wd=150*sc, H=125*sc;
   return `<svg class="${cls||""}" x="${x-Wd/2}" y="${y-H}" width="${Wd}" height="${H}" viewBox="0 0 120 100" overflow="visible">${flip?`<g transform="translate(120 0) scale(-1 1)">${sfArt(w,id)}</g>`:sfArt(w,id)}</svg>`; }
 function sdScene(){ const w=drill.sfW, sl=sdSlots(w), kept=drill.sf||[];
-  const placed=kept.map((e,k)=>{ const s=sl[k%sl.length], off=Math.floor(k/sl.length)*46; return `<g class="sdkept ${SD.pop===k?"pop":""}">${sdAnimalAt(e.w,e.id,s[0]+off,s[1],s[2],"",k%3===1)}</g>`; }).join("");
+  const placed=kept.map((e,k)=>{ const s=sl[k%sl.length], off=Math.floor(k/sl.length)*46; let tag=""; if(SD.pop===k){ const W=sfWorld(e.w), a=W&&W.animals.find(z=>z[0]===e.id); if(a){ const ty=s[1]-125*s[2]-8, nm=(a[2]==="r"?"✨ ":"")+a[1]+(a[2]==="r"?" ✨":""); tag=`<g class="sdname ${a[2]}"><text x="${s[0]+off}" y="${ty}" text-anchor="middle">${esc(nm)}</text></g>`; } }
+    return `<g class="sdkept ${SD.pop===k?"pop":""}">${sdAnimalAt(e.w,e.id,s[0]+off,s[1],s[2],"",k%3===1)}${tag}</g>`; }).join("");
   let hide="";
   if(!drill.done){ const an=sdPick(drill.idx), col=SD_HIDE[w]||SD_HIDE.bush, x=SD_HX, y=SD_HY;
     hide=`<g class="sdhide ${SD.out?"out":""} ${SD.duck?"duck":""}" data-sd="peek" role="button" aria-label="${SD.out?esc(an.name):"Hiding animal. Tap to bring it out"}" tabindex="0">
@@ -15407,7 +15427,7 @@ function sdDraw(){ const o=document.getElementById("sdov"); if(!o||!SD||!drill) 
       <div class="sdendb">${canWrite?`<button class="sdsave" data-sd="save">Save</button>`:""}<button data-sd="guide">📖 Field guide</button><button data-sd="close">Close</button></div></div>`; }
   let q="";
   if(!drill.done){ const it=set.items[drill.idx];
-    if(SD.out) q=`<div class="sdq"><b>${esc(it.w||"?")}</b><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>`;
+    if(SD.out) q=`<div class="sdq"><button class="sdsay" data-sd="say" aria-label="Hear the word">🔊</button><b>${esc(it.w||"?")}</b><span class="sdop">${esc(it.op||"")}</span><button class="sdans ${SD.ans?"on":""}" data-sd="ans" aria-label="${SD.ans?"Answer":"Show answer"}">${esc(it.a||"?")}</button></div>`;
     bar=`<div class="sdadult ${SD.out?"":"wait"}"><div class="sdbtns"><button class="sb-a" data-sd="a" aria-label="Quick">✓</button><button class="sb-c" data-sd="c" aria-label="Slow">🐢</button><button class="sb-x" data-sd="x" aria-label="Not yet">🙈</button><button class="sb-u" data-sd="undo" aria-label="Undo" ${drill.idx?"":"disabled"}>↶</button></div></div>`; }
   o.innerHTML=`<div class="sdbox"><div class="sdtop"><b>${esc(name)}'s safari</b><span class="sdrule">${esc(lvText(drill.level))}</span><span class="sdkeep" title="Animals kept">🐾 ${kept}</span><span class="sdtime ${(drill.secs||0)>60?"over":""}" id="sd-time">${fmtSecs(drill.secs||0)}</span><button class="sdguide" data-sd="guide" aria-label="Field guide">📖</button><button class="sdx" data-sd="close" aria-label="Close safari">✕</button></div>
     <div class="sddots">${dots}</div><div class="sdstage">${sdScene()}${q}${SD.toast?`<div class="sdtoast ${SD.toast[0]}">${SD.toast[1]}</div>`:""}</div>${bar}</div>`; }
@@ -15415,6 +15435,7 @@ function sdAct(a){ if(!SD||!drill) return; const c=sdKid();
   if(a==="close") return sdClose();
   if(a==="guide"){ sfOpen(c,{view:"album",w:drill.sfW}); return; }
   if(a==="ans"){ SD.ans=!SD.ans; sdDraw(); return; }
+  if(a==="say"){ const it=drill.set.items[drill.idx]; if(it&&typeof gmSay==="function") gmSay(it.w); return; }
   if(a==="peek"){ if(drill.done||SD.out) return; SD.out=true; SD.toast=null; sdDraw(); return; }
   if(a==="undo"){ undoDrill(); return; }
   if(a==="save"){ const b=document.getElementById("d-save"); if(b) b.click(); return; }
@@ -15422,9 +15443,9 @@ function sdAct(a){ if(!SD||!drill) return; const c=sdKid();
 const _sdMark=markDrill;
 markDrill=function(v){
   if(drill&&drill.safari&&drill.started&&!drill.done&&SD){ const i=drill.idx, an=sdPick(i);
-    if(v!=="x"){ drill.sf.push({i,w:an.w,id:an.id}); SD.pop=drill.sf.length-1; SD.toast=["keep",`${an.tier==="r"?"✨ ":""}${esc(an.name)}${an.tier==="r"?" ✨":""}`]; }
+    if(v!=="x"){ drill.sf.push({i,w:an.w,id:an.id}); SD.pop=drill.sf.length-1; SD.toast=null; sdConfetti(an.tier==="r"?90:v==="a"?55:35); }
     else { SD.pop=-1; SD.toast=["hid","🙈 It hid! Next time"]; }
-    SD.out=false; SD.ans=false; clearTimeout(SD.tt); SD.tt=setTimeout(()=>{ if(SD){ SD.toast=null; SD.pop=-1; const t=document.querySelector("#sdov .sdtoast"); if(t) t.remove(); } },1500); }
+    SD.out=false; SD.ans=false; clearTimeout(SD.tt); SD.tt=setTimeout(()=>{ if(SD){ SD.toast=null; SD.pop=-1; const t=document.querySelector("#sdov .sdtoast"); if(t) t.remove(); document.querySelectorAll("#sdov .sdname").forEach(x=>x.remove()); } },1800); }
   _sdMark(v); if(drill&&drill.safari&&SD) sdDraw(); };
 const _sdUndo=undoDrill;
 undoDrill=function(){ if(drill&&drill.safari&&!drill.done&&drill.idx){ const i=drill.idx-1; drill.sf=(drill.sf||[]).filter(e=>e.i<i); if(SD){ SD.out=false; SD.ans=false; SD.toast=null; SD.pop=-1; } }
