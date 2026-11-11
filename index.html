@@ -6716,7 +6716,7 @@ function okState(c){
   const cur=all.find(u=>u.status!=="secure")||null;
   const ds=clientOkd(c.id);
   const lastPr=u=>{ const a=(u.att||[]).map(x=>x.d); const d=ds.filter(x=>x.kind==="code"&&x.target===u.id).map(x=>x.date); return a.concat(d).sort().pop()||null; };
-  const ready=u=>{ if(u.status==="secure") return null; const last=(u.att||[]).slice(-(L.need||2)); const acc=last.length>=(L.need||2)&&last.every(a=>a.t&&a.c/a.t*100>=(L.thr||80)); const m=okMastery(ds.filter(x=>x.kind==="code"&&x.target===u.id)); return {acc, quick:m.mastered, run:m.run, pcts:last.map(a=>Math.round(a.c/a.t*100)), ok:acc&&m.mastered}; };
+  const ready=u=>{ if(u.status==="secure") return null; const last=(u.att||[]).slice(-(L.need||2)); const acc=last.length>=(L.need||2)&&last.every(a=>a.t&&a.c/a.t*100>=(L.thr||80)); const m=okMastery(ds.filter(x=>x.kind==="code"&&x.target===u.id)); const T=((c.okTick||{})[u.id])||{}; const A=T.acc!=null?T.acc:acc, Q=T.quick!=null?T.quick:m.mastered; return {acc:A, quick:Q, accMan:T.acc!=null, quickMan:T.quick!=null, run:m.run, pcts:last.map(a=>Math.round(a.c/a.t*100)), ok:A&&Q}; };
   const prog=all.filter(u=>u.status==="progress"||u===cur);
   const readyList=all.filter(u=>{ const r=ready(u); return r&&r.ok; });
   const focus=L.rules.filter(r=>r.focus&&r.level<5);
@@ -6859,8 +6859,8 @@ function v2ok(c){
   const tile=u=>{ const m=IC_META[u.id]; return `<div role="button" tabindex="0" data-unit="${esc(u.id)}" class="u ${u.status==="secure"?"s":u.status==="progress"?"p":""} ${o.cur&&u.id===o.cur.id?"now":""}" title="${esc(u.name)}"><i>${m[0]}</i><b>${esc(m[1])}</b>${IC_SUB[u.id]?`<small>${IC_SUB[u.id]}</small>`:""}</div>`; };
   const ecTile=u=>`<div role="button" tabindex="0" data-unit="${esc(u.id)}" class="u ${u.status==="secure"?"s":u.status==="progress"?"p":""} ${o.cur&&u.id===o.cur.id?"now":""}" title="${esc(u.name)}"><b>${esc(unitLabel(u).replace(/^EC /,""))}</b></div>`;
   const readyCard=u=>{ const r=o.ready(u); return `<div class="ready ${r.ok?"":"no"}"><div class="rh"><b>${esc(unitLabel(u))}</b><span class="badge ${r.ok?"":"grey"}">${r.ok?"Ready to mark secure":"In progress"}</span></div>
-    <div class="crit"><span class="${r.acc?"ok":"no"}">${r.acc?"✓":"○"}</span><span>Accurate: ${r.pcts.length?r.pcts.map(x=>x+"%").join(", ")+" on the last "+r.pcts.length:"no practice logged yet"} <span class="sub">(need ${o.L.thr||80}%+ ${o.L.need===1?"once":"twice"})</span></span></div>
-    <div class="crit"><span class="${r.quick?"ok":"no"}">${r.quick?"✓":"○"}</span><span>Quick: ${r.quick?`${masteryN()} perfect code drills in a row`:`${Math.min(r.run,masteryN())} of ${masteryN()} perfect code drills`}</span></div>
+    <div class="crit"><button type="button" class="tick ${r.acc?"ok":"no"} ${r.accMan?"man":""}" data-tick="${esc(u.id)}" data-k="acc" data-v="${r.acc?1:0}" aria-pressed="${r.acc}" aria-label="Accurate" title="${r.accMan?"Ticked by you · tap to change":"Tap to tick"}" ${canWrite?"":"disabled"}>${r.acc?"✓":""}</button><span>Accurate: ${r.accMan&&r.acc?"ticked by you":r.pcts.length?r.pcts.map(x=>x+"%").join(", ")+" on the last "+r.pcts.length:"no practice logged yet"} <span class="sub">(need ${o.L.thr||80}%+ ${o.L.need===1?"once":"twice"})</span></span></div>
+    <div class="crit"><button type="button" class="tick ${r.quick?"ok":"no"} ${r.quickMan?"man":""}" data-tick="${esc(u.id)}" data-k="quick" data-v="${r.quick?1:0}" aria-pressed="${r.quick}" aria-label="Quick" title="${r.quickMan?"Ticked by you · tap to change":"Tap to tick"}" ${canWrite?"":"disabled"}>${r.quick?"✓":""}</button><span>Quick: ${r.quickMan&&r.quick?"ticked by you":r.quick?`${masteryN()} perfect code drills in a row`:`${Math.min(r.run,masteryN())} of ${masteryN()} perfect code drills`}</span></div>
     ${canWrite?`<div class="ra">${r.ok?`<button class="v2b dark sm" data-secure="${esc(u.id)}">Mark secure</button>`:""}${codeBtn(u,"Open").replace('class="v2b"','class="v2b sm"')}</div>`:""}</div>`; };
   const ladderW=r=>`<span class="ladw"><span class="lad">${[0,1,2,3,4].map(i=>`<i class="${i<r.level?"on":""}" title="${RSTEP[i]}"></i>`).join("")}</span><span class="lk"><span>explain</span><span>words</span><span>sent.</span><span>self-fix</span><span>own</span></span></span>`;
   const ruleRow=(r,pot)=>`<div class="rl ${pot?"pot":""}" role="button" tabindex="0" data-ropen="${esc(r.id)}"><span class="tl ${pot?"pot":"on"}">${esc(r.tile)}</span><span><b>${esc(rulePlain(r))}</b><small>${pot?"Potential next target":`${r.level?RSTEP[r.level-1]:"not started"} · next: ${RNEXT[r.level]||"done"}`}</small></span>${pot?(canWrite?`<button class="v2b sm" data-focus2="${esc(r.id)}">★ Make target</button>`:""):ladderW(r)}</div>`;
@@ -15292,6 +15292,9 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .sdq b{font-size:5rem}@media (max-width:820px){.sdq{top:6px;gap:0;padding:6px 22px 8px 62px}.sdq b{font-size:3.4rem}.sdq .sdop{font-size:1.05rem}.sdq .sdans{font-size:1.2rem;padding:0 12px}.sdqw .sdsay{width:38px;height:38px;font-size:1rem;left:12px;top:12px}}
 .sdtop button{display:inline-grid;place-items:center;padding:0;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .sdbtns button{display:inline-grid;place-items:center;padding:0;line-height:1}
+.crit .tick{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid #C9C3B6;background:#fff;color:#fff;font-weight:900;font-size:.85rem;line-height:1;display:inline-grid;place-items:center;padding:0;cursor:pointer;margin-right:2px}
+.crit .tick.ok{background:#2F6B66;border-color:#2F6B66}.crit .tick.man.ok{background:#3E8A7E}.crit .tick:hover{border-color:#2F6B66}.crit .tick:disabled{cursor:default}
+.crit{align-items:center}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15530,6 +15533,12 @@ function bhBind(){ const v=app.querySelector(".bhome"); if(!v) return;
   v.querySelectorAll("[data-bhsf]").forEach(b=>b.onclick=()=>{ const c=clients.find(x=>x.id===b.dataset.bhsf); if(c) sfOpen(c,{view:"scene",w:b.dataset.w}); }); }
 const _bhRC=renderCaseload;
 renderCaseload=function(){ _bhRC(); try{ bhBind(); }catch(e){ console.warn(e); } };
+
+/* quick tick of unit goals on the Orthographic knowledge tab */
+document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-tick]"); if(!b||!canWrite) return; e.preventDefault(); e.stopPropagation();
+  const c=clients.find(x=>x.id===view.clientId); if(!c) return; const id=b.dataset.tick, k=b.dataset.k, nv=b.dataset.v!=="1";
+  const t={...(c.okTick||{})}; t[id]={...(t[id]||{}),[k]:nv}; c.okTick=t; const y=scrollY; render(); scrollTo(0,y);
+  try{ await db.doc("clients/"+c.id).update({okTick:t}); }catch(err){ toast(errMsg(err)); } },true);
 
 </script>
 </body>
