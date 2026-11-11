@@ -9092,12 +9092,13 @@ const hpFrom=()=>settings.hpFrom||"Pei-Pei";
 const hpEmail=()=>settings.hpEmail!==undefined?settings.hpEmail:"peipeihsing@gmail.com";
 function hpOptions(c){
   const o=okState(c); const out=[];
-  if(o){ const units=[...new Set((o.prog||[]).concat(o.cur?[o.cur]:[]))].slice(0,3);
-    units.forEach(u=>{ if(!gmSetFor(u.id)) return; const g={h:`Sounds-Write · ${unitLabel(u)}`,items:[]};
+  if(o){ const base=[...new Set((o.prog||[]).concat(o.cur?[o.cur]:[]))]; const allU=o.ic.concat(o.ec);
+    const extra=(c.hpExtra||[]).map(id=>allU.find(u=>u.id===id)).filter(u=>u&&!base.includes(u)); const units=base.concat(extra);
+    units.forEach(u=>{ if(!gmSetFor(u.id)) return; const g={h:`Sounds-Write · ${unitLabel(u)}`,items:[],uid:u.id,extra:extra.includes(u),more:!extra.includes(u)&&base.indexOf(u)>=3};
       HP_SW.forEach(([k,ic,n])=>{ if(swAvail(u.id,k)) g.items.push({key:`sw|${u.id}|${k}`,icon:ic,label:n,sub:unitLabel(u).split(" · ")[0],kind:"sw",uid:u.id,k}); });
       const gs=gmSetFor(u.id); [["build","🧩","Word building"],["speed","⚡","Speed read"],["pairs","🃏","Pairs"],...(u.st==="ec"?[["sort","🗂️","Spelling sort"]]:[])].forEach(([k,ic,n])=>g.items.push({key:`gm|${u.id}|${k}`,icon:ic,label:n,sub:unitLabel(u).split(" · ")[0],kind:"gm",uid:u.id,k,set:gs.id}));
       G2_GAMES.filter(([k])=>k!=="syl"&&g2Avail(u.id,k)).forEach(([k,ic,n])=>g.items.push({key:`g2|${u.id}|${k}`,icon:ic,label:k==="syl"?"Syllable race":k==="ttt"?"Tic-tac-toe":n,sub:unitLabel(u).split(" · ")[0],kind:"g2",uid:u.id,k}));
-      if(g.items.length) out.push(g); });
+      if(g.more) g.items.forEach(x=>x.more=true); if(g.items.length) out.push(g); });
     (o.focus||[]).slice(0,3).forEach(r=>{ if(!TD[r.id]) return; const nx=tdNext(c,r.id); const wt=TD[r.id].filter(x=>!["story","sl","exc"].includes(x.type)); const t=(nx&&wt.includes(nx.t)?nx.t:null)||wt.find(x=>{ try{ return tdCell(c,r.id,x,"words").st!=="s"; }catch(e){ return true; } })||wt[0]||TD[r.id][0];
       const nm=RULE_PLAIN[r.id]||r.name; const g={h:`Spelling rule · ${nm}`,items:[]};
       const add=(tid,mode,ic,l)=>g.items.push({key:`task|${r.id}|${tid}|${mode}`,icon:ic,label:l,sub:nm,kind:"task",rid:r.id,tid,mode});
@@ -9133,9 +9134,9 @@ function hpLayBox(all){ const lay=hpLayout(all); if(!lay.some(e=>typeof e==="str
    <button class="hpladd" data-hplay="secadd">+ Add a section</button></div>`; }
 function hpPanel(c){ if(!canWrite) return "";
   const G=hpOptions(c); const all=G.flatMap(g=>g.items);
-  if(!view.hpSel||view.hpFor!==c.id){ view.hpFor=c.id; view.hpOut=""; view.hpLay=null; view.hpSel=all.filter(x=>/\|(swrcwc|swdict)$/.test(x.key)||/\|choose$/.test(x.key)||(x.kind==="oma"&&!/\|mix-/.test(x.key))).map(x=>x.key); if(!view.hpSel.length) view.hpSel=all.slice(0,2).map(x=>x.key); view.hpMsg=settings.hpMsg||"Little and often: 3–5 minutes, before dinner."; view.hpPerDay=settings.hpPerDay||5; view.hpBy=hpAddDays(today(),6); }
+  if(!view.hpSel||view.hpFor!==c.id){ view.hpFor=c.id; view.hpOut=""; view.hpLay=null; view.hpSel=all.filter(x=>!x.more&&/\|(swrcwc|swdict)$/.test(x.key)||/\|choose$/.test(x.key)||(x.kind==="oma"&&!/\|mix-/.test(x.key))).map(x=>x.key); if(!view.hpSel.length) view.hpSel=all.slice(0,2).map(x=>x.key); view.hpMsg=settings.hpMsg||"Little and often: 3–5 minutes, before dinner."; view.hpPerDay=settings.hpPerDay||5; view.hpBy=hpAddDays(today(),6); }
   return `<section class="v2card hpp" id="hpp"><h2 class="eyebrow">🏠 Home practice · a file families open on an iPad or phone, no login</h2>
-   ${G.map(g=>`<div class="hpg"><b>${esc(g.h)}</b>${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span><b>${x.icon} ${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div></div>`).join("")}
+   ${G.map(g=>`${g.more?`<details class="hpg hpmore" ${g.items.some(x=>view.hpSel.includes(x.key))?"open":""}><summary>`:`<div class="hpg">`}<b>${esc(g.h)}</b>${g.more?` <small>${g.items.length} activities</small></summary>`:""}${g.extra?`<button type="button" class="linkbtn hpxu" data-hpxu="${esc(g.uid)}">✕ remove</button>`:""}${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span><b>${x.icon} ${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div>${g.more?"</details>":"</div>"}`).join("")}${hpAddUnit(c,G)}
    ${hpLayBox(all)}
    <label class="hpl">Message for the family<textarea id="hpmsg" rows="2">${esc(view.hpMsg)}</textarea></label>
    <div class="hpset"><label>Tasks a day<select id="hpday">${[1,2,3,4,5,6,7,8,10].map(n=>`<option ${n===view.hpPerDay?"selected":""}>${n}</option>`).join("")}</select></label><label>Next session (the chart runs until then)<input id="hpby" type="date" value="${esc(view.hpBy)}" min="${esc(hpAddDays(today(),1))}"></label></div>
@@ -15340,6 +15341,10 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .stlab textarea{font:inherit;font-weight:400;font-family:Andika,ui-monospace,monospace;padding:8px 10px;border:1px solid #D7DBD9;border-radius:8px;resize:vertical}
 .stlab.small input{width:120px;font:inherit;padding:6px 8px;border:1px solid #D7DBD9;border-radius:8px}
 .stlab code,.stcard code{background:#F1EEE6;border-radius:4px;padding:0 4px}
+.hpaddu{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 4px;padding:10px 12px;border:1.5px dashed #D7DBD9;border-radius:10px;background:#FFFDF7}
+.hpaddu>span{font-weight:800}.hpaddu select{font:inherit;padding:6px 10px;border:1px solid #D7DBD9;border-radius:8px;background:#fff;max-width:100%}.hpaddu small{color:#6B6560}
+.hpxu{margin-left:10px;font-size:.82rem;color:#8A2B3D}
+.hpmore>summary{cursor:pointer;padding:6px 0;list-style:none}.hpmore>summary::-webkit-details-marker{display:none}.hpmore>summary:before{content:"▸ ";color:#6B6560}.hpmore[open]>summary:before{content:"▾ "}.hpmore>summary small{color:#6B6560;font-weight:400}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15721,6 +15726,17 @@ async function stClick(e){ const b=e.target.closest("[data-st]"); if(!b||!ST) re
     c.spellTests=L; b.disabled=true; try{ await db.doc("clients/"+c.id).update({spellTests:L}); toast("Saved"); ST.dirty=false; stClose(); }catch(err){ b.disabled=false; toast(errMsg(err)); } } }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest(".stcard [data-st]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; e.preventDefault();
   stOpen(c,b.dataset.st,Number(b.dataset.i)); });
+
+/* homework: pull in any unit's activities without changing its status */
+function hpAddUnit(c,G){ const o=okState(c); if(!o) return ""; const shown=new Set(G.map(g=>g.uid).filter(Boolean));
+  const opt=u=>shown.has(u.id)||!gmSetFor(u.id)?"":`<option value="${esc(u.id)}">${esc(unitLabel(u))}${u.status==="secure"?" ✓":""}</option>`;
+  return `<div class="hpaddu"><span>＋ Add a unit</span><select data-hpaddu aria-label="Add a unit's homework"><option value="">Pick a unit…</option><optgroup label="Initial Code">${o.ic.map(opt).join("")}</optgroup><optgroup label="Extended Code">${o.ec.map(opt).join("")}</optgroup></select><small>Its status doesn't change.</small></div>`; }
+document.addEventListener("change",async e=>{ const t=e.target; if(!t.matches||!t.matches("[data-hpaddu]")||!t.value) return; const c=hpClient(); if(!c) return;
+  c.hpExtra=[...new Set((c.hpExtra||[]).concat(t.value))]; const y=scrollY; renderClient(); scrollTo(0,y);
+  try{ await db.doc("clients/"+c.id).update({hpExtra:c.hpExtra}); }catch(err){ toast(errMsg(err)); } });
+document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-hpxu]"); if(!b) return; const c=hpClient(); if(!c) return; const id=b.dataset.hpxu;
+  c.hpExtra=(c.hpExtra||[]).filter(x=>x!==id); view.hpSel=(view.hpSel||[]).filter(k=>!k.includes("|"+id+"|")); const y=scrollY; renderClient(); scrollTo(0,y);
+  try{ await db.doc("clients/"+c.id).update({hpExtra:c.hpExtra}); }catch(err){ toast(errMsg(err)); } });
 
 </script>
 </body>
