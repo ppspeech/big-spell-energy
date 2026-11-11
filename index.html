@@ -15298,6 +15298,48 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .u.qt{position:relative;user-select:none}
 .u.qt .uopen{position:absolute;top:2px;right:3px;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:.72rem;font-style:normal;color:#8A8478;opacity:.55}
 .u.qt:hover .uopen{opacity:1}.ctrack.ec .u.qt{padding-right:16px}.ctrack.ec .u.qt .uopen{width:14px;height:14px;font-size:.6rem;top:1px;right:1px}.u.qt .uopen:hover{background:#fff;color:#2B2A33}
+/* ---------- Standardised spelling ---------- */
+.stcard .sth{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.stcard .stb{display:flex;gap:8px}
+.strows{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.strow{display:grid;grid-template-columns:80px 120px 1fr;gap:10px;align-items:baseline;text-align:left;font:inherit;color:inherit;background:#FFFDF7;border:1px solid #E7E1D4;border-radius:10px;padding:8px 12px;cursor:pointer}
+.strow:hover{border-color:#2F6B66}.stn{font-weight:800}.std{color:#6B6560;font-size:.85rem}.sts{font-size:.92rem}
+@media(max-width:640px){.strow{grid-template-columns:1fr}}
+.stneg{color:#8A2B3D}.stpos{color:#2F6B66}
+.stov{position:fixed;inset:0;z-index:2100;background:#FFFDF7;color:#1E2226;overflow:auto;font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+.stin{max-width:900px;margin:0 auto;padding:16px 16px 60px}
+.sthd{display:flex;align-items:center;gap:10px;margin-bottom:12px}.sthd b{font-size:1.2rem}.sthd span{color:#5B6570}
+.stx{margin-left:auto;width:40px;height:40px;border-radius:50%;border:1.5px solid #D7DBD9;background:#fff;font-size:1rem;cursor:pointer;display:grid;place-items:center;padding:0}
+.sttabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sttabs>button,.stforms button{font:inherit;font-weight:700;border:1.5px solid #D7DBD9;background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:#1E2226}
+.sttabs>button.on,.stforms button.on{background:#1E2226;border-color:#1E2226;color:#fff}
+.sttabs button:disabled:not(.on){opacity:.4;cursor:default}
+.stforms{display:flex;gap:4px;align-items:center;margin-left:6px;font-weight:700;color:#5B6570}
+.stdate{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:.88rem;color:#5B6570}.stdate input{font:inherit;padding:5px 8px;border:1px solid #D7DBD9;border-radius:8px}
+.stfull{margin:10px 0}
+.stres{display:flex;gap:16px;align-items:center;background:#EEF5F3;border-radius:14px;padding:12px 16px;margin:8px 0}
+.stbig{font:800 2.4rem Fredoka,"Atkinson Hyperlegible",sans-serif;color:#2F6B66;line-height:1}.stbig small{font-size:1.1rem;color:#5B6570}
+.stnote{font-size:.85rem;margin-top:4px;color:#7A5A2A}
+.sttags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 10px}.sttags b{margin-right:4px;font-size:.85rem}
+.sttags span{border-radius:999px;padding:3px 10px;font-size:.82rem;background:#F1E8D6}.sttags span.ok{background:#DCE9E7}.sttags span.no{background:#F2E1E4}.sttags i{font-style:normal;font-weight:800;margin-left:3px}
+.sttools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0 8px}.sttools .sub{margin-right:auto}
+.stlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.stit{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E7E1D4;border-radius:10px;padding:5px 6px}
+.stit.a{background:#F1F8F6;border-color:#B9D6D0}.stit.x{background:#FBF1F3;border-color:#E3C1C8}
+.stno{width:24px;text-align:right;font-weight:800;color:#8A8478;font-size:.82rem;flex:none}
+.stw{width:96px;flex:none;font-family:Andika,sans-serif;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stw small{display:block;font-family:inherit;font-weight:400;font-size:.68rem;color:#8A8478}
+.stwr{flex:1;min-width:0;font:inherit;font-family:Andika,sans-serif;padding:5px 8px;border:1px solid #E1DCD0;border-radius:7px;background:#fff}
+.stm{flex:none;width:32px;height:32px;border-radius:8px;border:1.5px solid #D7DBD9;background:#fff;font-weight:900;cursor:pointer;color:#B0AAA0;padding:0}
+.stm.a.on{background:#2F6B66;border-color:#2F6B66;color:#fff}.stm.x.on{background:#8A2B3D;border-color:#8A2B3D;color:#fff}
+.stfoot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.stfoot label{display:flex;flex-direction:column;gap:4px;font-size:.82rem;font-weight:700;color:#5B6570}
+.stfoot input{font:inherit;font-weight:400;padding:8px 10px;border:1px solid #D7DBD9;border-radius:8px}
+@media(max-width:640px){.stfoot{grid-template-columns:1fr}}
+.stact{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.stpriv{background:#FFF6DA;border-radius:10px;padding:8px 12px;font-size:.9rem}
+.stlab{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.88rem;margin-top:12px}.stlab small{font-weight:400;color:#5B6570}
+.stlab textarea{font:inherit;font-weight:400;font-family:Andika,ui-monospace,monospace;padding:8px 10px;border:1px solid #D7DBD9;border-radius:8px;resize:vertical}
+.stlab.small input{width:120px;font:inherit;padding:6px 8px;border:1px solid #D7DBD9;border-radius:8px}
+.stlab code,.stcard code{background:#F1EEE6;border-radius:4px;padding:0 4px}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
@@ -15551,6 +15593,134 @@ document.addEventListener("click",e=>{ if(!e.target.closest) return; const op=e.
   const o=okState(c); if(!o) return; const u=o.ic.concat(o.ec).find(x=>x.id===t.dataset.unit); if(!u) return;
   const order=["not","progress","secure"], nx=order[(order.indexOf(u.status)+1)%3];
   const y=scrollY; SC.setUnit(c.id,u.id,nx); setTimeout(()=>scrollTo(0,y),60); },true);
+
+/* ===================== Standardised spelling tests: SAST, DiSTn, DiSTi, DiSTm, DiSTs ===================== */
+/* No test items or norm tables are built in. Pei-Pei pastes them once from her own copy (Settings, saved privately). */
+const ST_TESTS={
+  sast:{name:"SAST",full:"South Australian Spelling Test",forms:["A","B"],n:70,norm:"age",src:"Westwood (2005), Spelling: Approaches to Teaching and Assessment, ACER"},
+  distn:{name:"DiSTn",full:"Diagnostic Spelling Test – Nonwords",forms:[""],n:74,norm:"grade",src:"motif.org.au",tag:"sound–letter rule"},
+  disti:{name:"DiSTi",full:"Diagnostic Spelling Test – Irregular words",forms:[""],n:74,norm:"grade",src:"motif.org.au"},
+  distm:{name:"DiSTm",full:"Diagnostic Spelling Test – Morphology",forms:[""],n:28,norm:"none",src:"motif.org.au",tag:"suffix / rule"},
+  dists:{name:"DiSTs",full:"Diagnostic Spelling Test – Sounds",forms:[""],n:0,norm:"grade",src:"motif.org.au",tag:"sound"}
+};
+const stKey=(t,f)=>t+(f?"_"+f:"");
+function stSetup(t,f){ const S=(typeof settings!=="undefined"&&settings.stSetup)||{}; return S[stKey(t,f)]||{}; }
+function stItems(t,f){ const s=stSetup(t,f), T=ST_TESTS[t];
+  const lines=String(s.list||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean).map(x=>{ const p=x.split("|").map(y=>y.trim()); return {w:p[0].replace(/^\d+[.)]\s*/,""),tag:p[1]||""}; });
+  const n=lines.length||Number(s.n)||T.n||0; return [...Array(n)].map((_,i)=>lines[i]||{w:"",tag:""}); }
+/* "8;1", "8.1", "8y1m" → months */
+function stMonths(a){ const m=String(a||"").trim().match(/^(\d+)\s*[;.y:]\s*(\d+)?/); return m?Number(m[1])*12+Number(m[2]||0):null; }
+const stYM=m=>m==null?"":Math.floor(m/12)+";"+(m%12);
+function stNorm(t,f){ const s=stSetup(t,f); return String(s.norms||"").split(/\r?\n/).map(x=>x.trim().split(/[\s,\t]+/)).filter(p=>p.length>=2&&p[0]!==""); }
+function stAgeM(c,date){ if(!c.dob) return null; const b=new Date(c.dob+"T00:00"), n=new Date((date||today())+"T00:00"); let m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth()); if(n.getDate()<b.getDate()) m--; return m<0?null:m; }
+function stGrade(c){ const y=String(c.year||""); if(/prep|kindy|foundation/i.test(y)) return 0; const m=y.match(/(\d+)/); return m?Number(m[1]):null; }
+function stPhi(z){ const t=1/(1+.2316419*Math.abs(z)), d=.3989423*Math.exp(-z*z/2); const p=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
+/* score one result: raw + whatever the pasted norms allow */
+function stScore(c,r){ const T=ST_TESTS[r.t], raw=(r.marks||[]).filter(v=>v==="a").length, n=(r.marks||[]).length;
+  const out={raw,n,attempted:(r.marks||[]).filter(v=>v==="a"||v==="x").length};
+  if(r.manual&&r.manual.trim()) out.manual=r.manual.trim();
+  if(T.norm==="age"){ const rows=stNorm(r.t,r.f).map(p=>[Number(p[0]),stMonths(p[1])]).filter(p=>!isNaN(p[0])&&p[1]!=null).sort((a,b)=>a[0]-b[0]);
+    let sa=null; rows.forEach(p=>{ if(raw>=p[0]) sa=p[1]; }); if(rows.length&&raw<rows[0][0]) out.below=true;
+    if(sa!=null){ out.sa=sa; const ca=stAgeM(c,r.date); if(ca!=null){ out.ca=ca; out.gap=sa-ca; } } }
+  if(T.norm==="grade"){ const g=stGrade(c), row=stNorm(r.t,r.f).find(p=>Number(p[0])===g);
+    if(row){ const mean=Number(row[1]), sd=Number(row[2]); if(sd>0){ out.z=(raw-mean)/sd; out.pct=Math.round(stPhi(out.z)*100); out.grade=g; out.mean=mean; } } }
+  const items=stItems(r.t,r.f), tags={}; (r.marks||[]).forEach((v,i)=>{ const tg=items[i]&&items[i].tag; if(!tg) return; const k=(tags[tg]=tags[tg]||{ok:0,n:0}); if(v==="a"||v==="x"){ k.n++; if(v==="a") k.ok++; } });
+  out.tags=Object.entries(tags).filter(([,v])=>v.n).map(([k,v])=>({k,...v})); return out; }
+function stOrd(n){ const t=n%100, u=n%10; return n+((t>10&&t<14)?"th":u===1?"st":u===2?"nd":u===3?"rd":"th"); }
+function stLine(c,r){ const s=stScore(c,r), T=ST_TESTS[r.t];
+  const bits=[`<b>${s.raw}/${s.n}</b>`];
+  if(s.sa!=null) bits.push(`spelling age <b>${stYM(s.sa)}</b>${s.gap!=null?` <span class="${s.gap<0?"stneg":"stpos"}">(${s.gap<0?stYM(-s.gap)+" below":s.gap>0?stYM(s.gap)+" above":"on age"})</span>`:""}`);
+  else if(s.below) bits.push(`below the table`);
+  if(s.pct!=null) bits.push(`<b>${stOrd(s.pct)} percentile</b> for ${s.grade?"Year "+s.grade:"Prep"}`);
+  if(s.manual) bits.push(esc(s.manual));
+  return bits.join(" · "); }
+
+/* ---------- card on the Orthographic knowledge tab ---------- */
+function stCard(c){ const R=(c.spellTests||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.at||0)-(b.at||0));
+  const latest={}; R.forEach((r,i)=>latest[r.t]={r,i:(c.spellTests||[]).indexOf(r)});
+  const rows=Object.keys(ST_TESTS).filter(t=>latest[t]).map(t=>{ const {r,i}=latest[t], T=ST_TESTS[t], n=R.filter(x=>x.t===t).length;
+    return `<button class="strow" data-st="view" data-i="${i}"><span class="stn">${T.name}${r.f?" "+r.f:""}</span><span class="std">${esc(dm(r.date))}${n>1?` · ${n} tests`:""}</span><span class="sts">${stLine(c,r)}</span></button>`; }).join("");
+  return `<section class="v2card stcard"><div class="sth"><div><h2 class="eyebrow" style="margin:0">Standardised spelling</h2>${rows?"":`<p class="sub" style="margin:4px 0 0">SAST, DiSTn, DiSTi, DiSTm, DiSTs. Not done yet.</p>`}</div><span class="stb">${canWrite?`<button class="v2b sm" data-st="setup">Set up tests</button><button class="v2b sm dark" data-st="new">Score a test</button>`:""}</span></div>${rows?`<div class="strows">${rows}</div>`:""}</section>`; }
+{ const _stV2ok=v2ok; v2ok=function(c){ const h=_stV2ok(c), card=stCard(c), re=/(<section class="v2card rccard[\s\S]*?<\/section>)/; return re.test(h)?h.replace(re,m=>m+card):card+h; }; }
+
+/* ---------- overlay ---------- */
+let ST=null;
+function stOpen(c,mode,i){ stClose(true);
+  ST={c,mode,dirty:false};
+  if(mode==="view"||mode==="edit"){ const r=(c.spellTests||[])[i]; ST.i=i; ST.r=JSON.parse(JSON.stringify(r)); ST.mode="edit"; }
+  if(mode==="new"){ const t=(c.spellTests||[]).length?(c.spellTests.slice(-1)[0].t):"sast"; ST.r={t,f:ST_TESTS[t].forms[0],date:today(),marks:[],wrote:[],manual:"",note:""};
+    if(t==="sast"){ const last=(c.spellTests||[]).filter(x=>x.t==="sast").pop(); if(last) ST.r.f=last.f==="A"?"B":"A"; } stFit(); }
+  if(mode==="setup"){ ST.su={t:"sast",f:"A"}; }
+  const o=document.createElement("div"); o.id="stov"; o.className="stov"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Standardised spelling");
+  document.body.appendChild(o); document.body.style.overflow="hidden";
+  o.addEventListener("click",stClick); o.addEventListener("input",stInput); o.addEventListener("change",stChange);
+  document.addEventListener("keydown",stKeyH); stDraw(); }
+function stKeyH(e){ if(e.key==="Escape") stAsk(); }
+async function stAsk(){ if(ST&&ST.dirty&&!(await confirmBox("Close without saving this test?","Close",true))) return; stClose(); }
+function stClose(silent){ const o=document.getElementById("stov"); if(o) o.remove(); document.removeEventListener("keydown",stKeyH); document.body.style.overflow=""; ST=null; if(!silent){ const y=scrollY; render(); scrollTo(0,y); } }
+function stFit(){ const r=ST.r, n=stItems(r.t,r.f).length; r.marks=(r.marks||[]).slice(0,n); r.wrote=(r.wrote||[]).slice(0,n); while(r.marks.length<n) r.marks.push(""); while(r.wrote.length<n) r.wrote.push(""); }
+function stDraw(){ const o=document.getElementById("stov"); if(!o||!ST) return; const c=ST.c;
+  const body=ST.mode==="setup"?stSetupView():stScoreView();
+  o.innerHTML=`<div class="stin"><div class="sthd"><b>${ST.mode==="setup"?"Set up spelling tests":"Standardised spelling"}</b><span>${esc(c.code)}</span><button class="stx" data-st="close" aria-label="Close">✕</button></div>${body}</div>`;
+  if(ST.focus){ const el=o.querySelector(`[data-wr="${ST.focus}"]`); if(el){ el.focus(); const v=el.value; el.setSelectionRange(v.length,v.length); } ST.focus=null; } }
+function stScoreView(){ const c=ST.c, r=ST.r, T=ST_TESTS[r.t], items=stItems(r.t,r.f), hasList=items.some(x=>x.w), s=stScore(c,r), su=stSetup(r.t,r.f);
+  const ca=stAgeM(c,r.date), g=stGrade(c);
+  const tabs=Object.entries(ST_TESTS).map(([k,v])=>`<button class="${r.t===k?"on":""}" data-st="t" data-v="${k}" ${ST.mode==="edit"?"disabled":""}>${v.name}</button>`).join("");
+  const forms=T.forms.length>1?`<span class="stforms">Form ${T.forms.map(f=>`<button class="${r.f===f?"on":""}" data-st="f" data-v="${f}" ${ST.mode==="edit"?"disabled":""}>${f}</button>`).join("")}</span>`:"";
+  const normNote=T.norm==="age"?(stNorm(r.t,r.f).length?"":`No spelling-age table yet. <button class="linkbtn" data-st="setup">Add it</button> or type the spelling age below.`)
+    :T.norm==="grade"?(stNorm(r.t,r.f).length?(g==null?"Add the kid's year level to get a percentile.":""):`No grade norms yet. <button class="linkbtn" data-st="setup">Add them</button> or type the result below.`):"No published norms. Use the error pattern.";
+  const res=`<div class="stres"><div class="stbig">${s.raw}<small>/${s.n}</small></div><div>${stLine(c,r).replace(/^<b>[^<]*<\/b>( · )?/,"")||`<span class="sub">${T.norm==="none"?"Error pattern below.":"Raw score"}</span>`}<div class="sub" style="font-size:.85rem">${ca!=null?`Age ${stYM(ca)}`:"No DOB"}${g!=null?` · ${g?"Year "+g:"Prep"}`:""} · ${s.attempted} marked</div>${normNote?`<div class="stnote">${normNote}</div>`:""}</div></div>`;
+  const tagBox=s.tags.length?`<div class="sttags"><b>By ${esc(T.tag||"tag")}</b>${s.tags.sort((a,b)=>a.ok/a.n-b.ok/b.n).map(x=>`<span class="${x.ok===x.n?"ok":x.ok===0?"no":"mid"}">${esc(x.k)} <i>${x.ok}/${x.n}</i></span>`).join("")}</div>`:"";
+  const rows=items.map((it,i)=>{ const m=r.marks[i]||"";
+    return `<div class="stit ${m}"><span class="stno">${i+1}</span>${hasList?`<span class="stw">${esc(it.w)}${it.tag?`<small>${esc(it.tag)}</small>`:""}</span>`:""}<input class="stwr" data-wr="${i}" value="${esc(r.wrote[i]||"")}" placeholder="${hasList?"they wrote…":"what they wrote (optional)"}" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="stm a ${m==="a"?"on":""}" data-st="m" data-i="${i}" data-v="a" aria-label="Correct">✓</button><button class="stm x ${m==="x"?"on":""}" data-st="m" data-i="${i}" data-v="x" aria-label="Wrong">✗</button></div>`; }).join("");
+  return `<div class="sttabs">${tabs}${forms}<label class="stdate">Date <input type="date" data-st-date value="${esc(r.date)}"></label></div>
+    <p class="sub stfull">${esc(T.full)}${hasList?"":` · ${items.length} items. <button class="linkbtn" data-st="setup">Paste the word list</button> to see words here and auto-mark what they wrote.`}</p>
+    ${res}${tagBox}
+    <div class="sttools">${hasList?`<span class="sub">Type what they wrote: a match marks ✓, anything else ✗.</span>`:`<span class="sub">Tap ✓ or ✗ for each item.</span>`}<button class="v2b sm" data-st="rest">Mark the rest ✗ (stopped)</button><button class="v2b sm" data-st="allok">Unmarked = ✓</button></div>
+    <div class="stlist">${rows}</div>
+    <div class="stfoot"><label>Result from the manual <input data-st-manual value="${esc(r.manual||"")}" placeholder="e.g. 16th percentile, stanine 3"></label><label>Note <input data-st-note value="${esc(r.note||"")}" placeholder="Observations"></label></div>
+    <div class="stact">${ST.mode==="edit"&&canWrite?`<button class="v2b sm" data-st="del">Delete</button>`:""}<button class="v2b" data-st="close">Cancel</button>${canWrite?`<button class="v2b dark" data-st="save">Save</button>`:""}</div>`; }
+function stSetupView(){ const su=ST.su, T=ST_TESTS[su.t], s=stSetup(su.t,su.f);
+  const tabs=Object.entries(ST_TESTS).map(([k,v])=>`<button class="${su.t===k?"on":""}" data-st="sut" data-v="${k}">${v.name}</button>`).join("");
+  const forms=T.forms.length>1?`<span class="stforms">Form ${T.forms.map(f=>`<button class="${su.f===f?"on":""}" data-st="suf" data-v="${f}">${f}</button>`).join("")}</span>`:"";
+  const nh=T.norm==="age"?`One row per raw score: <code>raw spelling-age</code>, e.g. <code>24 8;3</code>. Ages as years;months. List the lowest raw score for each spelling age; scores in between use the row below.`
+    :T.norm==="grade"?`One row per year level: <code>year mean SD</code>, e.g. <code>3 41.5 12.2</code>. Prep = 0. Gives a z-score and percentile.`:"";
+  return `<div class="sttabs">${tabs}${forms}</div>
+    <p class="sub stfull">${esc(T.full)} · ${esc(T.src)}</p>
+    <p class="stpriv">Paste these from your own copy of the test. They're saved to your private data, not into the app.</p>
+    <label class="stlab">Items, one per line${T.tag?` · optional <code>| ${esc(T.tag)}</code> after each to see errors by ${esc(T.tag)}`:""}<textarea data-su="list" rows="12" placeholder="${T.tag?"item | "+T.tag:"item"}">${esc(s.list||"")}</textarea></label>
+    <label class="stlab small">Number of items if you'd rather not paste the list <input type="number" min="0" data-su="n" value="${esc(s.n||"")}" placeholder="${T.n||""}"></label>
+    ${T.norm!=="none"?`<label class="stlab">Norms<textarea data-su="norms" rows="8">${esc(s.norms||"")}</textarea><small>${nh}</small></label>`:`<p class="sub">No published norms for this one, so there's nothing to paste here.</p>`}
+    <div class="stact"><button class="v2b" data-st="close">Close</button>${canWrite?`<button class="v2b dark" data-st="susave">Save ${T.name}${su.f?" form "+su.f:""}</button>`:""}</div>`; }
+function stNorm1(v){ return String(v||"").trim().toLowerCase().replace(/\s+/g," "); }
+function stInput(e){ if(!ST) return; const el=e.target;
+  if(el.dataset.wr!=null){ const i=Number(el.dataset.wr), r=ST.r, it=stItems(r.t,r.f)[i]; r.wrote[i]=el.value; ST.dirty=true;
+    if(it&&it.w){ const v=stNorm1(el.value); const nm=v?(v===stNorm1(it.w)?"a":"x"):""; if(nm!==r.marks[i]){ r.marks[i]=nm; const row=el.closest(".stit"); if(row){ row.className="stit "+nm; row.querySelector(".stm.a").classList.toggle("on",nm==="a"); row.querySelector(".stm.x").classList.toggle("on",nm==="x"); } stRes(); } }
+    return; }
+  if(el.dataset.stManual!=null){ ST.r.manual=el.value; ST.dirty=true; return; }
+  if(el.dataset.stNote!=null){ ST.r.note=el.value; ST.dirty=true; return; } }
+function stRes(){ const o=document.getElementById("stov"); if(!o) return; const tmp=document.createElement("div"); tmp.innerHTML=stScoreView();
+  ["stres","sttags"].forEach(cl=>{ const a=o.querySelector("."+cl), b=tmp.querySelector("."+cl); if(a&&b) a.replaceWith(b); else if(a&&!b) a.remove(); else if(!a&&b){ const ref=o.querySelector(".stres"); if(ref) ref.after(b); } }); }
+function stChange(e){ if(!ST) return; if(e.target.dataset.stDate!=null){ ST.r.date=e.target.value||today(); ST.dirty=true; stRes(); } }
+async function stClick(e){ const b=e.target.closest("[data-st]"); if(!b||!ST) return; const a=b.dataset.st, v=b.dataset.v, c=ST.c;
+  if(a==="close") return stAsk();
+  if(a==="setup"){ const r=ST.r; ST.back=ST.mode==="setup"?ST.back:{mode:ST.mode,r,i:ST.i,dirty:ST.dirty}; ST.mode="setup"; ST.su={t:r?r.t:"sast",f:r?r.f:"A"}; return stDraw(); }
+  if(a==="sut"){ ST.su={t:v,f:ST_TESTS[v].forms[0]}; return stDraw(); }
+  if(a==="suf"){ ST.su.f=v; return stDraw(); }
+  if(a==="susave"){ const o=document.getElementById("stov"), su=ST.su; const get=k=>{ const el=o.querySelector(`[data-su="${k}"]`); return el?el.value:""; };
+    const S={...(settings.stSetup||{})}; S[stKey(su.t,su.f)]={list:get("list"),norms:get("norms"),n:Number(get("n"))||0};
+    settings.stSetup=S; try{ await db.doc("settings/main").set({...settings}); toast("Saved"); }catch(err){ toast(errMsg(err)); }
+    if(ST.back){ const bk=ST.back; ST.back=null; ST.mode=bk.mode; ST.r=bk.r; ST.i=bk.i; ST.dirty=bk.dirty; if(ST.r) stFit(); } return stDraw(); }
+  if(a==="t"){ ST.r.t=v; ST.r.f=ST_TESTS[v].forms[0]; ST.r.marks=[]; ST.r.wrote=[]; stFit(); return stDraw(); }
+  if(a==="f"){ ST.r.f=v; stFit(); return stDraw(); }
+  if(a==="m"){ const i=Number(b.dataset.i); ST.r.marks[i]=ST.r.marks[i]===v?"":v; ST.dirty=true; const row=b.closest(".stit"); row.className="stit "+ST.r.marks[i]; row.querySelectorAll(".stm").forEach(x=>x.classList.toggle("on",x.dataset.v===ST.r.marks[i])); stRes(); return; }
+  if(a==="rest"){ let last=-1; ST.r.marks.forEach((m,i)=>{ if(m) last=i; }); ST.r.marks=ST.r.marks.map((m,i)=>i>last?"x":m); ST.dirty=true; return stDraw(); }
+  if(a==="allok"){ ST.r.marks=ST.r.marks.map(m=>m||"a"); ST.dirty=true; return stDraw(); }
+  if(a==="del"){ if(!(await confirmBox("Delete this test result?","Delete",true))) return; const L=(c.spellTests||[]).slice(); L.splice(ST.i,1); c.spellTests=L; try{ await db.doc("clients/"+c.id).update({spellTests:L}); }catch(err){ toast(errMsg(err)); } ST.dirty=false; return stClose(); }
+  if(a==="save"){ const L=(c.spellTests||[]).slice(); const rec={...ST.r,at:ST.r.at||Date.now()}; if(ST.mode==="edit") L[ST.i]=rec; else L.push(rec);
+    c.spellTests=L; b.disabled=true; try{ await db.doc("clients/"+c.id).update({spellTests:L}); toast("Saved"); ST.dirty=false; stClose(); }catch(err){ b.disabled=false; toast(errMsg(err)); } } }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest(".stcard [data-st]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; e.preventDefault();
+  stOpen(c,b.dataset.st,Number(b.dataset.i)); });
 
 </script>
 </body>
