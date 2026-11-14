@@ -2185,7 +2185,7 @@ function renderClientForm(host, client){
 
 
 function ladder(results, c){
-  const cols=`minmax(96px,auto) repeat(12, minmax(58px,1fr)) minmax(130px,auto)`;
+  const cols=`minmax(84px,auto) repeat(12, minmax(42px,1fr)) minmax(96px,1.2fr)`;
   const bands=[[0,4],[4,6],[6,8],[8,12]];
   let h=`<div class="ladder" style="grid-template-columns:${cols}"><div></div>`;
   bands.forEach(([a,b],i)=>{ h+=`<div class="band" style="grid-column:span ${b-a}">${SECTIONS[i].name}</div>`; });
@@ -2197,7 +2197,7 @@ function ladder(results, c){
     h+=r.units.map(u=>`<div class="cell ${cellClass(u)}" title="${u.id}: ${u.correct}/${u.n} correct, ${u.auto}/${u.n} automatic">${u.tested?u.correct:""}</div>`).join("");
     h+=`<div class="gl">${esc(r.grade)}</div>`;
   });
-  return h+`</div>`;
+  return `<div class="ladwrap">`+h+`</div></div>`;
 }
 
 let chartMode="level";
@@ -15367,6 +15367,38 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 .stm2.a{background:#2F6B66;border-color:#2F6B66;color:#fff}.stm2.x{background:#8A2B3D;border-color:#8A2B3D;color:#fff;text-decoration:line-through}
 .sttags span.rule{border:1.5px dashed #C9C3B6}
 .stlist.sast,.stlist.disti,.stlist.distm{grid-template-columns:1fr}.stlist.sast .stwr,.stlist.disti .stwr,.stlist.distm .stwr{flex:0 1 220px}
+
+/* ---------- polish pass ---------- */
+.ladwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}.ladder .gl{white-space:normal;line-height:1.15;font-size:.72rem}
+.cta .v2b{max-width:100%;white-space:normal;text-align:left}
+.bhome{color:var(--ink,#2B2A33)}.bhh{color:var(--ink,#2B2A33)}.bhh small{color:var(--muted,#8a8072)}
+.bhk,.bhspot,.bhhero{color:#2B2A33}
+.bhbox{background:var(--surface,#fff);border-color:var(--line,#F0EADF);color:var(--ink,#2B2A33)}
+.bhbh small,.bhkey,.bhempty,.bhcol small{color:var(--muted,#8a8072)}.bhn{color:var(--ink2,#5B5560)}.bhcol.today small{color:var(--ink,#2B2A33)}
+.bhcol.today .bhbar{box-shadow:0 0 0 2px var(--ink,#2B2A33)}
+.bhk.more,.bhk.add{background:var(--surface,#fff);border-color:var(--line,#E4DED2);color:var(--ink,#2B2A33)}
+.bhk.more small,.bhk.add small{color:var(--muted,#6b5f52)}
+.bht.on{outline-color:var(--ink,#2B2A33)}
+.bhwho{background:var(--surface,#fff);color:var(--ink,#2B2A33)}.bhwho button{background:var(--bg,#FFFDF8);border-color:var(--line,#E4DED2)}
+.sfcard{color:#2B2A33}.sfcard .sub,.sfcard small,.sfcard .eyebrow{color:#5B5560}
+.stcard .strow{background:var(--surface,#FFFDF7);border-color:var(--line,#E7E1D4);color:var(--ink,#2B2A33)}.std{color:var(--muted,#6B6560)}
+.hpaddu{background:var(--surface,#FFFDF7);border-color:var(--line,#D7DBD9)}.hpaddu small{color:var(--muted,#6B6560)}
+.crit .tick{background:var(--surface,#fff)}
+@media (max-width:899px){.bhs{display:none}}
+@media (max-width:480px){.bhhero h2{font-size:1.7rem}.bhbolt{width:64px;height:68px}.bhhero{padding:16px}}
+@media (max-width:700px){
+  .v2tabs{flex-wrap:wrap;gap:2px 18px;overflow:visible}
+  .rch{flex-wrap:wrap}.rcbtns{display:flex;gap:8px;flex-wrap:wrap}
+  .slist td,.slist th{white-space:normal}
+  .stcard .stb{gap:6px}
+  .bhhero{gap:14px}
+}
+@media (max-width:640px){
+  .stit .stw{flex:1 1 calc(100% - 70px)}.stit .stwr{flex:1 1 0;margin-left:30px}.stpgr{padding-left:30px}
+  .sdov{padding:0}.sdbox{height:100%;max-height:none;border-radius:0}.sdstage{flex:1;display:flex}.sdscene{height:100%;max-height:none;flex:1}
+  .sdq{max-width:calc(100% - 16px)}
+}
+@media (max-width:640px){.ctrack.ec .u.qt .uopen{display:none}.ctrack.ec .u.qt{padding-right:0}}
 </style>
 <script id="v6-js">
 /* ===================== Buddies v2: head-and-shoulders avatars, hair as a full cap fitted to one head shape ===================== */
