@@ -15942,5 +15942,91 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 }
 @media (prefers-reduced-motion:reduce){.bhome .bhk,.bhome .bht{transition:none}}
 </style>
+<style id="sess-css">
+/* ---------- Session tab ---------- */
+.ss{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:18px;align-items:start}
+.sslist{display:flex;flex-direction:column;gap:8px;position:sticky;top:12px}
+.sslh{font-weight:800;color:var(--muted,#6A6E73);font-size:.9rem;padding:2px 4px}
+.ssli{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;padding:14px;border-radius:16px;background:var(--surface,#FFFDF8);border:2px solid transparent;cursor:pointer;min-height:66px}
+.ssli:hover{border-color:var(--line,#E4DCCD)}.ssli.on{border-color:#2F6B66;box-shadow:0 3px 0 #0000000d}
+.ssli:focus-visible,.ssmore button:focus-visible,.ssgo:focus-visible,.sssaf:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
+.sstx{flex:1;min-width:0}.sstx b{display:block;font-size:1.06rem}.sstx small{color:var(--muted,#6A6E73);font-size:.86rem}
+.ssli em{font-style:normal;color:var(--muted,#6A6E73);font-size:1.3rem}
+.ssdot{width:12px;height:42px;border-radius:6px;flex:none;padding:0;margin:0}.ssdot.sd-t{background:#2F6B66}.ssdot.sd-w{background:#8A2B3D}.ssdot.sd-a{background:#E0A43A}
+.ssmore{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-radius:16px;border:2px dashed var(--line,#E4DCCD)}
+.ssmore span{flex-basis:100%;font-weight:800;color:var(--muted,#6A6E73);font-size:.85rem}
+.ssmore button{border:1px solid var(--line,#E4DCCD);background:var(--surface,#FFFDF8);color:var(--ink,#23262B);border-radius:999px;padding:9px 14px;font:inherit;font-weight:700;font-size:.92rem;min-height:44px;cursor:pointer}
+.ssdet{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ssdh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ssdh h2{margin:0;font-family:var(--posh-serif,Fredoka,sans-serif);font-size:1.9rem;line-height:1.1}
+.sspill{border-radius:999px;padding:6px 13px;font-weight:800;font-size:.9rem}.sspill.sd-t{background:#DCE9E7;color:#2F6B66}.sspill.sd-w{background:#F2E1E4;color:#8A2B3D}.sspill.sd-a{background:#F1E8D6;color:#7A5A1E}
+.ssdh .v2b{margin-left:auto}
+.sstrk{display:flex;justify-content:space-between;gap:2px;background:var(--surface,#FFFDF8);border-radius:16px;padding:8px 10px}
+.sstrk span{width:40px;height:40px;opacity:.25;border-radius:10px;display:grid;place-items:center}.sstrk span.done{opacity:1}.sstrk span.now{opacity:1;background:#F2E1E4;box-shadow:inset 0 0 0 2px #8A2B3D}
+.sstrk svg{width:32px;height:32px}
+.ssbig{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ssbig.one{grid-template-columns:1fr}
+.ssgo{border:0;border-radius:20px;font:inherit;font-weight:800;font-size:1.4rem;min-height:80px;cursor:pointer;transition:transform .12s}
+.ssgo:active{transform:translateY(2px)}
+.ssgo.dark{background:#1E2226;color:#fff}.ssgo.saf{background:#F5B83D;color:#1E2226;box-shadow:0 5px 0 #D9962A}.ssgo.amb{background:#F1E8D6;color:#1E2226}
+.sshist{background:var(--surface,#FFFDF8);border-radius:16px;padding:12px 16px}.sshist h3{margin:0 0 6px;font-size:1rem}
+.sshr{display:flex;align-items:center;gap:12px;padding:5px 0}.sshr span:first-child{width:56px;color:var(--muted,#6A6E73);font-size:.9rem}.sshr b{white-space:nowrap}
+.ssbars{display:flex;gap:4px;flex:1}.ssbars i{flex:1;height:14px;border-radius:4px;background:#E4E1DA}.ssbars i.a{background:#2F6B66}.ssbars i.c{background:#F5B83D}.ssbars i.x{background:#C9B8E8}
+.sssaf{display:flex;align-items:center;gap:6px;border:0;border-radius:16px;padding:6px 16px;background:linear-gradient(90deg,#FFF7E6,#EEF6E6);font:inherit;color:#2B2A33;cursor:pointer;text-align:left}
+.sssaf span{margin-left:8px;font-weight:700}.sssaf em{margin-left:auto;font-style:normal;font-size:1.2rem}
+@media (max-width:760px){.ss{grid-template-columns:1fr}.sslist{position:static}.ssgo{min-height:64px;font-size:1.15rem}.sstrk span{width:26px;height:26px}.sstrk svg{width:22px;height:22px}}
+@media (prefers-reduced-motion:reduce){.ssgo{transition:none}}
+</style>
+<script id="sess-js">
+/* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
+let SS_SEL={};
+function ssItems(c){ const p=paState(c), o=okState(c), out=[];
+  const lv=i=>{ const u=UNITS[i].id; return nextDrillLevel(c.id,u)||levelsForUnit(u)[0]; };
+  if(!p) out.push({k:"past",col:"t",t:"PAST check",s:"Start here: Form A"});
+  else{
+    if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Warm up drill",s:`${LVL(p.solid)} · keep it quick`,lvl:L,i:p.solid}); }
+    if(p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
+  }
+  if(o&&o.cur) out.push({k:"code",col:"a",t:`Code · ${unitLabel(o.cur)}`,s:o.cur.status==="progress"?"in progress":"next unit",u:o.cur});
+  return out; }
+function ssTrack(p,hi){ return `<div class="sstrk">${ANIMALS.map((a,i)=>`<span class="${p&&i<=p.solid?"done":""} ${i===hi?"now":""}" title="Level ${i+1}"><svg viewBox="0 0 64 64" aria-hidden="true">${a[1]}</svg></span>`).join("")}</div>`; }
+function ssBars(d){ return `<span class="ssbars">${(d.results||[]).map(v=>`<i class="${v}"></i>`).join("")}</span>`; }
+function ssDetail(c,it){ const p=paState(c);
+  if(!it) return `<div class="ssdet"><p class="sub">Nothing planned yet.</p></div>`;
+  if(it.k==="past") return `<div class="ssdet"><div class="ssdh"><h2>PAST check</h2></div><p class="sub">No PAST yet. Run Form A to see where ${esc(c.code)} is up to.</p>${canWrite?`<div class="ssbig one"><button class="ssgo dark" data-ss="past">▶ Start PAST · Form A</button></div>`:""}</div>`;
+  if(it.k==="warm"||it.k==="teach"){
+    const ds=clientDrills(c.id).filter(d=>d.level===it.lvl).slice(-3).reverse();
+    let A=null; try{ A=sfAlbum(c); }catch(e){}
+    const w=typeof sfCur==="function"?sfCur(c):null, W=w&&sfWorld(w), S=(A&&A.seen[w])||{}, got=Object.keys(S);
+    return `<div class="ssdet"><div class="ssdh"><h2>${it.k==="warm"?"Warm up drill":"1-minute drill"}</h2><span class="sspill sd-${it.col}">${esc(lvText(it.lvl))}</span>${it.k==="teach"?`<button class="v2b sm" data-ss="howto">How to teach it</button>`:""}</div>
+      ${ssTrack(p,it.i)}
+      ${canWrite&&it.lvl?`<div class="ssbig"><button class="ssgo dark" data-ss="drill" data-l="${esc(it.lvl)}">▶ Start</button><button class="ssgo saf" data-ss="safari" data-l="${esc(it.lvl)}">🦘 Safari drill</button></div>`:""}
+      <div class="sshist"><h3>Last drills at this level</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span>${ssBars(d)}<b>${(d.results||[]).filter(v=>v!=="x").length}/${(d.results||[]).length} · ${Math.round(d.secs||0)}s</b></div>`).join(""):`<p class="sub">None yet.</p>`}</div>
+      ${W?`<button class="sssaf" data-ss="album">${Object.keys(S).slice(-3).map(id=>sfMini(w,id,54)).join("")}<span>${got.length} of ${W.animals.length} spotted in ${esc(W.name)}</span><em>📖</em></button>`:""}</div>`; }
+  if(it.k==="code"){ const u=it.u; const ds=clientOkd(c.id).filter(d=>d.kind==="code"&&d.target===u.id).slice(-3).reverse();
+    return `<div class="ssdet"><div class="ssdh"><h2>${esc(unitLabel(u))}</h2><span class="sspill sd-a">Sounds-Write</span></div>
+      ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="unit" data-u="${esc(u.id)}">Open unit</button><button class="ssgo amb" data-ss="codedrill" data-u="${esc(u.id)}">⏱ Code drill</button></div>`:""}
+      <div class="sshist"><h3>Last code drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Start with see it, say it, then hear it, write it.</p>`}</div></div>`; }
+  return ""; }
+function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some(x=>x.k===sel)) sel=items[0]&&items[0].k; SS_SEL[c.id]=sel; const it=items.find(x=>x.k===sel);
+  return `<div class="ss"><div class="sslist"><div class="sslh">Today</div>
+    ${items.map(x=>`<button class="ssli ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="ssdot sd-${x.col}"></span><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><em>›</em></button>`).join("")}
+    <div class="ssmore"><span>Sometimes</span><button data-ss="rc">📖 Reading check</button><button data-ss="st">✍️ Spelling tests</button><button data-ss="games">🎮 Games</button></div></div>
+    ${ssDetail(c,it)}</div>`; }
+v2dash=function(c){ return ssHTML(c); };
+v2tabs=function(tab){ const t=[["dash","Session"],["pa","Phonemic"],["ok","Code & rules"],["home","🏠 Homework"],["act","Activity"],["rep","Reports"]];
+  return `<nav class="v2tabs" role="tablist">${t.map(([k,l])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}">${l}</button>`).join("")}</nav>`; };
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
+  if(a==="pick"){ SS_SEL[c.id]=b.dataset.k; const y=scrollY; render(); scrollTo(0,y); return; }
+  if(a==="drill"||a==="safari"){ startDrill(c.id,b.dataset.l); if(a==="safari") setTimeout(()=>{ if(typeof sdStart==="function") sdStart(); },60); else setTimeout(()=>{ const g=document.getElementById("d-start"); if(g) g.click(); },60); return; }
+  if(a==="howto"){ openTeach(c); return; }
+  if(a==="album"){ sfOpen(c,{view:"album"}); return; }
+  if(a==="unit"){ openUnit(c,b.dataset.u); return; }
+  if(a==="codedrill"){ openOkDrill(c,"code",b.dataset.u); return; }
+  if(a==="past"){ const nb=document.getElementById("newsess"); if(nb){ nb.click(); return; } view={name:"client",clientId:c.id,ctab:"pa"}; clientTab="pa"; render(); setTimeout(()=>{ const n=document.getElementById("newsess"); if(n) n.click(); },80); return; }
+  if(a==="rc"){ openRC(c); return; }
+  if(a==="games"){ openGames(c); return; }
+  if(a==="st"){ view={name:"client",clientId:c.id,ctab:"ok"}; clientTab="ok"; render(); setTimeout(()=>{ const s=document.querySelector(".stcard"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); },80); return; }
+});
+
+</script>
 </body>
 </html>
