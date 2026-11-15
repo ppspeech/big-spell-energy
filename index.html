@@ -6006,7 +6006,7 @@ function clientDash(c, results){
 /* ---------- kid avatar maker ---------- */
 function spiritOf(c){ if(!c) return null; const ss=clientSessions(c.id); if(!ss.length) return null; const r=score(ss[ss.length-1].scores); return r.highA?unitIdx(r.highA):0; }
 function openKidAvatar(c){
-  const st={...avOf(c)}; const spirit=spiritOf(c);
+  const st={...avOf(c)}; const spirit=spiritOf(c); window.KAV_ST=st; window.KAV_DRAW=()=>draw();
   const root=document.createElement("div"); root.className="kav"; root.setAttribute("role","dialog"); root.setAttribute("aria-modal","true"); root.setAttribute("aria-label","Make your character");
   document.body.appendChild(root); document.body.style.overflow="hidden";
   const close=()=>{ root.remove(); document.body.style.overflow=""; document.removeEventListener("keydown",esc_); };
@@ -6016,7 +6016,7 @@ function openKidAvatar(c){
   const draw=()=>{
     root.innerHTML=`<div class="kav-in">
       <h2>Make your character</h2>
-      <div class="kav-stage"><div class="kav-me">${avatarSVG(st,150,"You")}</div><div class="kav-sp">${spirit!=null?pixAnimal(spirit,128)+`<span>Level ${spirit+1} ${ANIMALS[spirit][0]}</span><small>${spirit>=ANIMALS.length-1?"Top level! You made it all the way to the dragon 🐉":"Level up to meet the next animal!"}</small>`:`<div class="kav-q">?</div><span>Your animal arrives after your first sound check</span>`}</div></div>
+      <div class="kav-stage"><div class="kav-me">${avatarSVG(st,150,"You")}</div>${kavBuddy(c,st)}</div>
       <div class="kav-rows">
         <div><span class="kl">Skin</span>${sw("s",AV_SKIN)}</div>
         <div><span class="kl">Hair</span>${sw("h",AV_HAIR)}</div>
@@ -10162,7 +10162,7 @@ function avatarSVG(av,px,label){ return bdSVG(bdNorm(av,"x"),px,label); }
 function avRects(av){ return bdSVG(bdNorm(av,"x"),18).replace("<svg ",'<svg x="-1" '); }
 /* simple picker: just features + accessories; everything else stays as seeded (🎲 still shuffles it all) */
 const BD_FACES=[["Smiley",0,1,0],["Grin",1,1,1],["Wink",2,1,4],["Wow",5,2,2],["Sparkly",4,1,1],["Cool",0,3,4],["Sleepy",3,1,5],["Cheeky",4,2,3]];
-const BD_SIMPLE=[["skin","Skin","c"],["hair","Hair","s"],["hairC","Hair colour","c"],["face3","Face","f"],["extra","Accessories","s"]];
+const BD_SIMPLE=[["skin","Skin","c"],["hair","Hair","s"],["hairC","Hair colour","c"],["face3","Face","f"],["top","Clothes","s"],["topC","Clothes colour","c"],["bgC","Background","c"],["extra","Accessories","s"]];
 function bdRow(st,k,lab,type,cls){
   const on=i=>st[k]===i, big=cls==="bk"?58:36;
   if(type==="c") return BD[k].map((col,i)=>`<button type="button" class="${cls}sw ${on(i)?"on":""}" data-${cls}="${k}" data-i="${i}" style="background:${col}" aria-label="${lab} ${i+1}" aria-pressed="${on(i)}"></button>`).join("");
@@ -10180,7 +10180,7 @@ function bindAvPicker(host,state){ Object.assign(state,bdNorm(state,"x"));
     const box=host.querySelector(".avpick"); box.outerHTML=avPicker(state); bindAvPicker(host,state); }); }
 /* kid-facing "Make your character" */
 function openKidAvatar(c){
-  const st={...avOf(c)}; const spirit=spiritOf(c);
+  const st={...avOf(c)}; const spirit=spiritOf(c); window.KAV_ST=st; window.KAV_DRAW=()=>draw();
   const root=document.createElement("div"); root.className="kav bdkav"; root.setAttribute("role","dialog"); root.setAttribute("aria-modal","true"); root.setAttribute("aria-label","Make your character");
   document.body.appendChild(root); document.body.style.overflow="hidden";
   const close=()=>{ root.remove(); document.body.style.overflow=""; document.removeEventListener("keydown",esc_); };
@@ -10189,7 +10189,7 @@ function openKidAvatar(c){
   const draw=()=>{
     root.innerHTML=`<div class="kav-in">
       <h2>Make your character</h2>
-      <div class="kav-stage"><div class="kav-me">${bdSVG(st,170,"You")}</div><div class="kav-sp">${spirit!=null?pixAnimal(spirit,128)+`<span>Level ${spirit+1} ${ANIMALS[spirit][0]}</span><small>${spirit>=ANIMALS.length-1?"Top level! You made it all the way to the dragon 🐉":"Level up to meet the next animal!"}</small>`:`<div class="kav-q">?</div><span>Your animal arrives after your first sound check</span>`}</div></div>
+      <div class="kav-stage"><div class="kav-me">${bdSVG(st,170,"You")}</div>${kavBuddy(c,st)}</div>
       <div class="kav-rows">${bdRows(st,"bk","kl")}</div>
       <div class="kav-act"><button class="kdone" data-k="done">Done ✓</button><button data-k="rand">🎲 Surprise me</button><button class="kcancel" data-k="cancel">Cancel</button></div>
     </div>`;
@@ -15975,6 +15975,10 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 @media (max-width:760px){.ss{grid-template-columns:1fr}.sslist{position:static}.ssgo{min-height:64px;font-size:1.15rem}.sstrk span{width:26px;height:26px}.sstrk svg{width:22px;height:22px}}
 @media (prefers-reduced-motion:reduce){.ssgo{transition:none}}
 .sshead{display:inline-grid;place-items:center;width:46px;height:40px}.sshead svg{display:block}.sshead.off svg{filter:grayscale(1) opacity(.45)}
+.kbud{gap:6px;max-width:420px}.kbcur{background:#E3EEF2;border-radius:24px;padding:10px;display:grid;place-items:center;width:130px;height:130px}.kbud .kbcur svg{background:none;padding:0;animation:none}
+.kbrow{width:100%;margin-top:6px}.kbrow small{display:block;text-align:left;font-size:.85rem;color:#5B6880;margin-bottom:4px}.kbrow>div{display:flex;flex-wrap:wrap;gap:6px}
+.kbopt{width:58px;height:58px;border-radius:14px;border:2px solid #DCE3EA;background:#fff;display:grid;place-items:center;cursor:pointer;padding:0}.kbopt svg{background:none!important;padding:0!important;animation:none!important}
+.kbopt.on{border-color:#1E2A44;box-shadow:0 0 0 2px #1E2A44}.kbopt:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16031,6 +16035,26 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
 /* header buddy: the kid's latest safari animal instead of the pixel spirit */
 function ssHeadAnimal(c){ try{ const A=sfAlbum(c), sp=A.spots[A.spots.length-1]; if(sp) return `<span class="sshead" title="Latest safari spot: ${esc(sp.name)}">${sfMini(sp.w,sp.id,46)}</span>`;
   const w=sfCur(c), W=sfWorld(w); const a=W&&W.animals[0]; return a?`<span class="sshead off" title="Spot animals in the safari drill">${sfMini(w,a[0],46)}</span>`:""; }catch(e){ return ""; } }
+
+/* buddy animal: kids pick from PAST animals they've reached and safari animals they've spotted */
+function budSVG(code,px){ if(!code) return ""; const p=String(code).split(":");
+  if(p[0]==="p"){ const a=ANIMALS[Number(p[1])]; return a?`<svg viewBox="0 0 64 64" width="${px}" height="${px}" aria-hidden="true">${a[1]}</svg>`:""; }
+  if(p[0]==="s") return sfMini(p[1],p[2],px); return ""; }
+function budName(code){ const p=String(code||"").split(":"); if(p[0]==="p") return (ANIMALS[Number(p[1])]||[""])[0]; if(p[0]==="s"){ const W=sfWorld(p[1]); const a=W&&W.animals.find(x=>x[0]===p[2]); return a?a[1]:""; } return ""; }
+function budOptions(c){ const out=[]; let p=null; try{ p=paState(c); }catch(e){}
+  if(p) for(let i=0;i<=Math.min(p.solid+1,ANIMALS.length-1);i++) if(i<=p.solid||i===0) out.push("p:"+i);
+  try{ const A=sfAlbum(c); Object.entries(A.seen).forEach(([w,S])=>Object.keys(S).forEach(id=>out.push(`s:${w}:${id}`))); }catch(e){}
+  return [...new Set(out)]; }
+function budDefault(c){ try{ const A=sfAlbum(c), sp=A.spots[A.spots.length-1]; if(sp) return `s:${sp.w}:${sp.id}`; }catch(e){} try{ const p=paState(c); if(p&&p.solid>=0) return "p:"+p.solid; }catch(e){} return null; }
+function kavBuddy(c,st){ const opts=budOptions(c), cur=st.buddy&&opts.includes(st.buddy)?st.buddy:budDefault(c);
+  if(!opts.length) return `<div class="kav-sp kbud"><div class="kav-q">?</div><span>Your buddy arrives after your first sound check or safari drill</span></div>`;
+  const past=opts.filter(o=>o[0]==="p"), saf=opts.filter(o=>o[0]==="s");
+  const row=(L,h)=>L.length?`<div class="kbrow"><small>${h}</small><div>${L.map(o=>`<button type="button" class="kbopt ${o===cur?"on":""}" data-bud="${esc(o)}" aria-pressed="${o===cur}" title="${esc(budName(o))}">${budSVG(o,46)}</button>`).join("")}</div></div>`:"";
+  return `<div class="kav-sp kbud"><div class="kbcur">${budSVG(cur,110)}</div><span>${esc(budName(cur))}</span>${row(past,"Your levels")}${row(saf,"Your safari")}</div>`; }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-bud]"); if(!b||!window.KAV_ST) return; e.preventDefault(); window.KAV_ST.buddy=b.dataset.bud; if(window.KAV_DRAW) window.KAV_DRAW(); });
+ssHeadAnimal=function(c){ const av=avOf(c); const code=(av&&av.buddy&&budOptions(c).includes(av.buddy))?av.buddy:budDefault(c);
+  if(code) return `<span class="sshead" title="${esc(budName(code))}">${budSVG(code,46)}</span>`;
+  try{ const w=sfCur(c), W=sfWorld(w); const a=W&&W.animals[0]; return a?`<span class="sshead off" title="Spot animals in the safari drill">${sfMini(w,a[0],46)}</span>`:""; }catch(e){ return ""; } };
 
 </script>
 </body>
