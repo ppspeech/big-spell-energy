@@ -9136,7 +9136,7 @@ function hpPanel(c){ if(!canWrite) return "";
   const G=hpOptions(c); const all=G.flatMap(g=>g.items);
   if(!view.hpSel||view.hpFor!==c.id){ view.hpFor=c.id; view.hpOut=""; view.hpLay=null; view.hpSel=all.filter(x=>!x.more&&/\|(swsent|swdict)$/.test(x.key)||/\|choose$/.test(x.key)||(x.kind==="oma"&&!/\|mix-/.test(x.key))).map(x=>x.key); if(!view.hpSel.length) view.hpSel=all.slice(0,2).map(x=>x.key); view.hpMsg=settings.hpMsg||"Little and often: 3–5 minutes, before dinner."; view.hpPerDay=settings.hpPerDay||5; view.hpBy=hpAddDays(today(),6); }
   return `<section class="v2card hpp" id="hpp"><div class="hphd"><h2 class="eyebrow">Home practice · a file families open on an iPad or phone, no login</h2><span class="hpall"><button type="button" data-hpall="1">Select all</button><button type="button" data-hpall="0">Deselect all</button></span></div>
-   ${G.map((g,gi)=>`${g.more?`<details class="hpg hpmore" ${g.items.some(x=>view.hpSel.includes(x.key))?"open":""}><summary>`:`<div class="hpg">`}<b>${esc(g.h)}</b>${g.more?` <small>${g.items.length} activities</small></summary>`:""}<span class="hpgall"><button type="button" data-hpg="${gi}" data-v="1">All</button><button type="button" data-hpg="${gi}" data-v="0">None</button></span>${g.extra?`<button type="button" class="linkbtn hpxu" data-hpxu="${esc(g.uid)}">✕ remove</button>`:""}${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span><b>${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div>${g.more?"</details>":"</div>"}`).join("")}${hpAddUnit(c,G)}
+   ${G.map((g,gi)=>`<div class="hpg"><b>${esc(g.h)}</b><span class="hpgall"><button type="button" data-hpg="${gi}" data-v="1">All</button><button type="button" data-hpg="${gi}" data-v="0">None</button></span>${g.extra?`<button type="button" class="linkbtn hpxu" data-hpxu="${esc(g.uid)}">✕ remove</button>`:""}${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span class="hpic" aria-hidden="true">${hpIcon(x)}</span><span><b>${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div></div>`).join("")}${hpAddUnit(c,G)}
    ${hpLayBox(all)}
    <label class="hpl">Message for the family<textarea id="hpmsg" rows="2">${esc(view.hpMsg)}</textarea></label>
    <div class="hpset"><label>Tasks a day<select id="hpday">${[1,2,3,4,5,6,7,8,10].map(n=>`<option ${n===view.hpPerDay?"selected":""}>${n}</option>`).join("")}</select></label><label>Next session (the chart runs until then)<input id="hpby" type="date" value="${esc(view.hpBy)}" min="${esc(hpAddDays(today(),1))}"></label></div>
@@ -9146,6 +9146,8 @@ function hpPanel(c){ if(!canWrite) return "";
    <div class="r2go"><button class="v2b pri" data-hplink>🔗 Send as a link</button><button class="v2b" data-hpmake>Make practice file</button><span class="sub" id="hpcount">${view.hpSel.length} task${view.hpSel.length===1?"":"s"} · no notes or reports go in the link or file</span></div><div id="hplinkbox">${typeof hpLinkBox==="function"&&view.hpLink&&view.hpLink.cid===c.id?hpLinkBox(view.hpLink,c):""}</div>
    <div class="hpin"><b>Got a results code back?</b><textarea id="hpcodein" rows="2" placeholder="Paste the code that starts with BSE…"></textarea><div class="r2go"><button class="v2b" data-hpimport>Bring in results</button></div><div id="hpout">${view.hpOut||""}</div></div>
   </section>`; }
+const HP_IC={"four in a row":"🔴","word ladder":"🪜","bingo":"🎯","memory":"🃏","snap":"👏","sort":"🗂️","dictation":"🎧","spin":"🎡","race":"🏁","fix":"🔧","choose":"✅","read":"📖","spell":"✏️","write":"✏️","match":"🧲","find":"🔎","build":"🧩","rule":"📏"};
+function hpIcon(x){ if(x.icon) return x.icon; const l=(x.label||"").toLowerCase(); for(const k in HP_IC) if(l.includes(k)) return HP_IC[k]; return "⭐"; }
 function hpTab(c){ if(!canWrite) return `<p class="sub">Home practice files are made by the clinician.</p>`;
   return hpPanel(c)+`<p class="sub" style="margin-top:14px">Want paper instead? <button class="linkbtn" id="homeprac">Printable PAST home sheet</button></p>`; }
 function hpClient(){ return clients.find(x=>x.id===view.clientId); }
@@ -16001,6 +16003,8 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .okv-sr .split>.strand:nth-child(1),.okv-sr .v2status,.okv-sr #okd2,.okv-sr .cta [data-dcode],.okv-sr .stcard,.okv-sr .rccard,.okv-sr .wtdn .do:has([data-dcode]),.okv-sr .wtdn .do:has([data-sctool]){display:none}
 .okv-ph .wtdn .do:has([data-drule]){display:none}
 .okv-ph .axcard{display:none}
+.r2wsr .hpic{font-size:1.35rem;line-height:1;width:28px;text-align:center;flex:none}
+@media (min-width:700px){.hpg .r2ws{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
