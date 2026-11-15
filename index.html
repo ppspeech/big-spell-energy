@@ -16005,7 +16005,7 @@ function ssItems(c){ const p=paState(c), o=okState(c), out=[];
   if(!p) out.push({k:"past",col:"t",t:"PAST check",s:"Start here: Form A"});
   else{
     if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Warm up drill",s:`${LVL(p.solid)} · keep it quick`,lvl:L,i:p.solid}); }
-    if(p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
+    if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
   if(o&&o.cur) out.push({k:"code",col:"a",t:`Code · ${unitLabel(o.cur)}`,s:o.cur.status==="progress"?"in progress":"next unit",u:o.cur});
   return out; }
