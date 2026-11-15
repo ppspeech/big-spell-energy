@@ -6743,7 +6743,7 @@ function v2head(c){
   return `<div class="v2crumb"><button class="linkbtn" id="back">Caseload</button> › ${esc(c.code)}</div>
   <div class="v2who"><button class="v2av" id="kidav" title="Kid: change avatar">${avatarSVG(avOf(c),40,c.code)}${ssHeadAnimal(c)}</button>
     <h1>${esc(c.code)}</h1><span class="v2meta">${[ap,c.year,seen?"seen "+dm(seen):""].filter(Boolean).map(esc).join(" · ")}</span>
-    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}<span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button></span></span></div>
+    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}<span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button><button data-ss="log">Log</button></span></span></div>
   ${c.notes?`<p class="v2notes">${esc(c.notes)}</p>`:""}
   <div id="editpanel"></div>`;
 }
@@ -6919,10 +6919,10 @@ function renderClient(){
   parkSC();
   const c=clients.find(x=>x.id===view.clientId);
   if(!c){ view={name:"caseload"}; renderCaseload(); return; }
-  let tab=view.ctab||clientTab; if(!["dash","pa","ok","home","act","rep"].includes(tab)) tab="dash";
+  let tab=view.ctab||clientTab; if(!["dash","pa","ok","sr","home","act","rep"].includes(tab)) tab="dash";
   try{ SC&&SC.ensure(c); }catch(e){}
-  const body=tab==="dash"?v2dash(c):tab==="pa"?v2pa(c):tab==="ok"?v2ok(c):tab==="act"?v2act(c):tab==="home"?hpTab(c):v2rep(c);
-  app.innerHTML=`<div class="v2">${v2head(c)}${v2tabs(tab)}<div id="ctab">${body}</div></div>`;
+  const body=tab==="dash"?v2dash(c):tab==="pa"?v2pa(c):tab==="ok"||tab==="sr"?v2ok(c):tab==="act"?v2act(c):tab==="home"?hpTab(c):v2rep(c);
+  app.innerHTML=`<div class="v2 ${tab==="ok"?"okv-ph":tab==="sr"?"okv-sr":""}">${v2head(c)}${v2tabs(tab)}<div id="ctab">${body}</div></div>`;
   app.classList.add("wide");
   const ss=clientSessions(c.id);
   document.getElementById("back").onclick=()=>{view={name:"caseload"};render();};
@@ -6951,7 +6951,7 @@ function renderClient(){
   app.querySelectorAll("[data-okdel]").forEach(b=>b.onclick=async()=>{ if(!await confirmBox(`Delete this drill? It'll go to the recycle bin for ${BIN_DAYS} days.`,"Delete",true)) return; try{ await binIt("okdrills/"+b.dataset.okdel,"Drill"); }catch(e){ toast(errMsg(e)); } });
   app.querySelectorAll("[data-sctool]").forEach(b=>b.onclick=()=>b.dataset.sctool==="checks"?openCheck(c):openSCModal(c,b.dataset.sctool));
   if(tab==="act") bindAct(c);
-  if(tab==="ok") bindSW(c);
+  if(tab==="ok"||tab==="sr") bindSW(c);
 }
 function openSCModal(c,k){
   const o=document.createElement("div"); o.className="scmodal"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true");
@@ -15996,18 +15996,24 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .sstbtn:focus-visible,.ssmenu button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
 .sshd{margin-bottom:6px}.sshd .v2tabs{margin-bottom:14px}
 .wkhas .wkcrumb{display:none}.sshd2{margin:0 0 10px}.sshd2 .v2tabs{margin:10px 0 12px}
+.okv-ph .split,.okv-sr .split{grid-template-columns:1fr}
+.okv-ph .split>.strand:nth-child(2),.okv-ph #okd1,.okv-ph .cta [data-drule]{display:none}
+.okv-sr .split>.strand:nth-child(1),.okv-sr .v2status,.okv-sr #okd2,.okv-sr .cta [data-dcode],.okv-sr .stcard,.okv-sr .rccard,.okv-sr .wtdn .do:has([data-dcode]),.okv-sr .wtdn .do:has([data-sctool]){display:none}
+.okv-ph .wtdn .do:has([data-drule]){display:none}
+.okv-ph .axcard{display:none}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
 let SS_SEL={};
 function ssItems(c){ const p=paState(c), o=okState(c), out=[];
   const lv=i=>{ const u=UNITS[i].id; return nextDrillLevel(c.id,u)||levelsForUnit(u)[0]; };
-  if(!p) out.push({k:"past",col:"t",t:"PAST check",s:"Start here: Form A"});
+  if(!p) out.push({k:"past",col:"t",t:"Phonemic awareness",s:"PAST check · start with Form A"});
   else{
-    if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Warm up drill",s:`${LVL(p.solid)} · keep it quick`,lvl:L,i:p.solid}); }
+    if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Phonemic awareness",s:`Warm up · ${LVL(p.solid)}`,lvl:L,i:p.solid}); }
     if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
-  if(o&&o.cur) out.push({k:"code",col:"a",t:`Code · ${unitLabel(o.cur)}`,s:o.cur.status==="progress"?"in progress":"next unit",u:o.cur});
+  if(o&&o.cur) out.push({k:"code",col:"a",t:"Phonics",s:`${unitLabel(o.cur)} · ${o.cur.status==="progress"?"in progress":"next unit"}`,u:o.cur});
+  const f0=o&&o.focus&&o.focus[0]; if(f0) out.push({k:"rule",col:"w",t:"Spelling rules",s:`${rulePlain(f0)} · ${f0.level?RSTEP[f0.level-1]:"not started"}`,r:f0});
   return out; }
 function ssTrack(p,hi){ return `<div class="sstrk">${ANIMALS.map((a,i)=>`<span class="${p&&i<=p.solid?"done":""} ${i===hi?"now":""}" title="Level ${i+1}"><svg viewBox="0 0 64 64" aria-hidden="true">${a[1]}</svg></span>`).join("")}</div>`; }
 function ssBars(d){ return `<span class="ssbars">${(d.results||[]).map(v=>`<i class="${v}"></i>`).join("")}</span>`; }
@@ -16027,6 +16033,11 @@ function ssDetail(c,it){ const p=paState(c);
     return `<div class="ssdet"><div class="ssdh"><h2>${esc(unitLabel(u))}</h2><span class="sspill sd-a">Sounds-Write</span></div>
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="unit" data-u="${esc(u.id)}">Open unit</button><button class="ssgo amb" data-ss="codedrill" data-u="${esc(u.id)}">⏱ Code drill</button></div>`:""}
       <div class="sshist"><h3>Last code drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Start with see it, say it, then hear it, write it.</p>`}</div></div>`; }
+  if(it.k==="rule"){ const r=it.r; const ds=clientOkd(c.id).filter(d=>d.kind==="rule"&&d.target===r.id).slice(-3).reverse();
+    return `<div class="ssdet"><div class="ssdh"><h2>${esc(rulePlain(r))}</h2><span class="sspill sd-w">${r.level?esc(RSTEP[r.level-1]):"not started"}</span></div>
+      <p class="sub">Next: ${esc(RNEXT[r.level]||"done")}</p>
+      ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="rule" data-r="${esc(r.id)}">Open rule</button><button class="ssgo amb" data-drule="${esc(r.id)}">⏱ Rule drill</button></div>`:""}
+      <div class="sshist"><h3>Last rule drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Sort right vs wrong spellings first.</p>`}</div></div>`; }
   return ""; }
 function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some(x=>x.k===sel)) sel=items[0]&&items[0].k; SS_SEL[c.id]=sel; const it=items.find(x=>x.k===sel);
   return `<div class="ss"><div class="sslist"><div class="sslh">Today</div>
@@ -16034,7 +16045,7 @@ function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some
     </div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
-v2tabs=function(tab){ const t=[["dash","Session","Session"],["pa","Phonemic","Phonemic"],["ok","Code & rules","Code"],["home","Homework","Home"],["act","Activity","Activity"],["rep","Reports","Reports"]];
+v2tabs=function(tab){ const t=[["dash","Session","Session"],["pa","Phonemic awareness","PA"],["ok","Phonics","Phonics"],["sr","Spelling rules","Rules"],["home","Homework","Home"],["rep","Reports","Reports"]];
   return `<nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
@@ -16048,6 +16059,8 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(a==="past"){ const nb=document.getElementById("newsess"); if(nb){ nb.click(); return; } view={name:"client",clientId:c.id,ctab:"pa"}; clientTab="pa"; render(); setTimeout(()=>{ const n=document.getElementById("newsess"); if(n) n.click(); },80); return; }
   if(a==="rc"){ openRC(c); return; }
   if(a==="games"){ openGames(c); return; }
+  if(a==="log"){ view={name:"client",clientId:c.id,ctab:"act"}; clientTab="act"; render(); return; }
+  if(a==="rule"){ const id=b.dataset.r; TD[id]?openRule(c,id):openRuleBasic(c,id); return; }
   if(a==="st"){ view={name:"client",clientId:c.id,ctab:"ok"}; clientTab="ok"; render(); setTimeout(()=>{ const s=document.querySelector(".stcard"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); },80); return; }
 });
 
@@ -16097,7 +16110,7 @@ function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.na
 /* same header and tabs on clinician full-screen pages (unit, rule, progress check, how to teach) */
 function ssOverlayHead(){ const o=document.getElementById("wkov"); if(!o||typeof WK==="undefined"||!WK||!WK.c) return; if(!["unit","rule","ruleb","check","teach"].includes(WK.kind)) return;
   const inner=o.querySelector(".wkin")||o.firstElementChild; if(!inner||inner.querySelector(".sshd2")) return; const c=WK.c;
-  const tab={unit:"ok",rule:"ok",ruleb:"ok",check:"ok",teach:"pa"}[WK.kind];
+  const tab={unit:"ok",rule:"sr",ruleb:"sr",check:"ok",teach:"pa"}[WK.kind];
   const d=document.createElement("div"); d.className="v2 sshd sshd2"; d.innerHTML=v2head(c).replace(/ id="(back|kidav|editc|editpanel)"/g,' data-oh="$1"')+v2tabs(tab); inner.prepend(d); o.classList.add("wkhas");
   const go=(fn)=>{ try{ wkClose(); }catch(e){} try{ TA=null; TR=null; PC=null; }catch(e){} fn(); };
   const bk=d.querySelector('[data-oh="back"]'); if(bk) bk.onclick=()=>go(()=>{ view={name:"caseload"}; render(); });
