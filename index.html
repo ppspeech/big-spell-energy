@@ -15995,6 +15995,7 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .ssmenu button:hover{background:var(--bg,#F4F1EA)}
 .sstbtn:focus-visible,.ssmenu button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
 .sshd{margin-bottom:6px}.sshd .v2tabs{margin-bottom:14px}
+.wkhas .wkcrumb{display:none}.sshd2{margin:0 0 10px}.sshd2 .v2tabs{margin:10px 0 12px}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16092,6 +16093,19 @@ function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.na
   const kav=d.querySelector("#kidav"); if(kav) kav.onclick=()=>openKidAvatar(c);
   const ed=d.querySelector("#editc"); if(ed) ed.onclick=()=>{ view={name:"client",clientId:c.id}; render(); const p=document.getElementById("editpanel"); if(p) renderClientForm(p,c); }; }
 { const _ssR=render; render=function(){ _ssR(); try{ ssPersistHead(); }catch(e){ console.warn(e); } }; }
+
+/* same header and tabs on clinician full-screen pages (unit, rule, progress check, how to teach) */
+function ssOverlayHead(){ const o=document.getElementById("wkov"); if(!o||typeof WK==="undefined"||!WK||!WK.c) return; if(!["unit","rule","ruleb","check","teach"].includes(WK.kind)) return;
+  const inner=o.querySelector(".wkin")||o.firstElementChild; if(!inner||inner.querySelector(".sshd2")) return; const c=WK.c;
+  const tab={unit:"ok",rule:"ok",ruleb:"ok",check:"ok",teach:"pa"}[WK.kind];
+  const d=document.createElement("div"); d.className="v2 sshd sshd2"; d.innerHTML=v2head(c).replace(/ id="(back|kidav|editc|editpanel)"/g,' data-oh="$1"')+v2tabs(tab); inner.prepend(d); o.classList.add("wkhas");
+  const go=(fn)=>{ try{ wkClose(); }catch(e){} try{ TA=null; TR=null; PC=null; }catch(e){} fn(); };
+  const bk=d.querySelector('[data-oh="back"]'); if(bk) bk.onclick=()=>go(()=>{ view={name:"caseload"}; render(); });
+  d.querySelectorAll("[data-ctab]").forEach(b=>b.onclick=()=>go(()=>{ view={name:"client",clientId:c.id,ctab:b.dataset.ctab}; clientTab=b.dataset.ctab; render(); }));
+  const kav=d.querySelector('[data-oh="kidav"]'); if(kav) kav.onclick=()=>openKidAvatar(c);
+  const ed=d.querySelector('[data-oh="editc"]'); if(ed) ed.onclick=()=>go(()=>{ view={name:"client",clientId:c.id}; render(); const p=document.getElementById("editpanel"); if(p) renderClientForm(p,c); });
+  const ep=d.querySelector('[data-oh="editpanel"]'); if(ep) ep.remove(); }
+new MutationObserver(()=>{ try{ ssOverlayHead(); }catch(e){} }).observe(document.body,{childList:true,subtree:true});
 
 </script>
 </body>
