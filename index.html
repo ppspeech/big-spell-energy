@@ -9135,8 +9135,8 @@ function hpLayBox(all){ const lay=hpLayout(all); if(!lay.some(e=>typeof e==="str
 function hpPanel(c){ if(!canWrite) return "";
   const G=hpOptions(c); const all=G.flatMap(g=>g.items);
   if(!view.hpSel||view.hpFor!==c.id){ view.hpFor=c.id; view.hpOut=""; view.hpLay=null; view.hpSel=all.filter(x=>!x.more&&/\|(swsent|swdict)$/.test(x.key)||/\|choose$/.test(x.key)||(x.kind==="oma"&&!/\|mix-/.test(x.key))).map(x=>x.key); if(!view.hpSel.length) view.hpSel=all.slice(0,2).map(x=>x.key); view.hpMsg=settings.hpMsg||"Little and often: 3–5 minutes, before dinner."; view.hpPerDay=settings.hpPerDay||5; view.hpBy=hpAddDays(today(),6); }
-  return `<section class="v2card hpp" id="hpp"><h2 class="eyebrow">🏠 Home practice · a file families open on an iPad or phone, no login</h2>
-   ${G.map(g=>`${g.more?`<details class="hpg hpmore" ${g.items.some(x=>view.hpSel.includes(x.key))?"open":""}><summary>`:`<div class="hpg">`}<b>${esc(g.h)}</b>${g.more?` <small>${g.items.length} activities</small></summary>`:""}${g.extra?`<button type="button" class="linkbtn hpxu" data-hpxu="${esc(g.uid)}">✕ remove</button>`:""}${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span><b>${x.icon} ${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div>${g.more?"</details>":"</div>"}`).join("")}${hpAddUnit(c,G)}
+  return `<section class="v2card hpp" id="hpp"><div class="hphd"><h2 class="eyebrow">Home practice · a file families open on an iPad or phone, no login</h2><span class="hpall"><button type="button" data-hpall="1">Select all</button><button type="button" data-hpall="0">Deselect all</button></span></div>
+   ${G.map((g,gi)=>`${g.more?`<details class="hpg hpmore" ${g.items.some(x=>view.hpSel.includes(x.key))?"open":""}><summary>`:`<div class="hpg">`}<b>${esc(g.h)}</b>${g.more?` <small>${g.items.length} activities</small></summary>`:""}<span class="hpgall"><button type="button" data-hpg="${gi}" data-v="1">All</button><button type="button" data-hpg="${gi}" data-v="0">None</button></span>${g.extra?`<button type="button" class="linkbtn hpxu" data-hpxu="${esc(g.uid)}">✕ remove</button>`:""}${g.lvSel?hpLvSel(g.lvSel):""}<div class="r2ws">${g.items.map(x=>`<label class="r2wsr"><input type="checkbox" data-hpk="${esc(x.key)}" ${view.hpSel.includes(x.key)?"checked":""}><span><b>${esc(x.label)}</b><small>${esc(x.sub)}</small></span></label>`).join("")}</div>${g.more?"</details>":"</div>"}`).join("")}${hpAddUnit(c,G)}
    ${hpLayBox(all)}
    <label class="hpl">Message for the family<textarea id="hpmsg" rows="2">${esc(view.hpMsg)}</textarea></label>
    <div class="hpset"><label>Tasks a day<select id="hpday">${[1,2,3,4,5,6,7,8,10].map(n=>`<option ${n===view.hpPerDay?"selected":""}>${n}</option>`).join("")}</select></label><label>Next session (the chart runs until then)<input id="hpby" type="date" value="${esc(view.hpBy)}" min="${esc(hpAddDays(today(),1))}"></label></div>
@@ -15979,6 +15979,10 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .kbrow{width:100%;margin-top:6px}.kbrow small{display:block;text-align:left;font-size:.85rem;color:#5B6880;margin-bottom:4px}.kbrow>div{display:flex;flex-wrap:wrap;gap:6px}
 .kbopt{width:58px;height:58px;border-radius:14px;border:2px solid #DCE3EA;background:#fff;display:grid;place-items:center;cursor:pointer;padding:0}.kbopt svg{background:none!important;padding:0!important;animation:none!important}
 .kbopt.on{border-color:#1E2A44;box-shadow:0 0 0 2px #1E2A44}.kbopt:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
+.hphd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.hphd .eyebrow{margin:0}
+.hpall{display:flex;gap:6px}.hpall button,.hpgall button{font:inherit;font-size:.85rem;font-weight:700;border:1px solid var(--line,#E4DCCD);background:var(--surface,#FFFDF8);color:var(--ink,#23262B);border-radius:999px;padding:6px 12px;min-height:34px;cursor:pointer}
+.hpall button:focus-visible,.hpgall button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
+.hpgall{display:inline-flex;gap:4px;margin-left:10px;vertical-align:middle}.hpgall button{padding:3px 10px;min-height:28px;font-size:.78rem}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16017,7 +16021,7 @@ function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some
     <div class="ssmore"><span>Sometimes</span><button data-ss="rc">📖 Reading check</button><button data-ss="st">✍️ Spelling tests</button><button data-ss="games">🎮 Games</button></div></div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
-v2tabs=function(tab){ const t=[["dash","Session"],["pa","Phonemic"],["ok","Code & rules"],["home","🏠 Homework"],["act","Activity"],["rep","Reports"]];
+v2tabs=function(tab){ const t=[["dash","Session"],["pa","Phonemic"],["ok","Code & rules"],["home","Homework"],["act","Activity"],["rep","Reports"]];
   return `<nav class="v2tabs" role="tablist">${t.map(([k,l])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}">${l}</button>`).join("")}</nav>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="pick"){ SS_SEL[c.id]=b.dataset.k; const y=scrollY; render(); scrollTo(0,y); return; }
@@ -16055,6 +16059,13 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
 ssHeadAnimal=function(c){ const av=avOf(c); const code=(av&&av.buddy&&budOptions(c).includes(av.buddy))?av.buddy:budDefault(c);
   if(code) return `<span class="sshead" title="${esc(budName(code))}">${budSVG(code,46)}</span>`;
   try{ const w=sfCur(c), W=sfWorld(w); const a=W&&W.animals[0]; return a?`<span class="sshead off" title="Spot animals in the safari drill">${sfMini(w,a[0],46)}</span>`:""; }catch(e){ return ""; } };
+
+/* homework: select / deselect all, and per group */
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-hpall],[data-hpg]"); if(!b) return; const c=hpClient(); if(!c) return; e.preventDefault(); e.stopPropagation();
+  const G=hpOptions(c); const on=(b.dataset.hpall??b.dataset.v)==="1";
+  const keys=b.dataset.hpall!=null?G.flatMap(g=>g.items.map(x=>x.key)):(G[Number(b.dataset.hpg)]||{items:[]}).items.map(x=>x.key);
+  view.hpSel=(view.hpSel||[]).filter(k=>!keys.includes(k)); if(on) view.hpSel=view.hpSel.concat(keys);
+  const y=scrollY; renderClient(); scrollTo(0,y); });
 
 </script>
 </body>
