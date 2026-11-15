@@ -6741,7 +6741,7 @@ function v2tabs(tab){ const t=[["dash","Overview"],["pa","Phonemic proficiency"]
 function v2head(c){
   const ap=age(c.dob), seen=seenOf(c), sp=spiritOf(c);
   return `<div class="v2crumb"><button class="linkbtn" id="back">Caseload</button> › ${esc(c.code)}</div>
-  <div class="v2who"><button class="v2av" id="kidav" title="Kid: change avatar">${avatarSVG(avOf(c),40,c.code)}${sp!=null?pixAnimal(sp,40):""}</button>
+  <div class="v2who"><button class="v2av" id="kidav" title="Kid: change avatar">${avatarSVG(avOf(c),40,c.code)}${ssHeadAnimal(c)}</button>
     <h1>${esc(c.code)}</h1><span class="v2meta">${[ap,c.year,seen?"seen "+dm(seen):""].filter(Boolean).map(esc).join(" · ")}</span>
     ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}</div>
   ${c.notes?`<p class="v2notes">${esc(c.notes)}</p>`:""}
@@ -15974,6 +15974,7 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .sssaf span{margin-left:8px;font-weight:700}.sssaf em{margin-left:auto;font-style:normal;font-size:1.2rem}
 @media (max-width:760px){.ss{grid-template-columns:1fr}.sslist{position:static}.ssgo{min-height:64px;font-size:1.15rem}.sstrk span{width:26px;height:26px}.sstrk svg{width:22px;height:22px}}
 @media (prefers-reduced-motion:reduce){.ssgo{transition:none}}
+.sshead{display:inline-grid;place-items:center;width:46px;height:40px}.sshead svg{display:block}.sshead.off svg{filter:grayscale(1) opacity(.45)}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16026,6 +16027,10 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(a==="games"){ openGames(c); return; }
   if(a==="st"){ view={name:"client",clientId:c.id,ctab:"ok"}; clientTab="ok"; render(); setTimeout(()=>{ const s=document.querySelector(".stcard"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); },80); return; }
 });
+
+/* header buddy: the kid's latest safari animal instead of the pixel spirit */
+function ssHeadAnimal(c){ try{ const A=sfAlbum(c), sp=A.spots[A.spots.length-1]; if(sp) return `<span class="sshead" title="Latest safari spot: ${esc(sp.name)}">${sfMini(sp.w,sp.id,46)}</span>`;
+  const w=sfCur(c), W=sfWorld(w); const a=W&&W.animals[0]; return a?`<span class="sshead off" title="Spot animals in the safari drill">${sfMini(w,a[0],46)}</span>`:""; }catch(e){ return ""; } }
 
 </script>
 </body>
