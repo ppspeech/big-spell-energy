@@ -6743,7 +6743,7 @@ function v2head(c){
   return `<div class="v2crumb"><button class="linkbtn" id="back">Caseload</button> › ${esc(c.code)}</div>
   <div class="v2who"><button class="v2av" id="kidav" title="Kid: change avatar">${avatarSVG(avOf(c),40,c.code)}${ssHeadAnimal(c)}</button>
     <h1>${esc(c.code)}</h1><span class="v2meta">${[ap,c.year,seen?"seen "+dm(seen):""].filter(Boolean).map(esc).join(" · ")}</span>
-    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}</div>
+    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}<span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button></span></span></div>
   ${c.notes?`<p class="v2notes">${esc(c.notes)}</p>`:""}
   <div id="editpanel"></div>`;
 }
@@ -15387,7 +15387,7 @@ if(typeof kidSheet2==="function"){ const _sfKid=kidSheet2; kidSheet2=function(c)
 @media (max-width:899px){.bhs{display:none}}
 @media (max-width:480px){.bhhero h2{font-size:1.7rem}.bhbolt{width:64px;height:68px}.bhhero{padding:16px}}
 @media (max-width:700px){
-  .v2tabs{flex-wrap:wrap;gap:2px 18px;overflow:visible}
+  .v2tabs{flex-wrap:nowrap;gap:14px;overflow-x:auto;scrollbar-width:none}.v2tabs::-webkit-scrollbar{display:none}.v2tabs button{font-size:.92rem}
   .rch{flex-wrap:wrap}.rcbtns{display:flex;gap:8px;flex-wrap:wrap}
   .slist td,.slist th{white-space:normal}
   .stcard .stb{gap:6px}
@@ -15983,6 +15983,17 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .hpall{display:flex;gap:6px}.hpall button,.hpgall button{font:inherit;font-size:.85rem;font-weight:700;border:1px solid var(--line,#E4DCCD);background:var(--surface,#FFFDF8);color:var(--ink,#23262B);border-radius:999px;padding:6px 12px;min-height:34px;cursor:pointer}
 .hpall button:focus-visible,.hpgall button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
 .hpgall{display:inline-flex;gap:4px;margin-left:10px;vertical-align:middle}.hpgall button{padding:3px 10px;min-height:28px;font-size:.78rem}
+@media (max-width:420px){.v2 .v2tabs{gap:7px}.v2 .v2tabs button{font-size:.8rem;letter-spacing:-.01em}}
+.v2tabs .tbs{display:none}
+@media (max-width:600px){.v2tabs .tbl{display:none}.v2tabs .tbs{display:inline}}
+.sstools{position:relative;margin-left:auto}.v2edit+.sstools{margin-left:8px}
+.sstbtn{font:inherit;font-weight:700;font-size:.9rem;border:1px solid var(--line,#E4DCCD);background:var(--surface,#FFFDF8);color:var(--ink,#23262B);border-radius:999px;padding:7px 14px;min-height:38px;cursor:pointer}
+.ssmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:50;display:flex;flex-direction:column;min-width:190px;background:var(--surface,#FFFDF8);border:1px solid var(--line,#E4DCCD);border-radius:14px;box-shadow:0 10px 30px #0000001f;padding:6px}
+.ssmenu[hidden]{display:none}
+.v2who{position:relative}@media (max-width:600px){.sstools{position:static}.ssmenu{right:0;top:100%}}
+.ssmenu button{font:inherit;font-weight:700;text-align:left;border:0;background:none;color:var(--ink,#23262B);padding:12px 14px;border-radius:10px;min-height:44px;cursor:pointer}
+.ssmenu button:hover{background:var(--bg,#F4F1EA)}
+.sstbtn:focus-visible,.ssmenu button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16018,12 +16029,14 @@ function ssDetail(c,it){ const p=paState(c);
 function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some(x=>x.k===sel)) sel=items[0]&&items[0].k; SS_SEL[c.id]=sel; const it=items.find(x=>x.k===sel);
   return `<div class="ss"><div class="sslist"><div class="sslh">Today</div>
     ${items.map(x=>`<button class="ssli ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="ssdot sd-${x.col}"></span><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><em>›</em></button>`).join("")}
-    <div class="ssmore"><span>Sometimes</span><button data-ss="rc">📖 Reading check</button><button data-ss="st">✍️ Spelling tests</button><button data-ss="games">🎮 Games</button></div></div>
+    </div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
-v2tabs=function(tab){ const t=[["dash","Session"],["pa","Phonemic"],["ok","Code & rules"],["home","Homework"],["act","Activity"],["rep","Reports"]];
-  return `<nav class="v2tabs" role="tablist">${t.map(([k,l])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}">${l}</button>`).join("")}</nav>`; };
+v2tabs=function(tab){ const t=[["dash","Session","Session"],["pa","Phonemic","Phonemic"],["ok","Code & rules","Code"],["home","Homework","Home"],["act","Activity","Activity"],["rep","Reports","Reports"]];
+  return `<nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
+  if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
+  { window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); }
   if(a==="pick"){ SS_SEL[c.id]=b.dataset.k; const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="drill"||a==="safari"){ startDrill(c.id,b.dataset.l); if(a==="safari") setTimeout(()=>{ if(typeof sdStart==="function") sdStart(); },60); else setTimeout(()=>{ const g=document.getElementById("d-start"); if(g) g.click(); },60); return; }
   if(a==="howto"){ openTeach(c); return; }
@@ -16066,6 +16079,8 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   const keys=b.dataset.hpall!=null?G.flatMap(g=>g.items.map(x=>x.key)):(G[Number(b.dataset.hpg)]||{items:[]}).items.map(x=>x.key);
   view.hpSel=(view.hpSel||[]).filter(k=>!keys.includes(k)); if(on) view.hpSel=view.hpSel.concat(keys);
   const y=scrollY; renderClient(); scrollTo(0,y); });
+
+document.addEventListener("click",e=>{ if(e.target.closest&&e.target.closest(".sstools")) return; if(window.SS_MENU){ window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); } });
 
 </script>
 </body>
