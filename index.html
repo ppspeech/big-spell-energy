@@ -15994,6 +15994,7 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .ssmenu button{font:inherit;font-weight:700;text-align:left;border:0;background:none;color:var(--ink,#23262B);padding:12px 14px;border-radius:10px;min-height:44px;cursor:pointer}
 .ssmenu button:hover{background:var(--bg,#F4F1EA)}
 .sstbtn:focus-visible,.ssmenu button:focus-visible{outline:3px solid #E9B949;outline-offset:2px}
+.sshd{margin-bottom:6px}.sshd .v2tabs{margin-bottom:14px}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16081,6 +16082,16 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   const y=scrollY; renderClient(); scrollTo(0,y); });
 
 document.addEventListener("click",e=>{ if(e.target.closest&&e.target.closest(".sstools")) return; if(window.SS_MENU){ window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); } });
+
+/* keep the kid's header and tabs on report and drill pages */
+function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.name]; if(!t||!view.clientId) return; const c=clients.find(x=>x.id===view.clientId); if(!c||document.getElementById("sshd")) return;
+  const d=document.createElement("div"); d.id="sshd"; d.className="v2 noprint sshd"; d.innerHTML=v2head(c)+v2tabs(t); app.prepend(d);
+  const cr=app.querySelector(".r2page>.v2crumb"); if(cr) cr.remove();
+  const bk=d.querySelector("#back"); if(bk) bk.onclick=()=>{ view={name:"caseload"}; render(); };
+  d.querySelectorAll("[data-ctab]").forEach(b=>b.onclick=()=>{ view={name:"client",clientId:c.id,ctab:b.dataset.ctab}; clientTab=b.dataset.ctab; render(); });
+  const kav=d.querySelector("#kidav"); if(kav) kav.onclick=()=>openKidAvatar(c);
+  const ed=d.querySelector("#editc"); if(ed) ed.onclick=()=>{ view={name:"client",clientId:c.id}; render(); const p=document.getElementById("editpanel"); if(p) renderClientForm(p,c); }; }
+{ const _ssR=render; render=function(){ _ssR(); try{ ssPersistHead(); }catch(e){ console.warn(e); } }; }
 
 </script>
 </body>
