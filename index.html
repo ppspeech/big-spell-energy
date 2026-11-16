@@ -6743,7 +6743,7 @@ function v2head(c){
   return `<div class="v2crumb"><button class="linkbtn" id="back">Caseload</button> › ${esc(c.code)}</div>
   <div class="v2who"><button class="v2av" id="kidav" title="Kid: change avatar">${avatarSVG(avOf(c),40,c.code)}${ssHeadAnimal(c)}</button>
     <h1>${esc(c.code)}</h1><span class="v2meta">${[ap,c.year,seen?"seen "+dm(seen):""].filter(Boolean).map(esc).join(" · ")}</span>
-    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}<span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button><button data-ss="log">Log</button></span></span></div>
+    ${canWrite?`<button class="linkbtn v2edit" id="editc">Edit</button>`:""}</div>
   ${c.notes?`<p class="v2notes">${esc(c.notes)}</p>`:""}
   <div id="editpanel"></div>`;
 }
@@ -7175,7 +7175,8 @@ function v2rep(c){
 }
 document.addEventListener("change",e=>{ const t=e.target;
   if(t.matches&&t.matches("[data-wsi]")){ const s=new Set(view.wsSel||[0,1]); const i=Number(t.dataset.wsi); t.checked?s.add(i):s.delete(i); view.wsSel=[...s].sort((a,b)=>a-b); }
-  if(t.id==="ws-key") view.wsKey=t.checked; if(t.id==="ws-note") view.wsNote=t.checked; });
+  if(t.id==="ws-key") view.wsKey=t.checked; if(t.id==="ws-note") view.wsNote=t.checked;
+  if(view.name==="rep2"&&view.kind==="ws"&&(t.matches("[data-wsi]")||t.id==="ws-key"||t.id==="ws-note")){ const y=scrollY; render(); scrollTo(0,y); } });
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-rep2]"); if(!b) return;
   const c=clients.find(x=>x.id===view.clientId); if(!c) return;
   view={name:"rep2",clientId:c.id,kind:b.dataset.rep2,wsSel:view.wsSel,wsKey:view.wsKey,wsNote:view.wsNote}; render(); });
@@ -7188,7 +7189,8 @@ function renderRep2(){
   const T={kid:["My progress","Kid version. Add a message if you like, then save."],parent:["Progress report","Parent version. Edit the summary and the home tips, then save."],clin:["Clinical summary","Your version. Edit the paragraph, then save or copy."],ws:["Worksheets","Each worksheet is its own page."]}[k]||["Report",""];
   const ed=k==="parent"?`<label for="r2-lead">Summary for parents</label><textarea id="r2-lead" rows="3">${esc(view.lead??parentLead(c))}</textarea><label for="r2-help" style="margin-top:10px">How to help at home</label><textarea id="r2-help" rows="2">${esc(view.help??parentHelp(c))}</textarea>`
     :k==="kid"?`<label for="r2-name">Their name on the report</label><input id="r2-name" type="text" maxlength="30" placeholder="${esc(c.code)}" value="${esc(view.kname||"")}" style="width:100%;font:inherit;padding:8px 10px;margin-bottom:10px"><label for="r2-msg">Message (optional)</label><textarea id="r2-msg" rows="2">${esc(view.msg||"")}</textarea>`
-    :k==="clin"?`<label for="r2-para">Paragraph for reports</label><textarea id="r2-para" rows="5">${esc(view.para??clinPara(c))}</textarea><button class="v2b" id="r2-copy" style="margin-top:6px">Copy paragraph</button>`:"";
+    :k==="clin"?`<label for="r2-para">Paragraph for reports</label><textarea id="r2-para" rows="5">${esc(view.para??clinPara(c))}</textarea><button class="v2b" id="r2-copy" style="margin-top:6px">Copy paragraph</button>`
+    :k==="ws"?(()=>{ const ws=wsOptions(c); return ws.length?`<div class="r2ws">${ws.map((w,i)=>`<label class="r2wsr"><input type="checkbox" data-wsi="${i}" ${(view.wsSel||[0,1]).includes(i)?"checked":""}><span><b>${esc(w.kind)}</b><small>${esc(w.label)}</small></span></label>`).join("")}</div><div class="r2opts"><label><input type="checkbox" id="ws-key" ${view.wsKey!==false?"checked":""}> Answer key / reading script</label><label><input type="checkbox" id="ws-note" ${view.wsNote!==false?"checked":""}> Note for parents at the top</label></div><div class="r2go"><button class="v2b" data-rep="home">PAST home practice</button></div>`:`<p class="sub">Set a focus rule or start a Sounds-Write unit and worksheets appear here.</p><div class="r2go"><button class="v2b" data-rep="home">PAST home practice</button></div>`; })():"";
   app.innerHTML=`<div class="v2 r2page"><div class="v2crumb noprint"><button class="linkbtn" id="r2-back">${esc(c.code)}</button> › Reports</div>
     <div class="r2top noprint"><div><h1>${T[0]}</h1><p class="sub">${T[1]}</p></div><button class="v2b pri" id="r2-pdf">Save as PDF</button></div>
     ${ed?`<div class="r2ed noprint">${ed}</div>`:""}
@@ -16020,8 +16022,9 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
  .kav.bdkav .kav-in>h2,.kav.bdkav .kav-act{grid-column:1/-1}
  .kav.bdkav .kav-stage{position:sticky;top:0;flex-direction:column;align-items:center}}
 /* phone header: ☰ + crumb + More on one row */
-@media (max-width:899px){.v2{position:relative}.v2>.v2crumb,.sshd>.v2crumb{padding-left:40px;min-height:34px;display:flex;align-items:center;margin-top:-26px}}
-@media (max-width:600px){.v2 .sstools{position:absolute;top:-26px;right:0;margin:0}.v2 .sstbtn{min-height:34px;padding:5px 12px}.sshd .sstools{top:-26px}}
+.v2 .v2crumb,.sshd .v2crumb{display:none}
+.ssham{display:none}
+@media (max-width:899px){#railtab{opacity:0!important;pointer-events:none}.ssham{display:grid;place-items:center;width:40px;height:40px;flex:none;border:0;border-radius:10px;background:transparent;color:var(--muted,#6B6560);font-size:1.3rem;cursor:pointer;margin-right:2px}.ssham:hover{background:var(--surface,#FFFDF8)}}
 /* reports: less scrolling */
 .r2cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .r2cards .r2card{padding:12px;min-height:0}
@@ -16032,8 +16035,20 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .v2card .r2ws .r2wsr{padding:8px 10px}
 @media (max-width:600px){.v2card .r2ws{grid-template-columns:1fr 1fr}.v2card .r2ws .r2wsr b{font-size:.9rem}}
 /* tab bar stays put while scrolling */
-.v2 .v2tabs{position:sticky;top:0;z-index:60;background:var(--bg,#F4F1EA);padding-top:6px}
-.wkov .sshd2 .v2tabs{background:#FFFDF7}
+.v2 .v2tabrow{position:sticky;top:0;z-index:60;background:var(--bg,#F4F1EA);padding-top:6px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line,#E4DCCD);margin-bottom:14px}
+.v2tabrow .v2tabs{flex:1;min-width:0;border-bottom:0!important;margin:0!important}
+.v2tabrow .sstools{margin-left:auto!important;flex:none}
+@media (max-width:400px){.v2 .v2tabs{gap:6px!important}.v2tabrow .sstbtn{padding:4px 9px;font-size:.8rem}}
+.sshd .r2older{margin:-4px 0 10px;font-size:.82rem}
+.r2bar{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.r2bar .r2s{display:none}
+@media (max-width:600px){.r2bar .r2l{display:none}.r2bar .r2s{display:inline}.r2bar{gap:4px!important}.r2bar .r2card{padding:7px 5px;min-width:0;overflow-wrap:anywhere}.r2bar .r2card b{font-size:.74rem;line-height:1.2}}
+@media (max-width:380px){.v2 .v2tabs{gap:4px!important}.v2 .v2tabs button{font-size:.76rem}}
+.r2ed .r2wsr{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:inherit;margin:0}
+.r2ed .r2wsr input{margin-top:3px;flex:none}.r2ed .r2wsr b{display:block;font-size:.92rem}.r2ed .r2wsr small{display:block;font-weight:400;color:var(--muted,#6B6560);font-size:.82rem}
+.r2ed .r2ws{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:8px}
+.r2ed .r2opts label{display:inline-flex;gap:6px;align-items:center;font-weight:400;margin-right:14px}.v2tabrow .sstbtn{min-height:34px;padding:5px 12px;font-size:.85rem}
+.wkov .sshd2 .v2tabrow{background:#FFFDF7}
 #railtab{position:absolute!important}
 .r2bar{grid-template-columns:repeat(4,1fr);margin:0 0 12px;padding-bottom:6px}
 .r2bar .r2card{padding:8px 10px;border:2px solid transparent;opacity:.75}
@@ -16086,7 +16101,7 @@ function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
 v2tabs=function(tab){ const t=[["dash","Session","Session"],["pa","Phonemic awareness","PA"],["ok","Phonics","Phonics"],["sr","Spelling rules","Rules"],["home","Homework","Home"],["rep","Reports","Reports"]];
-  return `<nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav>`; };
+  return `<div class="v2tabrow"><nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav><span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button><button data-ss="log">Log</button></span></span></div>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
   { window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); }
@@ -16139,7 +16154,8 @@ document.addEventListener("click",e=>{ if(e.target.closest&&e.target.closest(".s
 
 /* keep the kid's header and tabs on report and drill pages */
 function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.name]; if(!t||!view.clientId) return; const c=clients.find(x=>x.id===view.clientId); if(!c||document.getElementById("sshd")) return;
-  const d=document.createElement("div"); d.id="sshd"; d.className="v2 noprint sshd"; d.innerHTML=v2head(c)+v2tabs(t)+(view.name==="rep2"?`<div class="r2cards r2bar">${[["kid","For the kid","My progress"],["parent","For parents","Progress report"],["clin","For you","Clinical summary"],["ws","Print","Worksheets"]].map(([k,w,n])=>`<button class="r2card ${view.kind===k?"on":""}" data-r2bar="${k}" aria-pressed="${view.kind===k}"><span class="who">${w}</span><b>${n}</b></button>`).join("")}</div>`:""); app.prepend(d);
+  const d=document.createElement("div"); d.id="sshd"; d.className="v2 noprint sshd"; d.innerHTML=v2head(c)+v2tabs(t)+(view.name==="rep2"?`<div class="r2cards r2bar">${[["kid","For the kid","My progress","Kid"],["parent","For parents","Progress report","Parent"],["clin","For you","Clinical summary","Clinical"],["ws","Print","Worksheets","Sheets"]].map(([k,w,n,sh])=>`<button class="r2card ${view.kind===k?"on":""}" data-r2bar="${k}" aria-pressed="${view.kind===k}"><span class="who">${w}</span><b><span class="r2l">${n}</span><span class="r2s">${sh}</span></b></button>`).join("")}</div>${clientSessions(c.id).length?`<p class="sub r2older">Older PAST-only reports: <button class="linkbtn" data-rep="clinician">clinician</button> · <button class="linkbtn" data-rep="parent">parent</button> · <button class="linkbtn" data-rep="kids">kids</button></p>`:""}`:""); app.prepend(d);
+  d.querySelectorAll("[data-rep]").forEach(b=>b.onclick=()=>{ view={name:"report",clientId:c.id,tab:b.dataset.rep}; render(); });
   d.querySelectorAll("[data-r2bar]").forEach(b=>b.onclick=()=>{ if(b.dataset.r2bar===view.kind) return; const ws=view.wsSel; view={name:"rep2",clientId:c.id,kind:b.dataset.r2bar}; if(ws) view.wsSel=ws; render(); });
   const cr=app.querySelector(".r2page>.v2crumb"); if(cr) cr.remove();
   const bk=d.querySelector("#back"); if(bk) bk.onclick=()=>{ view={name:"caseload"}; render(); };
@@ -16185,6 +16201,12 @@ new MutationObserver(()=>{ const k=document.querySelector(".kav.bdkav .kav-in");
 
 function ssStick(){ document.querySelectorAll(".sshd").forEach(d=>{ const t=d.querySelector(".v2tabs"); if(!t) return; d.style.top=-(t.offsetTop-d.offsetTop>0?t.offsetTop-d.offsetTop:0)-6+"px"; }); }
 new MutationObserver(()=>requestAnimationFrame(ssStick)).observe(document.body,{childList:true,subtree:true}); addEventListener("resize",ssStick);
+
+new MutationObserver(()=>{ document.querySelectorAll(".v2who").forEach(w=>{ if(w.querySelector(".ssham")) return; const b=document.createElement("button"); b.type="button"; b.className="ssham"; b.setAttribute("aria-label","Caseload"); b.textContent="☰"; b.onclick=e=>{ e.stopPropagation(); const r=document.getElementById("railtab"); if(r) r.click(); }; w.prepend(b); }); }).observe(document.body,{childList:true,subtree:true});
+
+{ const _rc=renderClient; renderClient=function(){ const t=view.ctab||clientTab; if(view.name==="client"&&t==="rep"){ const c=clients.find(x=>x.id===view.clientId); if(c){ view={name:"rep2",clientId:c.id,kind:window.REP_LAST||"kid",wsSel:view.wsSel}; render(); return; } } return _rc.apply(this,arguments); }; }
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-r2bar]"); if(b) window.REP_LAST=b.dataset.r2bar; },true);
+document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest(".r2page [data-rep]"); if(!b) return; view={name:"report",clientId:view.clientId,tab:b.dataset.rep}; render(); });
 
 </script>
 </body>
