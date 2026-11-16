@@ -16035,6 +16035,11 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .v2 .v2tabs{position:sticky;top:0;z-index:60;background:var(--bg,#F4F1EA);padding-top:6px}
 .wkov .sshd2 .v2tabs{background:#FFFDF7}
 #railtab{position:absolute!important}
+.r2bar{grid-template-columns:repeat(4,1fr);margin:0 0 12px;padding-bottom:6px}
+.r2bar .r2card{padding:8px 10px;border:2px solid transparent;opacity:.75}
+.r2bar .r2card:nth-child(4){background:#E3E6F3}
+.r2bar .r2card.on{border-color:#23262B;opacity:1}
+@media (max-width:600px){.r2bar .r2card .who{display:none}.r2bar .r2card b{font-size:.82rem}}
 .sshd{position:sticky;z-index:60;background:var(--bg,#F4F1EA)}.wkov .sshd2{background:#FFFDF7}
 </style>
 <script id="sess-js">
@@ -16134,7 +16139,8 @@ document.addEventListener("click",e=>{ if(e.target.closest&&e.target.closest(".s
 
 /* keep the kid's header and tabs on report and drill pages */
 function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.name]; if(!t||!view.clientId) return; const c=clients.find(x=>x.id===view.clientId); if(!c||document.getElementById("sshd")) return;
-  const d=document.createElement("div"); d.id="sshd"; d.className="v2 noprint sshd"; d.innerHTML=v2head(c)+v2tabs(t); app.prepend(d);
+  const d=document.createElement("div"); d.id="sshd"; d.className="v2 noprint sshd"; d.innerHTML=v2head(c)+v2tabs(t)+(view.name==="rep2"?`<div class="r2cards r2bar">${[["kid","For the kid","My progress"],["parent","For parents","Progress report"],["clin","For you","Clinical summary"],["ws","Print","Worksheets"]].map(([k,w,n])=>`<button class="r2card ${view.kind===k?"on":""}" data-r2bar="${k}" aria-pressed="${view.kind===k}"><span class="who">${w}</span><b>${n}</b></button>`).join("")}</div>`:""); app.prepend(d);
+  d.querySelectorAll("[data-r2bar]").forEach(b=>b.onclick=()=>{ if(b.dataset.r2bar===view.kind) return; const ws=view.wsSel; view={name:"rep2",clientId:c.id,kind:b.dataset.r2bar}; if(ws) view.wsSel=ws; render(); });
   const cr=app.querySelector(".r2page>.v2crumb"); if(cr) cr.remove();
   const bk=d.querySelector("#back"); if(bk) bk.onclick=()=>{ view={name:"caseload"}; render(); };
   d.querySelectorAll("[data-ctab]").forEach(b=>b.onclick=()=>{ view={name:"client",clientId:c.id,ctab:b.dataset.ctab}; clientTab=b.dataset.ctab; render(); });
