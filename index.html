@@ -16057,6 +16057,11 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .r2bar .r2card.on{border-color:#23262B;opacity:1}
 @media (max-width:600px){.r2bar .r2card .who{display:none}.r2bar .r2card b{font-size:.82rem}}
 .sshd{position:sticky;z-index:60;background:var(--bg,#F4F1EA)}.wkov .sshd2{background:#FFFDF7}
+.ssgrp{display:flex;flex-direction:column;gap:6px}
+.ssgrp.has>.ssgh{box-shadow:inset 0 0 0 2px #8A2B3D33}
+.sssub{display:flex;flex-direction:column;gap:6px;margin-left:22px;padding-left:10px;border-left:3px solid #F2E1E4}
+.sssi{padding:9px 12px!important;background:#FBF3F4!important}.sssi b{font-size:.95rem}
+.sssi.on{box-shadow:inset 0 0 0 2px #8A2B3D}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16095,9 +16100,14 @@ function ssDetail(c,it){ const p=paState(c);
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="rule" data-r="${esc(r.id)}">Open rule</button><button class="ssgo amb" data-drule="${esc(r.id)}">⏱ Rule drill</button></div>`:""}
       <div class="sshist"><h3>Last rule drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Sort right vs wrong spellings first.</p>`}</div></div>`; }
   return ""; }
+window.SS_RX=window.SS_RX||{};
 function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some(x=>x.k===sel)) sel=items[0]&&items[0].k; SS_SEL[c.id]=sel; const it=items.find(x=>x.k===sel);
   return `<div class="ss"><div class="sslist"><div class="sslh">Today</div>
-    ${items.map(x=>`<button class="ssli ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="ssdot sd-${x.col}"></span><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><em>›</em></button>`).join("")}
+    ${(()=>{ const li=x=>`<button class="ssli ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="ssdot sd-${x.col}"></span><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><em>›</em></button>`;
+      const rules=items.filter(x=>x.r), rest=items.filter(x=>!x.r); if(!rules.length) return rest.map(li).join("");
+      const open=SS_RX[c.id]??rules.some(x=>x.k===sel);
+      const grp=`<div class="ssgrp ${open?"open":""} ${rules.some(x=>x.k===sel)?"has":""}"><button class="ssli ssgh" data-ss="rx" aria-expanded="${open}"><span class="ssdot sd-w"></span><span class="sstx"><b>Spelling rules</b><small>${rules.length} target rule${rules.length===1?"":"s"}${open?"":" · "+esc(rules.map(x=>x.r.tile||"").filter(Boolean).join(", "))}</small></span><em>${open?"▾":"▸"}</em></button>${open?`<div class="sssub">${rules.map(x=>`<button class="ssli sssi ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.r.level?RSTEP[x.r.level-1]:"not started")}</small></span><em>›</em></button>`).join("")}</div>`:""}</div>`;
+      return rest.map(li).join("")+grp; })()}
     </div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
@@ -16106,6 +16116,7 @@ v2tabs=function(tab){ const t=[["dash","Session","Session"],["pa","Phonemic awar
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
   { window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); }
+  if(a==="rx"){ const items=ssItems(c), rules=items.filter(x=>x.r), sel=SS_SEL[c.id]; const cur=SS_RX[c.id]??rules.some(x=>x.k===sel); SS_RX[c.id]=!cur; if(!cur&&rules[0]&&!rules.some(x=>x.k===sel)) SS_SEL[c.id]=rules[0].k; const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="pick"){ SS_SEL[c.id]=b.dataset.k; const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="drill"||a==="safari"){ startDrill(c.id,b.dataset.l); if(a==="safari") setTimeout(()=>{ if(typeof sdStart==="function") sdStart(); },60); else setTimeout(()=>{ const g=document.getElementById("d-start"); if(g) g.click(); },60); return; }
   if(a==="howto"){ openTeach(c); return; }
