@@ -16062,6 +16062,38 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .sssub{display:flex;flex-direction:column;gap:6px;margin-left:22px;padding-left:10px;border-left:3px solid #F2E1E4}
 .sssi{padding:9px 12px!important;background:#FBF3F4!important}.sssi b{font-size:.95rem}
 .sssi.on{box-shadow:inset 0 0 0 2px #8A2B3D}
+/* parent report milestones */
+.qm-list{display:flex;flex-direction:column;gap:14px;margin:18px 0}
+.qm{--c:#2F6B66;--s:#DCE9E7;--t:#EEF5F4;background:var(--t);border-radius:16px;padding:18px 20px 16px;break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.qm1{--c:#8F6A22;--s:#F1E4C8;--t:#FAF4E6}.qm2{--c:#8A2B3D;--s:#F2DDE1;--t:#FBF1F3}
+.qm header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.qm h3{margin:0;font-size:1.15rem;color:var(--c)}
+.qm header p{margin:3px 0 0;font-size:.9rem;color:#4b545c;max-width:52ch}
+.qm-chip{flex:none;background:var(--c);color:#fff;font-weight:700;font-size:.8rem;border-radius:999px;padding:6px 12px;white-space:nowrap}
+.qm-track{margin:16px 0 6px}
+.qm-row{position:relative;height:26px}
+.qm-lab{position:absolute;transform:translateX(-50%);white-space:nowrap;font-size:.8rem;font-weight:700;line-height:1}
+.qm-lab.l{transform:translateX(-14px)}.qm-lab.r{transform:translateX(calc(-100% + 14px))}
+.qm-lab.me{bottom:9px;background:#1E2226;color:#fff;border-radius:8px;padding:5px 9px}
+.qm-lab.ex{top:8px;color:var(--c)}
+.qm-bands{position:relative;display:flex;gap:4px}
+.qm-bands i{flex:1;height:34px;border-radius:9px;background:linear-gradient(90deg,var(--s) var(--p),#fff var(--p));display:grid;place-items:center;font-style:normal;box-shadow:inset 0 0 0 1.5px var(--s)}
+.qm-bands i b{font-size:.78rem;font-weight:700;color:#5B6570}.qm-bands i.full b{color:var(--c)}
+.qm-pin{position:absolute;top:-7px;width:0;height:0;margin-left:-7px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:9px solid #1E2226}
+.qm-pin::after{content:"";position:absolute;left:-1.5px;top:-2px;width:3px;height:38px;background:#1E2226;opacity:.18;border-radius:2px}
+.qm-flag{position:absolute;top:-4px;bottom:-10px;width:0;border-left:2.5px dashed var(--c)}
+.qm-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.qm-cols>div{background:#fff;border-radius:12px;padding:12px 14px}
+.qm-cols b{display:block;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:#5B6570;margin-bottom:6px}
+.qm-cols ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qm-cols li{position:relative;padding-left:24px;font-size:.95rem;line-height:1.35}
+.qm-cols p{margin:0;font-size:.95rem}
+.qm-can li::before{content:"✓";position:absolute;left:0;top:0;width:17px;height:17px;border-radius:50%;background:var(--c);color:#fff;font-size:.68rem;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.qm-next li::before{content:"";position:absolute;left:3px;top:5px;width:9px;height:9px;border-radius:50%;border:2.5px solid var(--c)}
+.qm.none{background:transparent;box-shadow:inset 0 0 0 1.5px #E4DCCD;padding:14px 20px}
+.qm.none h3{color:#5B6570}.qm-none{margin:8px 0 0;font-size:.92rem;color:#5B6570}
+@media (max-width:600px){.qm{padding:14px 12px}.qm header{flex-direction:column;gap:8px}.qm-cols{grid-template-columns:1fr}.qm-bands i b{font-size:.68rem}.qm-lab{font-size:.74rem}}
+@media print{.qm-cols{grid-template-columns:1fr 1fr}.qm header{flex-direction:row}}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16219,6 +16251,31 @@ new MutationObserver(()=>{ document.querySelectorAll(".v2who").forEach(w=>{ if(w
 { const _rc=renderClient; renderClient=function(){ const t=view.ctab||clientTab; if(view.name==="client"&&t==="rep"){ const c=clients.find(x=>x.id===view.clientId); if(c){ view={name:"rep2",clientId:c.id,kind:window.REP_LAST||"kid",wsSel:view.wsSel}; render(); return; } } return _rc.apply(this,arguments); }; }
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-r2bar]"); if(b) window.REP_LAST=b.dataset.r2bar; },true);
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest(".r2page [data-rep]"); if(!b) return; view={name:"report",clientId:view.clientId,tab:b.dataset.rep}; render(); });
+
+/* ---------- parent report: milestones, redesigned ---------- */
+qcBar=function(area,A,yi,code){
+  const start=Math.max(0,Math.min((yi??0)-2,area.top-area.bands)), n=area.bands;
+  const pct=v=>Math.max(0,Math.min(100,(v-start)/n*100));
+  const bands=[...Array(n)].map((_,i)=>{ const lo=start+i, f=Math.max(0,Math.min(1,A.now-lo)); return `<i class="${f>=1?"full":f>0?"part":""}" style="--p:${Math.round(f*100)}%"><b>${YNAME(lo)}</b></i>`; }).join("");
+  const expLab=A.exp===null?"":(yi+1>area.top?`Expected by end of ${YNAME(area.top-1)}`:`Expected by end of ${YNAME(yi)}`);
+  const al=v=>v<22?"l":v>78?"r":"";
+  const me=pct(A.now), ex=A.exp===null?null:pct(A.exp);
+  return `<div class="qm-track"><div class="qm-row top"><span class="qm-lab me ${al(me)}" style="left:${me}%">${A.all?"All secure":esc(code)+" is here"}</span></div>
+    <div class="qm-bands">${bands}<span class="qm-pin" style="left:${me}%"></span>${ex!==null?`<span class="qm-flag" style="left:${ex}%"></span>`:""}</div>
+    ${ex!==null?`<div class="qm-row bot"><span class="qm-lab ex ${al(ex)}" style="left:${ex}%">${expLab}</span></div>`:""}</div>`; };
+parentSheet2=function(c){
+  const yi=yIdx(c.year), X=qcCtx(c), fd=firstDate(c);
+  const areas=QC_AREAS.map((a,ai)=>{ const A=qcArea(a,X,yi);
+    const chip=!A.has?"":A.all?"All skills secure":`Working in ${YNAME(Math.max(0,Math.min(Math.floor(A.now),a.top-1)))} skills`;
+    return `<section class="qm qm${ai%3} ${A.has?"":"none"}"><header><div><h3>${a.name}</h3><p>${a.what}</p></div>${chip?`<span class="qm-chip">${chip}</span>`:""}</header>
+      ${A.has?`${qcBar(a,A,yi,c.code)}<div class="qm-cols"><div class="qm-can"><b>Can do</b>${A.can.length?`<ul>${A.can.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:`<p>Building the first steps</p>`}</div><div class="qm-next"><b>Working on next</b>${A.next.length?`<ul>${A.next.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:`<p>All skills here are secure</p>`}</div></div>`
+      :`<p class="qm-none">Not checked yet. This fills in after the first check.</p>`}</section>`; }).join("");
+  return `<div class="r2s r2paper"><div class="r2ph"><h2>Literacy progress report</h2><span>${esc(c.code)}${c.year?" · "+esc(c.year):""}<br>${fd?esc(monYr(fd))+" – ":""}${esc(longD(today()))}</span></div>
+    ${view.lead??parentLead(c)?`<p class="r2lead">${esc(view.lead??parentLead(c))}</p>`:""}
+    <div class="qm-list">${areas}</div>
+    ${(view.help??parentHelp(c))?`<div class="r2help"><b>How to help at home</b><br>${esc(view.help??parentHelp(c))}</div>`:""}
+    ${yi===null?`<p class="r2fine">Add ${esc(c.code)}'s school year (Edit) to show the year-level expectation.</p>`:""}
+    <p class="r2fine">${QC_CITE}</p></div>`; };
 
 </script>
 </body>
