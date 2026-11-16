@@ -16031,6 +16031,11 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .v2card .r2ws{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
 .v2card .r2ws .r2wsr{padding:8px 10px}
 @media (max-width:600px){.v2card .r2ws{grid-template-columns:1fr 1fr}.v2card .r2ws .r2wsr b{font-size:.9rem}}
+/* tab bar stays put while scrolling */
+.v2 .v2tabs{position:sticky;top:0;z-index:60;background:var(--bg,#F4F1EA);padding-top:6px}
+.wkov .sshd2 .v2tabs{background:#FFFDF7}
+#railtab{position:absolute!important}
+.sshd{position:sticky;z-index:60;background:var(--bg,#F4F1EA)}.wkov .sshd2{background:#FFFDF7}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16171,6 +16176,9 @@ document.addEventListener("click",e=>{ const x=e.target.closest&&e.target.closes
   window[P.name](P.c,P.id); },true);
 
 new MutationObserver(()=>{ const k=document.querySelector(".kav.bdkav .kav-in"); if(!k||k.querySelector(".kav-x")) return; const b=document.createElement("button"); b.className="kav-x"; b.type="button"; b.setAttribute("aria-label","Close"); b.textContent="✕"; b.onclick=()=>{ const c=document.querySelector('.kav [data-k="cancel"]'); if(c) c.click(); }; k.prepend(b); }).observe(document.body,{childList:true});
+
+function ssStick(){ document.querySelectorAll(".sshd").forEach(d=>{ const t=d.querySelector(".v2tabs"); if(!t) return; d.style.top=-(t.offsetTop-d.offsetTop>0?t.offsetTop-d.offsetTop:0)-6+"px"; }); }
+new MutationObserver(()=>requestAnimationFrame(ssStick)).observe(document.body,{childList:true,subtree:true}); addEventListener("resize",ssStick);
 
 </script>
 </body>
