@@ -15775,14 +15775,31 @@ function stKeyNav(e){ const el=e.target; if(!el.dataset||el.dataset.wr==null) re
   if(e.key==="ArrowUp"){ e.preventDefault(); const pv=document.querySelector(`#stov [data-wr="${i-1}"]`); if(pv) pv.focus(); } }
 async function stAsk(){ if(ST&&ST.dirty&&!(await confirmBox("Close without saving this test?","Close",true))) return; stClose(); }
 function stClose(silent){ const o=document.getElementById("stov"); if(o) o.remove(); document.removeEventListener("keydown",stKeyH); document.body.style.overflow=""; ST=null; if(!silent){ const y=scrollY; render(); scrollTo(0,y); } }
+function stSumHTML(c,r){ const s=stScore(c,r), T=ST_TESTS[r.t], D=stD(r.t), ca=stAgeM(c,r.date), g0=stGrade(c);
+  const wrote=i=>((r.wrote||[])[i]||"").trim();
+  let errs=[], rec="";
+  if(r.t==="distm"){ D.items.forEach((it,i)=>{ const m=(r.m||[])[i]||{}; if(m.s==="x"||m.r==="x") errs.push([it.w,wrote(i),[m.s==="x"?"suffix":"",m.r==="x"?"rule":""].filter(Boolean).join(" + ")]); });
+    rec=D.items.map((it,i)=>{ const m=(r.m||[])[i]||{}; const mk=v=>v==="a"?`<i class="a">✓</i>`:v==="x"?`<i class="x">✗</i>`:`<i>–</i>`; return `<div class="ssr"><span>${i+1}</span><b>${esc(it.w)}</b><em>${esc(wrote(i))||"·"}</em><span class="ssm">${mk(m.s)}${it.rule?mk(m.r):""}</span></div>`; }).join(""); }
+  else { D.items.forEach((it,i)=>{ if(s.stop>=0&&i>s.stop) return; if((r.marks||[])[i]==="x") errs.push([r.t==="dists"?`${it.w} (as in ${it.ex})`:it.w,wrote(i),""]); });
+    rec=D.items.map((it,i)=>{ const v=(r.marks||[])[i]||"", dead=s.stop>=0&&i>s.stop; return `<div class="ssr ${dead?"dead":""}"><span>${i+1}</span><b>${esc(it.w)}</b><em>${esc(wrote(i))||"·"}</em><span class="ssm">${v==="a"?`<i class="a">✓</i>`:v==="x"?`<i class="x">✗</i>`:`<i>–</i>`}</span></div>`; }).join(""); }
+  const res=stResHTML(c,r,s);
+  return `<div class="stsum"><div class="ssh"><div><h2>${esc(T.full)}</h2><p>Spelling test summary</p></div><span>${esc(c.code)}${c.year?" · "+esc(c.year):g0!=null?" · "+stGName(g0):""}${ca!=null?"<br>Age "+stYM(ca):""}<br>${esc(longD(r.date))}</span></div>
+    <div class="ssres">${res}</div>
+    <div class="ssbox obs"><h3>Observations</h3>${(r.note||"").trim()?esc(r.note.trim()).split(/\n+/).map(p=>`<p>${p}</p>`).join(""):`<p class="ssnone">None written.</p>`}</div>
+    <div class="ssbox err"><h3>Errors · ${errs.length}</h3>${errs.length?`<div class="sserr">${errs.map(([w,a,k])=>`<span><b>${esc(w)}</b> → <em>${esc(a)||"no response"}</em>${k?` <small>${k}</small>`:""}</span>`).join("")}</div>`:`<p class="ssnone">No errors marked.</p>`}</div>
+    <div class="ssbox"><h3>Full record${s.stop>=0?` <small>· items after ${s.stop+1} not counted</small>`:""}</h3><div class="ssrec">${rec}</div></div>
+    <p class="ssfine">${esc(T.full)} · scored in Big Spell Energy · ${esc(longD(today()))}</p></div>`; }
 function stxDraw(){ const o=document.getElementById("stov"); if(!o||!ST) return; const c=ST.c, r=ST.r, T=ST_TESTS[r.t];
+  if(ST.sum){ o.innerHTML=`<div class="stin"><div class="sthd"><b>Summary</b><span>${esc(c.code)} · ${esc(T.name)}</span><button class="stx" data-st="close" aria-label="Close">✕</button></div>
+    <div class="stact top"><button class="v2b" data-st="unsum">← Back to scoring</button><button class="v2b dark" data-st="pdf">Save as PDF</button>${ST.dirty&&canWrite?`<button class="v2b" data-st="save">Save test</button>`:""}</div>
+    <div class="stsumw">${stSumHTML(c,r)}</div></div>`; o.scrollTop=0; return; }
   const s=stScore(c,r), ca=stAgeM(c,r.date), g0=stGrade(c);
   const gOpts=r.t==="sast"||r.t==="distm"?"":`<label class="stdate">Compare with <select data-st-grade>${(r.t==="dists"?[0,1,2,3]:[1,2,3,4,5,6,7]).map(g=>`<option value="${g}" ${s.normG===g?"selected":""}>${r.t==="dists"&&g===0?"Kindy/Prep":stGName(g)}</option>`).join("")}</select></label>`;
   o.innerHTML=`<div class="stin"><div class="sthd"><b>${esc(T.full)}</b><span>${esc(c.code)}${ca!=null?` · ${stYM(ca)}`:""}${g0!=null?` · ${stGName(g0)}`:""}</span><button class="stx" data-st="close" aria-label="Close">✕</button></div>
     <div class="sttabs"><label class="stdate">Date <input type="date" data-st-date value="${esc(r.date)}"></label>${gOpts}${r.t==="distn"?`<label class="stchk"><input type="checkbox" data-st-stop ${r.stopUsed?"checked":""}> Stopping rule used (5 wrong in a row)</label>`:""}</div>
     <div class="stresw">${stResHTML(c,r,s)}</div>${stHint(r.t)}<div class="stlist ${r.t}">${stRows(c,r,s)}</div>
-    <div class="stfoot"><label>Note <input data-st-note value="${esc(r.note||"")}" placeholder="Observations, e.g. said the sounds while writing"></label></div>
-    <div class="stact">${ST.mode==="edit"&&canWrite?`<button class="v2b sm" data-st="del">Delete</button>`:""}<button class="v2b" data-st="close">Cancel</button>${canWrite?`<button class="v2b dark" data-st="save">Save</button>`:""}</div></div>`; }
+    <div class="stfoot"><label>Observations <textarea data-st-note rows="6" placeholder="What you noticed, e.g. said the sounds while writing, self-corrected, letter formation, pencil grip, attention">${esc(r.note||"")}</textarea></label></div>
+    <div class="stact">${ST.mode==="edit"&&canWrite?`<button class="v2b sm" data-st="del">Delete</button>`:""}<button class="v2b" data-st="sum">Summary and PDF</button><button class="v2b" data-st="close">Cancel</button>${canWrite?`<button class="v2b dark" data-st="save">Save</button>`:""}</div></div>`; }
 function stHint(t){ const h={sast:"Say the number, the word, the sentence, then the word again. Stops counting after 10 wrong in a row. Don't penalise b/d reversals.",
   disti:"Say the word, the sentence, then the word again. Stops counting after 5 wrong in a row.",
   distn:"Say each nonword (twice if needed). Any listed spelling counts. On wrong items, the sound–letter parts show what they got: tap a part to fix the guess.",
@@ -15832,6 +15849,9 @@ function stChange(e){ if(!ST) return; const el=e.target, r=ST.r;
   if(el.dataset.stStop!=null){ r.stopUsed=el.checked; ST.dirty=true; stRefresh(); } }
 async function stClick(e){ const b=e.target.closest("[data-st]"); if(!b||!ST) return; const a=b.dataset.st, c=ST.c, r=ST.r, i=Number(b.dataset.i);
   if(a==="close") return stAsk();
+  if(a==="sum"){ const n=document.querySelector("#stov [data-st-note]"); if(n) r.note=n.value; ST.sum=true; return stxDraw(); }
+  if(a==="unsum"){ ST.sum=false; return stxDraw(); }
+  if(a==="pdf"){ const el=document.querySelector("#stov .stsum"); if(el) savePdf(el,`${ST_TESTS[r.t].name}-${safeName(c.code)}-${r.date}.pdf`,false,b); return; }
   if(a==="say"){ const it=stD(r.t).items[i]; if(typeof gmSay==="function") gmSay(it.w); return; }
   if(a==="m"){ r.marks=r.marks||[]; r.marks[i]=r.marks[i]===b.dataset.v?"":b.dataset.v; ST.dirty=true; return stRefresh(); }
   if(a==="pg"){ const it=stD(r.t).items[i]; r.pg=r.pg||[]; const cur=(r.pg[i]||stSlots(it,(r.wrote||[])[i]||"")).slice(); const k=Number(b.dataset.k); cur[k]=!cur[k]; r.pg[i]=cur; ST.dirty=true; return stRefresh(); }
@@ -16096,6 +16116,36 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 @media print{.qm-cols{grid-template-columns:1fr 1fr}.qm header{flex-direction:row}}
 .tarule{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;background:#F2E1E4;color:#1E2226;border-radius:999px;padding:7px 16px;margin:4px auto 6px;font-size:1.05rem;font-weight:700}
 .tarule span{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#8A2B3D}
+.stfoot textarea{font:inherit;font-weight:400;padding:10px 12px;border:1px solid #D7DBD9;border-radius:10px;min-height:150px;resize:vertical;line-height:1.5;background:#fff;color:#1E2226;width:100%;box-sizing:border-box}
+.stfoot{grid-template-columns:1fr!important}
+.stact.top{justify-content:flex-start;margin:0 0 12px}
+.stsumw{background:#fff;border:1px solid #E4DCCD;border-radius:12px;overflow:hidden}
+.stsum{background:#fff;color:#1E2226;padding:26px 28px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;display:flex;flex-direction:column;gap:14px}
+.pdfmode .stsum{padding:6px 4px}
+.ssh{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid #1E2226;padding-bottom:10px}
+.ssh h2{margin:0;font-family:"Libre Caslon Text",Fraunces,Georgia,serif;font-weight:400;font-size:1.5rem}
+.ssh p{margin:2px 0 0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570;font-weight:700}
+.ssh>span{text-align:right;font-size:.88rem;color:#4b545c;line-height:1.45;flex:none}
+.ssres{background:#EEF5F4;border-radius:14px;padding:14px 16px}
+.ssres .stres{margin:0;background:none;border:0;padding:0}
+.ssbox{border-radius:14px;padding:14px 16px;background:#FAF7F0}
+.ssbox h3{margin:0 0 8px;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570}
+.ssbox h3 small{text-transform:none;letter-spacing:0;font-weight:400}
+.ssbox.obs{background:#FAF4E6}.ssbox.obs p{margin:0 0 8px;line-height:1.55;white-space:pre-wrap}.ssbox.obs p:last-child{margin:0}
+.ssbox.err{background:#FBF1F3}
+.ssnone{color:#5B6570;margin:0}
+.sserr{display:flex;flex-wrap:wrap;gap:6px}
+.sserr span{background:#fff;border-radius:8px;padding:5px 10px;font-size:.92rem}
+.sserr em{font-style:normal;color:#8A2B3D;font-family:Andika,sans-serif}.sserr small{color:#5B6570}
+.ssrec{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 18px}
+.ssr{display:grid;grid-template-columns:22px 1fr 1fr 34px;gap:6px;align-items:baseline;font-size:.86rem;padding:3px 0;border-bottom:1px solid #EEE8DB;break-inside:avoid}
+.ssr>span:first-child{color:#8a9097;font-size:.74rem}.ssr b{font-weight:700}.ssr em{font-style:normal;font-family:Andika,sans-serif;color:#4b545c}
+.ssr.dead{opacity:.4}
+.ssm{text-align:right;white-space:nowrap}.ssm i{font-style:normal;font-weight:700;color:#8a9097}.ssm i.a{color:#2F6B66}.ssm i.x{color:#8A2B3D}
+.ssfine{font-size:.72rem;color:#8a9097;margin:0}
+@media (max-width:700px){.stsum{padding:16px 14px}.ssrec{grid-template-columns:1fr 1fr}.ssh{flex-direction:column;align-items:flex-start}.ssh>span{text-align:left}}
+@media (max-width:420px){.ssrec{grid-template-columns:1fr}}
+.pdfmode .ssrec{grid-template-columns:repeat(3,1fr)}.pdfmode .ssh{flex-direction:row;align-items:flex-end}.pdfmode .ssh>span{text-align:right}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
