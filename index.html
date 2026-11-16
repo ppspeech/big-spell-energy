@@ -16069,7 +16069,7 @@ function ssItems(c){ const p=paState(c), o=okState(c), out=[];
     if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
   if(o&&o.cur) out.push({k:"code",col:"a",t:"Phonics",s:`${unitLabel(o.cur)} · ${o.cur.status==="progress"?"in progress":"next unit"}`,u:o.cur});
-  const f0=o&&o.focus&&o.focus[0]; if(f0) out.push({k:"rule",col:"w",t:"Spelling rules",s:`${rulePlain(f0)} · ${f0.level?RSTEP[f0.level-1]:"not started"}`,r:f0});
+  ((o&&o.focus)||[]).forEach((f,i)=>out.push({k:"rule_"+f.id,col:"w",t:rulePlain(f),s:`Spelling rule · ${f.level?RSTEP[f.level-1]:"not started"}`,r:f}));
   return out; }
 function ssTrack(p,hi){ return `<div class="sstrk">${ANIMALS.map((a,i)=>`<span class="${p&&i<=p.solid?"done":""} ${i===hi?"now":""}" title="Level ${i+1}"><svg viewBox="0 0 64 64" aria-hidden="true">${a[1]}</svg></span>`).join("")}</div>`; }
 function ssBars(d){ return `<span class="ssbars">${(d.results||[]).map(v=>`<i class="${v}"></i>`).join("")}</span>`; }
@@ -16089,7 +16089,7 @@ function ssDetail(c,it){ const p=paState(c);
     return `<div class="ssdet"><div class="ssdh"><h2>${esc(unitLabel(u))}</h2><span class="sspill sd-a">Sounds-Write</span></div>
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="unit" data-u="${esc(u.id)}">Open unit</button><button class="ssgo amb" data-ss="codedrill" data-u="${esc(u.id)}">⏱ Code drill</button></div>`:""}
       <div class="sshist"><h3>Last code drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Start with see it, say it, then hear it, write it.</p>`}</div></div>`; }
-  if(it.k==="rule"){ const r=it.r; const ds=clientOkd(c.id).filter(d=>d.kind==="rule"&&d.target===r.id).slice(-3).reverse();
+  if(it.r){ const r=it.r; const ds=clientOkd(c.id).filter(d=>d.kind==="rule"&&d.target===r.id).slice(-3).reverse();
     return `<div class="ssdet"><div class="ssdh"><h2>${esc(rulePlain(r))}</h2><span class="sspill sd-w">${r.level?esc(RSTEP[r.level-1]):"not started"}</span></div>
       <p class="sub">Next: ${esc(RNEXT[r.level]||"done")}</p>
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="rule" data-r="${esc(r.id)}">Open rule</button><button class="ssgo amb" data-drule="${esc(r.id)}">⏱ Rule drill</button></div>`:""}
