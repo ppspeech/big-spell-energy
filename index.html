@@ -16019,6 +16019,18 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 @media (min-width:900px){.kav.bdkav .kav-in{display:grid;grid-template-columns:minmax(300px,380px) 1fr;column-gap:18px;align-items:start}
  .kav.bdkav .kav-in>h2,.kav.bdkav .kav-act{grid-column:1/-1}
  .kav.bdkav .kav-stage{position:sticky;top:0;flex-direction:column;align-items:center}}
+/* phone header: ☰ + crumb + More on one row */
+@media (max-width:899px){.v2{position:relative}.v2>.v2crumb,.sshd>.v2crumb{padding-left:40px;min-height:34px;display:flex;align-items:center;margin-top:-26px}}
+@media (max-width:600px){.v2 .sstools{position:absolute;top:-26px;right:0;margin:0}.v2 .sstbtn{min-height:34px;padding:5px 12px}.sshd .sstools{top:-26px}}
+/* reports: less scrolling */
+.r2cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.r2cards .r2card{padding:12px;min-height:0}
+.r2cards .r2card:nth-child(1){background:#DCE9E7}.r2cards .r2card:nth-child(2){background:#F1E8D6}.r2cards .r2card:nth-child(3){background:#F2E1E4}
+.r2card .who{font-size:.68rem}
+@media (max-width:600px){.r2cards .r2card small{display:none}.r2cards .r2card b{font-size:.95rem}}
+.v2card .r2ws{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.v2card .r2ws .r2wsr{padding:8px 10px}
+@media (max-width:600px){.v2card .r2ws{grid-template-columns:1fr 1fr}.v2card .r2ws .r2wsr b{font-size:.9rem}}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
