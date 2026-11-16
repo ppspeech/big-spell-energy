@@ -16005,6 +16005,20 @@ body.railnarrow:not(.railon) #bserail{box-shadow:none}
 .okv-ph .axcard{display:none}
 .r2wsr .hpic{font-size:1.35rem;line-height:1;width:28px;text-align:center;flex:none}
 @media (min-width:700px){.hpg .r2ws{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
+.stpage .stcard{max-width:900px}.stpage .stcard:not(.sttiles) .stb{display:none}
+.sttiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:14px;border:0;padding:0;background:none}
+.sttile{font:inherit;text-align:left;border:0;border-radius:16px;padding:16px;min-height:120px;display:flex;flex-direction:column;gap:4px;cursor:pointer;color:#1E2226}
+.sttile b{font-size:1.25rem}.sttile small{color:#4b545c;font-size:.85rem;line-height:1.3}.sttile span{margin-top:auto;font-weight:700;font-size:.85rem}
+.sttile.t0{background:#DCE9E7}.sttile.t1{background:#F1E8D6}.sttile.t2{background:#F2E1E4}.sttile.t3{background:#E3E6F3}.sttile.t4{background:#E6EFDA}
+/* character maker: stays inside the app, exit always visible */
+.kav.bdkav{background:rgba(20,24,28,.45);padding:16px 12px 0}
+.kav.bdkav .kav-in{max-width:1080px;background:linear-gradient(#DDEFF4,#F7F3E8);border-radius:22px;padding:14px 16px 0;min-height:calc(100% - 16px);position:relative}
+.kav.bdkav .kav-in>h2{margin:4px 0 0;font-size:1.4rem;padding-right:56px}
+.kav-x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid #D7DBD9;background:#fff;font:inherit;font-size:1.2rem;cursor:pointer;z-index:3}
+.kav.bdkav .kav-act{position:sticky;bottom:0;z-index:2;background:linear-gradient(transparent,#F7F3E8 30%);padding:18px 0 14px;margin-top:-8px}
+@media (min-width:900px){.kav.bdkav .kav-in{display:grid;grid-template-columns:minmax(300px,380px) 1fr;column-gap:18px;align-items:start}
+ .kav.bdkav .kav-in>h2,.kav.bdkav .kav-act{grid-column:1/-1}
+ .kav.bdkav .kav-stage{position:sticky;top:0;flex-direction:column;align-items:center}}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16065,7 +16079,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(a==="games"){ openGames(c); return; }
   if(a==="log"){ view={name:"client",clientId:c.id,ctab:"act"}; clientTab="act"; render(); return; }
   if(a==="rule"){ const id=b.dataset.r; TD[id]?openRule(c,id):openRuleBasic(c,id); return; }
-  if(a==="st"){ view={name:"client",clientId:c.id,ctab:"ok"}; clientTab="ok"; render(); setTimeout(()=>{ const s=document.querySelector(".stcard"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); },80); return; }
+  if(a==="st"){ ssStPage(c); return; }
 });
 
 /* header buddy: the kid's latest safari animal instead of the pixel spirit */
@@ -16114,7 +16128,7 @@ function ssPersistHead(){ const t={rep2:"rep",report:"rep",drill:"dash"}[view.na
 /* same header and tabs on clinician full-screen pages (unit, rule, progress check, how to teach) */
 function ssOverlayHead(){ const o=document.getElementById("wkov"); if(!o||typeof WK==="undefined"||!WK||!WK.c) return; if(!["unit","rule","ruleb","check","teach"].includes(WK.kind)) return;
   const inner=o.querySelector(".wkin")||o.firstElementChild; if(!inner||inner.querySelector(".sshd2")) return; const c=WK.c;
-  const tab={unit:"ok",rule:"sr",ruleb:"sr",check:"ok",teach:"pa"}[WK.kind];
+  const tab=(view&&view.name==="client"&&(view.ctab||clientTab))||clientTab||"dash";
   const d=document.createElement("div"); d.className="v2 sshd sshd2"; d.innerHTML=v2head(c).replace(/ id="(back|kidav|editc|editpanel)"/g,' data-oh="$1"')+v2tabs(tab); inner.prepend(d); o.classList.add("wkhas");
   const go=(fn)=>{ try{ wkClose(); }catch(e){} try{ TA=null; TR=null; PC=null; }catch(e){} fn(); };
   const bk=d.querySelector('[data-oh="back"]'); if(bk) bk.onclick=()=>go(()=>{ view={name:"caseload"}; render(); });
@@ -16123,6 +16137,28 @@ function ssOverlayHead(){ const o=document.getElementById("wkov"); if(!o||typeof
   const ed=d.querySelector('[data-oh="editc"]'); if(ed) ed.onclick=()=>go(()=>{ view={name:"client",clientId:c.id}; render(); const p=document.getElementById("editpanel"); if(p) renderClientForm(p,c); });
   const ep=d.querySelector('[data-oh="editpanel"]'); if(ep) ep.remove(); }
 new MutationObserver(()=>{ try{ ssOverlayHead(); }catch(e){} }).observe(document.body,{childList:true,subtree:true});
+
+/* Spelling tests: its own page */
+function ssStFill(){ const o=document.getElementById("stpage"); if(!o) return; const c=clients.find(x=>x.id===o.dataset.c); if(!c) return;
+  o.innerHTML=`<div class="wkin"><div class="wkhd"><b>Spelling tests</b><span>${esc(c.code)}</span><button class="wkx" data-stpx aria-label="Close">✕</button></div><div class="stcard sttiles">${Object.keys(ST_TESTS).map((k,i)=>`<button class="sttile t${i%5}" data-st="new" data-t="${k}"><b>${({sast:"SAST",disti:"DiSTi",distn:"DiSTn",dists:"DiSTs",distm:"DiSTm"})[k]||esc(k)}</b><small>${esc(ST_TESTS[k].full||"")}</small><span>＋ New</span></button>`).join("")}</div>${stCard(c)}</div>`;
+  o.querySelector("[data-stpx]").onclick=()=>{ o.remove(); document.body.style.overflow=""; const y=scrollY; render(); scrollTo(0,y); }; }
+function ssStPage(c){ let o=document.getElementById("stpage"); if(!o){ o=document.createElement("div"); o.id="stpage"; o.className="wkov stpage"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label","Spelling tests"); document.body.appendChild(o); }
+  o.dataset.c=c.id; document.body.style.overflow="hidden"; ssStFill(); setTimeout(ssStFill,700); }
+{ let had=false; new MutationObserver(()=>{ const s=!!document.getElementById("stov"); if(had&&!s) ssStFill(); had=s; }).observe(document.body,{childList:true}); }
+
+/* X goes back one step: from an activity to its rule/unit page, from that page to where you were */
+window.SS_PARENT=null;
+{ const wrap=(name,kind)=>{ const f=window[name]; if(typeof f!=="function") return; window[name]=function(c,id,...r){ SS_PARENT={kind,name,c,id}; return f.call(this,c,id,...r); }; };
+  wrap("openRule","rule"); wrap("openRuleBasic","rule"); wrap("openUnit","unit"); }
+function ssAtParent(o){ return !!o.querySelector(".trgrid,.unseg"); }
+document.addEventListener("click",e=>{ const x=e.target.closest&&e.target.closest("#wkov .wkx,#wkov [data-wx]"); if(!x) return; const o=document.getElementById("wkov");
+  const P=SS_PARENT; if(!o) return;
+  if(ssAtParent(o)||!P){ SS_PARENT=null; return; }
+  e.stopPropagation(); e.preventDefault(); SS_PARENT=null;
+  try{ wkClose(); }catch(_){ o.remove(); } try{ TA=null; }catch(_){}
+  window[P.name](P.c,P.id); },true);
+
+new MutationObserver(()=>{ const k=document.querySelector(".kav.bdkav .kav-in"); if(!k||k.querySelector(".kav-x")) return; const b=document.createElement("button"); b.className="kav-x"; b.type="button"; b.setAttribute("aria-label","Close"); b.textContent="✕"; b.onclick=()=>{ const c=document.querySelector('.kav [data-k="cancel"]'); if(c) c.click(); }; k.prepend(b); }).observe(document.body,{childList:true});
 
 </script>
 </body>
