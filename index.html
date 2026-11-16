@@ -15766,14 +15766,14 @@ async function stOpen(c,mode,i,t){ await stLoad(); stClose(true);
   const o=document.createElement("div"); o.id="stov"; o.className="stov"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); o.setAttribute("aria-label",ST_TESTS[ST.r.t].full);
   document.body.appendChild(o); document.body.style.overflow="hidden";
   o.addEventListener("click",stClick); o.addEventListener("input",stInput); o.addEventListener("change",stChange); o.addEventListener("keydown",stKeyNav);
-  document.addEventListener("keydown",stKeyH); stDraw(); const f=o.querySelector("[data-wr]"); if(f&&ST.mode==="new") f.focus(); }
+  document.addEventListener("keydown",stKeyH); stxDraw(); const f=o.querySelector("[data-wr]"); if(f&&ST.mode==="new") f.focus(); }
 function stKeyH(e){ if(e.key==="Escape") stAsk(); }
 function stKeyNav(e){ const el=e.target; if(!el.dataset||el.dataset.wr==null) return; const i=Number(el.dataset.wr);
   if(e.key==="Enter"||e.key==="ArrowDown"){ e.preventDefault(); const nx=document.querySelector(`#stov [data-wr="${i+1}"]`); if(nx) nx.focus(); }
   if(e.key==="ArrowUp"){ e.preventDefault(); const pv=document.querySelector(`#stov [data-wr="${i-1}"]`); if(pv) pv.focus(); } }
 async function stAsk(){ if(ST&&ST.dirty&&!(await confirmBox("Close without saving this test?","Close",true))) return; stClose(); }
 function stClose(silent){ const o=document.getElementById("stov"); if(o) o.remove(); document.removeEventListener("keydown",stKeyH); document.body.style.overflow=""; ST=null; if(!silent){ const y=scrollY; render(); scrollTo(0,y); } }
-function stDraw(){ const o=document.getElementById("stov"); if(!o||!ST) return; const c=ST.c, r=ST.r, T=ST_TESTS[r.t];
+function stxDraw(){ const o=document.getElementById("stov"); if(!o||!ST) return; const c=ST.c, r=ST.r, T=ST_TESTS[r.t];
   const s=stScore(c,r), ca=stAgeM(c,r.date), g0=stGrade(c);
   const gOpts=r.t==="sast"||r.t==="distm"?"":`<label class="stdate">Compare with <select data-st-grade>${(r.t==="dists"?[0,1,2,3]:[1,2,3,4,5,6,7]).map(g=>`<option value="${g}" ${s.normG===g?"selected":""}>${r.t==="dists"&&g===0?"Kindy/Prep":stGName(g)}</option>`).join("")}</select></label>`;
   o.innerHTML=`<div class="stin"><div class="sthd"><b>${esc(T.full)}</b><span>${esc(c.code)}${ca!=null?` · ${stYM(ca)}`:""}${g0!=null?` · ${stGName(g0)}`:""}</span><button class="stx" data-st="close" aria-label="Close">✕</button></div>
