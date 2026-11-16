@@ -8141,7 +8141,7 @@ function taDraw(){
   else if(mode==="exc"){
     body=`<p class="wkq">Detective time 🕵️ Does this word follow the rule?</p><div class="wkbig">${esc(it.w)}</div>
       <div class="wkopts">${[["r","Follows the rule ✓"],["x","Rule breaker 🕵️"]].map(([k,l])=>`<button class="${TA.stage===k?(k===it.k?"good":"bad"):TA.wrongs.includes(k)?"bad":""}" data-tsl="${k}" ${TA.lock||TA.wrongs.includes(k)?"disabled":""}>${l}</button>`).join("")}</div>${fb}`; }
-  o.innerHTML=`<div class="wkin">${wkCrumb()}<div class="wkhd"><b>${esc(t.n)}${mode==="sl"||mode==="exc"?"":" · "+TMODES[mode][0]}</b><span>${done?"":`${i+1} of ${items.length}`}</span><button class="wkx" data-ta="back" aria-label="Back to the rule">✕</button></div>${bar}<div class="wkkid">${body}</div></div>`;
+  o.innerHTML=`<div class="wkin">${wkCrumb()}<div class="wkhd"><b>${esc(t.n)}${mode==="sl"||mode==="exc"?"":" · "+TMODES[mode][0]}</b><span>${done?"":`${i+1} of ${items.length}`}</span><button class="wkx" data-ta="back" aria-label="Back to the rule">✕</button></div>${bar}<div class="wkkid">${TA&&TA.rid&&RULE_PLAIN[TA.rid]?`<p class="tarule"><span>The rule</span> ${esc(RULE_PLAIN[TA.rid])}</p>`:""}${body}</div></div>`;
   o.querySelectorAll("[data-ta]").forEach(b=>b.onclick=()=>taAct(b.dataset.ta));
   o.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>gmSay(b.dataset.say));
   o.querySelectorAll("[data-tp]").forEach(b=>b.onclick=()=>taChoose(b.dataset.tp));
@@ -8203,7 +8203,7 @@ function stDraw(){
     body=`<div class="wkbig">${a} / ${S.res.length}</div><p class="wkq">Case closed: ${esc(S.st.t)}</p>${(()=>{ const pr=S.res.filter(r=>r.r==="x"&&r.ch!=="marked but right").map(r=>r.p), fa=S.res.filter(r=>r.ch==="marked but right").map(r=>r.p);
         return (pr.length?`<p class="wkfb">To practise: ${esc(pr.join(", "))}</p>`:`<p class="wkfb">Super sleuth! Every mistake found and fixed.</p>`)+(fa.length?`<p class="wkq">Marked but spelled right: ${esc(fa.join(", "))}</p>`:""); })()}
       <div class="wknav">${S.saved?`<span class="sub">Saved to the Activity log.</span>`:""}<button data-ta="back" class="go">Back to the rule</button></div>`; }
-  o.innerHTML=`<div class="wkin">${wkCrumb()}<div class="wkhd"><b>🕵️ ${esc(S.st.t)}</b><span>Case ${S.k+1} of ${TD_STORY[S.rid].length}</span><button class="wkx" data-ta="back" aria-label="Back to the rule">✕</button></div><div class="wkkid">${body}</div></div>`;
+  o.innerHTML=`<div class="wkin">${wkCrumb()}<div class="wkhd"><b>🕵️ ${esc(S.st.t)}</b><span>Case ${S.k+1} of ${TD_STORY[S.rid].length}</span><button class="wkx" data-ta="back" aria-label="Back to the rule">✕</button></div><div class="wkkid">${TA&&TA.rid&&RULE_PLAIN[TA.rid]?`<p class="tarule"><span>The rule</span> ${esc(RULE_PLAIN[TA.rid])}</p>`:""}${body}</div></div>`;
   o.querySelectorAll("[data-ta]").forEach(b=>b.onclick=()=>taAct(b.dataset.ta));
   o.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>{ const i=Number(b.dataset.sw); S.flags.has(i)?S.flags.delete(i):S.flags.add(i); if(S.clue===i) S.clue=null; stDraw(); });
   o.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{ const a=b.dataset.st;
@@ -16094,6 +16094,8 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .qm.none h3{color:#5B6570}.qm-none{margin:8px 0 0;font-size:.92rem;color:#5B6570}
 @media (max-width:600px){.qm{padding:14px 12px}.qm header{flex-direction:column;gap:8px}.qm-cols{grid-template-columns:1fr}.qm-bands i b{font-size:.68rem}.qm-lab{font-size:.74rem}}
 @media print{.qm-cols{grid-template-columns:1fr 1fr}.qm header{flex-direction:row}}
+.tarule{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;background:#F2E1E4;color:#1E2226;border-radius:999px;padding:7px 16px;margin:4px auto 6px;font-size:1.05rem;font-weight:700}
+.tarule span{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#8A2B3D}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
