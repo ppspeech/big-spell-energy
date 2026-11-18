@@ -16079,6 +16079,7 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .sshd{position:sticky;z-index:60;background:var(--bg,#F4F1EA)}.wkov .sshd2{background:#FFFDF7}
 .ssgrp{display:flex;flex-direction:column;gap:6px}
 .ssgrp.has>.ssgh{box-shadow:inset 0 0 0 2px #8A2B3D33}
+.ssgrp.ga .sssub{border-left-color:#F1E4C8}.ssgrp.ga .sssi{background:#FBF6EA!important}.ssgrp.ga .sssi.on{box-shadow:inset 0 0 0 2px #B07A1E}.ssgrp.ga.has>.ssgh{box-shadow:inset 0 0 0 2px #B07A1E33}
 .sssub{display:flex;flex-direction:column;gap:6px;margin-left:22px;padding-left:10px;border-left:3px solid #F2E1E4}
 .sssi{padding:9px 12px!important;background:#FBF3F4!important}.sssi b{font-size:.95rem}
 .sssi.on{box-shadow:inset 0 0 0 2px #8A2B3D}
@@ -16157,7 +16158,7 @@ function ssItems(c){ const p=paState(c), o=okState(c), out=[];
     if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Phonemic awareness",s:`Warm up · ${LVL(p.solid)}`,lvl:L,i:p.solid}); }
     if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
-  if(o&&o.cur) out.push({k:"code",col:"a",t:"Phonics",s:`${unitLabel(o.cur)} · ${o.cur.status==="progress"?"in progress":"next unit"}`,u:o.cur});
+  ((o&&o.prog)||[]).forEach(u=>out.push({k:"code_"+u.id,col:"a",t:unitLabel(u),s:u.status==="progress"?"in progress":"next unit",u,g:"ph"}));
   ((o&&o.focus)||[]).forEach((f,i)=>out.push({k:"rule_"+f.id,col:"w",t:rulePlain(f),s:`Spelling rule · ${f.level?RSTEP[f.level-1]:"not started"}`,r:f}));
   return out; }
 function ssTrack(p,hi){ return `<div class="sstrk">${ANIMALS.map((a,i)=>`<span class="${p&&i<=p.solid?"done":""} ${i===hi?"now":""}" title="Level ${i+1}"><svg viewBox="0 0 64 64" aria-hidden="true">${a[1]}</svg></span>`).join("")}</div>`; }
@@ -16174,7 +16175,7 @@ function ssDetail(c,it){ const p=paState(c);
       ${canWrite&&it.lvl?`<div class="ssbig"><button class="ssgo dark" data-ss="drill" data-l="${esc(it.lvl)}">▶ Start</button><button class="ssgo saf" data-ss="safari" data-l="${esc(it.lvl)}">🦘 Safari drill</button></div>`:""}
       <div class="sshist"><h3>Last drills at this level</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span>${ssBars(d)}<b>${(d.results||[]).filter(v=>v!=="x").length}/${(d.results||[]).length} · ${Math.round(d.secs||0)}s</b></div>`).join(""):`<p class="sub">None yet.</p>`}</div>
       ${W?`<button class="sssaf" data-ss="album">${Object.keys(S).slice(-3).map(id=>sfMini(w,id,54)).join("")}<span>${got.length} of ${W.animals.length} spotted in ${esc(W.name)}</span><em>📖</em></button>`:""}</div>`; }
-  if(it.k==="code"){ const u=it.u; const ds=clientOkd(c.id).filter(d=>d.kind==="code"&&d.target===u.id).slice(-3).reverse();
+  if(it.u){ const u=it.u; const ds=clientOkd(c.id).filter(d=>d.kind==="code"&&d.target===u.id).slice(-3).reverse();
     return `<div class="ssdet"><div class="ssdh"><h2>${esc(unitLabel(u))}</h2><span class="sspill sd-a">Sounds-Write</span></div>
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="unit" data-u="${esc(u.id)}">Open unit</button><button class="ssgo amb" data-ss="codedrill" data-u="${esc(u.id)}">⏱ Code drill</button></div>`:""}
       <div class="sshist"><h3>Last code drills</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span><b>${typeof okScore==="function"?esc(String(okScore(d))):""}</b></div>`).join(""):`<p class="sub">No drills yet. Start with see it, say it, then hear it, write it.</p>`}</div></div>`; }
@@ -16188,10 +16189,12 @@ window.SS_RX=window.SS_RX||{};
 function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some(x=>x.k===sel)) sel=items[0]&&items[0].k; SS_SEL[c.id]=sel; const it=items.find(x=>x.k===sel);
   return `<div class="ss"><div class="sslist"><div class="sslh">Today</div>
     ${(()=>{ const li=x=>`<button class="ssli ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="ssdot sd-${x.col}"></span><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><em>›</em></button>`;
-      const rules=items.filter(x=>x.r), rest=items.filter(x=>!x.r); if(!rules.length) return rest.map(li).join("");
-      const open=SS_RX[c.id]??rules.some(x=>x.k===sel);
-      const grp=`<div class="ssgrp ${open?"open":""} ${rules.some(x=>x.k===sel)?"has":""}"><button class="ssli ssgh" data-ss="rx" aria-expanded="${open}"><span class="ssdot sd-w"></span><span class="sstx"><b>Spelling rules</b><small>${rules.length} target rule${rules.length===1?"":"s"}${open?"":" · "+esc(rules.map(x=>x.r.tile||"").filter(Boolean).join(", "))}</small></span><em>${open?"▾":"▸"}</em></button>${open?`<div class="sssub">${rules.map(x=>`<button class="ssli sssi ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="sstx"><b>${esc(x.t)}</b><small>${esc(x.r.level?RSTEP[x.r.level-1]:"not started")}</small></span><em>›</em></button>`).join("")}</div>`:""}</div>`;
-      return rest.map(li).join("")+grp; })()}
+      const G=(key,name,col,its,sum,sub)=>{ if(!its.length) return ""; const K=c.id+key; const open=SS_RX[K]??its.some(x=>x.k===sel);
+        return `<div class="ssgrp g${col} ${open?"open":""} ${its.some(x=>x.k===sel)?"has":""}"><button class="ssli ssgh" data-ss="rx" data-g="${key}" aria-expanded="${open}"><span class="ssdot sd-${col}"></span><span class="sstx"><b>${name}</b><small>${sum}</small></span><em>${open?"▾":"▸"}</em></button>${open?`<div class="sssub">${its.map(x=>`<button class="ssli sssi ${x.k===sel?"on":""}" data-ss="pick" data-k="${x.k}"><span class="sstx"><b>${esc(x.t)}</b><small>${esc(sub(x))}</small></span><em>›</em></button>`).join("")}</div>`:""}</div>`; };
+      const ph=items.filter(x=>x.g==="ph"), rules=items.filter(x=>x.r), rest=items.filter(x=>!x.r&&x.g!=="ph");
+      return rest.map(li).join("")
+        +G("ph","Phonics","a",ph,`${ph.length} unit${ph.length===1?"":"s"} on the go · ${esc(ph.map(x=>x.t.replace(/ · .*/,"")).join(", "))}`,x=>x.s)
+        +G("rx","Spelling rules","w",rules,`${rules.length} target rule${rules.length===1?"":"s"} · ${esc(rules.map(x=>x.r.tile||"").filter(Boolean).join(", "))}`,x=>x.r.level?RSTEP[x.r.level-1]:"not started"); })()}
     </div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
@@ -16200,7 +16203,7 @@ v2tabs=function(tab){ const t=[["dash","▶️ Session","▶️ Session"],["pa",
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
   { window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); }
-  if(a==="rx"){ const items=ssItems(c), rules=items.filter(x=>x.r), sel=SS_SEL[c.id]; const cur=SS_RX[c.id]??rules.some(x=>x.k===sel); SS_RX[c.id]=!cur; if(!cur&&rules[0]&&!rules.some(x=>x.k===sel)) SS_SEL[c.id]=rules[0].k; const y=scrollY; render(); scrollTo(0,y); return; }
+  if(a==="rx"){ const key=b.dataset.g||"rx", items=ssItems(c), its=items.filter(x=>key==="ph"?x.g==="ph":x.r), sel=SS_SEL[c.id], K=c.id+key; const cur=SS_RX[K]??its.some(x=>x.k===sel); SS_RX[K]=!cur; if(!cur&&its[0]&&!its.some(x=>x.k===sel)) SS_SEL[c.id]=its[0].k; const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="pick"){ SS_SEL[c.id]=b.dataset.k; const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="drill"||a==="safari"){ startDrill(c.id,b.dataset.l); if(a==="safari") setTimeout(()=>{ if(typeof sdStart==="function") sdStart(); },60); else setTimeout(()=>{ const g=document.getElementById("d-start"); if(g) g.click(); },60); return; }
   if(a==="howto"){ openTeach(c); return; }
