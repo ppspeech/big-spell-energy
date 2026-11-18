@@ -13933,10 +13933,11 @@ async function hpLink(c){ const HP=await hpMake(c,null,"data"); if(!HP) return n
   const trim=(o,n,R)=>{ (o.tasks||[]).forEach(t=>{ if(t.ladder){ const at=t.ladderAt||0, a=Math.max(0,Math.min(at-1,t.ladder.length-R)); t.ladder=t.ladder.slice(a,a+R); t.ladderAt=at-a; t.ladder.forEach(r=>{ r.items=(r.items||[]).slice(0,n); }); }
     if(t.oma&&t.oma.items) t.oma.items=t.oma.items.slice(0,t.ladder?10:n); }); return o; };
   let best=null, first=null;
-  for(const [n,av,R] of [[40,1,4],[25,1,4],[20,0,3],[15,0,3],[12,0,3],[10,0,2]]){ const o=trim(JSON.parse(JSON.stringify(base)),n,R); if(!av) delete o.av;
-    const url=HP_HOME+"#"+await hpPack(o); best={url,qr:url.length<=1500}; if(!first) first=best; if(best.qr) break; }
+  for(const [n,av,R] of [[40,1,4],[25,1,4],[20,0,3],[15,0,3],[12,0,2],[10,0,2],[8,0,1],[6,0,1],[5,0,0]]){ const o=trim(JSON.parse(JSON.stringify(base)),n,Math.max(R,1)); if(!av) delete o.av; if(!R) (o.tasks||[]).forEach(t=>{ delete t.ladder; delete t.ladderAt; });
+    if(n<=8) (o.tasks||[]).forEach(t=>{ ["items","words","sents","list"].forEach(k=>{ if(Array.isArray(t[k])&&t[k].length>n) t[k]=t[k].slice(0,n); }); });
+    const url=HP_HOME+"#"+await hpPack(o); best={url,qr:url.length<=2300}; if(!first) first=best; if(best.qr) break; }
   return {url:first.url,qrUrl:best.qr?best.url:null,id:HP.id}; }
-function hpQR(url){ try{ const q=qrcode(0,"L"); q.addData(url,"Byte"); q.make(); return q.createSvgTag({cellSize:4,margin:4,scalable:true}); }catch(e){ return ""; } }
+function hpQR(url){ try{ const q=qrcode(0,"L"); q.addData(url,"Byte"); q.make(); const mc=q.getModuleCount(), px=Math.max(220,Math.min(520,(mc+8)*3.2)); return q.createSvgTag({cellSize:4,margin:4,scalable:true}).replace("<svg ",`<svg class="hpqr" style="width:${px}px;height:${px}px;max-width:100%" `); }catch(e){ return ""; } }
 function hpLinkBox(L,c){ const name=hpKidName(c); const qr=L.qrUrl?hpQR(L.qrUrl):"";
   return `<div class="hplink"><div class="hplk-l"><b>Send home as a link</b><p class="sub">Opens on their phone or iPad: tasks, games and sticker chart. Progress stays on their device. Only "${esc(name)}" goes in the link.</p>
     <input readonly id="hplinkurl" value="${esc(L.url)}" aria-label="Practice link">
@@ -16147,6 +16148,8 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 @media (max-width:700px){.stsum{padding:16px 14px}.ssrec{grid-template-columns:1fr 1fr}.ssh{flex-direction:column;align-items:flex-start}.ssh>span{text-align:left}}
 @media (max-width:420px){.ssrec{grid-template-columns:1fr}}
 .pdfmode .ssrec{grid-template-columns:repeat(3,1fr)}.pdfmode .ssh{flex-direction:row;align-items:flex-end}.pdfmode .ssh>span{text-align:right}
+.hplk-q{min-width:0}.hplk-q svg{height:auto!important;aspect-ratio:1}
+.hplink:has(.hpqr){display:flex!important;flex-direction:column}.hplink:has(.hpqr) .hplk-q{align-self:stretch;width:auto!important;max-width:none!important;display:flex!important;flex-direction:column;align-items:center;text-align:center}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
