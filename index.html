@@ -16150,6 +16150,7 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .pdfmode .ssrec{grid-template-columns:repeat(3,1fr)}.pdfmode .ssh{flex-direction:row;align-items:flex-end}.pdfmode .ssh>span{text-align:right}
 .hplk-q{min-width:0}.hplk-q svg{height:auto!important;aspect-ratio:1}
 .hplink:has(.hpqr){display:flex!important;flex-direction:column}.hplink:has(.hpqr) .hplk-q{align-self:stretch;width:auto!important;max-width:none!important;display:flex!important;flex-direction:column;align-items:center;text-align:center}
+.sswarm{font:inherit;font-weight:700;width:100%;margin-top:8px;padding:11px 14px;border-radius:14px;border:1.5px dashed #2F6B66;background:#EEF5F4;color:#2F6B66;cursor:pointer;text-align:left}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16158,7 +16159,8 @@ function ssItems(c){ const p=paState(c), o=okState(c), out=[];
   const lv=i=>{ const u=UNITS[i].id; return nextDrillLevel(c.id,u)||levelsForUnit(u)[0]; };
   if(!p) out.push({k:"past",col:"t",t:"Phonemic awareness",s:"PAST check · start with Form A"});
   else{
-    if(p.solid>=0){ const L=lv(p.solid); if(L) out.push({k:"warm",col:"t",t:"Phonemic awareness",s:`Warm up · ${LVL(p.solid)}`,lvl:L,i:p.solid}); }
+    { const ti=p.target!==null&&p.target!==undefined?p.target:p.solid, wi=p.solid>=0&&p.solid!==ti?p.solid:null; const L=ti>=0?lv(ti):null;
+      if(L) out.push({k:"warm",col:"t",t:"Phonemic awareness",s:`Working on ${LVL(ti)}${wi!==null?` · warm up at Level ${wi+1}`:""}`,lvl:L,i:ti,wl:wi!==null?lv(wi):null,wi}); }
     if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
   ((o&&o.prog)||[]).forEach(u=>out.push({k:"code_"+u.id,col:"a",t:unitLabel(u),s:u.status==="progress"?"in progress":"next unit",u,g:"ph"}));
@@ -16173,9 +16175,9 @@ function ssDetail(c,it){ const p=paState(c);
     const ds=clientDrills(c.id).filter(d=>d.level===it.lvl).slice(-3).reverse();
     let A=null; try{ A=sfAlbum(c); }catch(e){}
     const w=typeof sfCur==="function"?sfCur(c):null, W=w&&sfWorld(w), S=(A&&A.seen[w])||{}, got=Object.keys(S);
-    return `<div class="ssdet"><div class="ssdh"><h2>${it.k==="warm"?"Warm up drill":"1-minute drill"}</h2><span class="sspill sd-${it.col}">${esc(lvText(it.lvl))}</span>${it.k==="teach"?`<button class="v2b sm" data-ss="howto">How to teach it</button>`:""}</div>
+    return `<div class="ssdet"><div class="ssdh"><h2>1-minute drill</h2><span class="sspill sd-${it.col}">${esc(lvText(it.lvl))}</span>${it.k==="teach"?`<button class="v2b sm" data-ss="howto">How to teach it</button>`:""}</div>
       ${ssTrack(p,it.i)}
-      ${canWrite&&it.lvl?`<div class="ssbig"><button class="ssgo dark" data-ss="drill" data-l="${esc(it.lvl)}">▶ Start</button><button class="ssgo saf" data-ss="safari" data-l="${esc(it.lvl)}">🦘 Safari drill</button></div>`:""}
+      ${canWrite&&it.lvl?`<div class="ssbig"><button class="ssgo dark" data-ss="drill" data-l="${esc(it.lvl)}">▶ Start</button><button class="ssgo saf" data-ss="safari" data-l="${esc(it.lvl)}">🦘 Safari drill</button></div>${it.wl?`<button class="sswarm" data-ss="drill" data-l="${esc(it.wl)}">Warm up first · Level ${it.wi+1} · ${esc(SKN[it.wi]||"")}</button>`:""}`:""}
       <div class="sshist"><h3>Last drills at this level</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span>${ssBars(d)}<b>${(d.results||[]).filter(v=>v!=="x").length}/${(d.results||[]).length} · ${Math.round(d.secs||0)}s</b></div>`).join(""):`<p class="sub">None yet.</p>`}</div>
       ${W?`<button class="sssaf" data-ss="album">${Object.keys(S).slice(-3).map(id=>sfMini(w,id,54)).join("")}<span>${got.length} of ${W.animals.length} spotted in ${esc(W.name)}</span><em>📖</em></button>`:""}</div>`; }
   if(it.u){ const u=it.u; const ds=clientOkd(c.id).filter(d=>d.kind==="code"&&d.target===u.id).slice(-3).reverse();
