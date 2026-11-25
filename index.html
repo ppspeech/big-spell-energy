@@ -16238,7 +16238,8 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwfs button{font:inherit;font-size:.85rem;font-weight:700;border:1px solid #D7DBD9;background:#fff;border-radius:8px;padding:5px 9px;color:#5B6570;font-family:"Atkinson Hyperlegible",sans-serif}
 .bwor{display:inline-flex;gap:4px;margin:0 .15em;vertical-align:baseline}
 .bwor button{font:inherit;padding:1px 10px;border-radius:10px;border:2px solid #5B4B9A;background:#E9E5F5;color:#3F3378}
-.bwor button.on{background:#5B4B9A;color:#fff}.bwor button.off{opacity:.35;border-style:dashed;background:#fff}
+.bwor button.on{background:#5B4B9A;color:#fff}.bwor button.good{background:#2F6B66;border-color:#2F6B66;color:#fff;opacity:1}.bwor button.bad{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D;text-decoration:line-through;opacity:.8}
+.bwtick{color:#2F6B66;font-family:"Atkinson Hyperlegible",sans-serif}.bwtile.t7{background:#FBE9D8}.bwsetcur{flex:none;background:#fff!important}.bwor button.off{opacity:.35;border-style:dashed;background:#fff}
 .bwgap{font:inherit;min-width:2.4em;padding:0 8px;margin:0 .1em;border-radius:9px;border:2px dashed #5B4B9A;background:#fff;color:#5B4B9A}
 .bwgap.suf{margin-left:0;border-radius:0 9px 9px 0}.bwgap.pre{margin-right:0;border-radius:9px 0 0 9px}
 .bwgap.sel{background:#E9E5F5;border-style:solid}.bwgap.f{border-style:solid;background:#5B4B9A;color:#fff}
@@ -16254,6 +16255,18 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwpw{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;max-width:560px;margin:0 auto}.bwpw p{font-size:1.5rem;margin:0;line-height:1.75}.bwpw.speedy p{font-size:1.2rem;line-height:1.5}.bwpw i{font-style:normal;display:inline-block;min-width:2.2em;color:#555;font-size:.8em}
 .bwpbox{display:flex;gap:30px;justify-content:center;margin-top:18px}.bwpbox span{border:2px solid #111;border-radius:8px;width:150px;height:70px;padding:4px 8px;font-size:.85rem;font-family:"Atkinson Hyperlegible",sans-serif}
 .bwpc{font-size:.62rem;color:#666;margin:18px 0 0;font-family:"Atkinson Hyperlegible",sans-serif}
+/* status colour always shows, even on the current unit */
+.ctrack .u.now.p{background:var(--slow-soft)!important;color:var(--slow)!important;box-shadow:inset 0 0 0 2px var(--slow)}
+.ctrack .u.now.s{background:var(--auto)!important;color:#fff!important}
+.ctrack .u.qt:active{transform:scale(.97)}
+/* EC tiles match IC tiles */
+.ctrack.ec{display:grid!important;grid-template-columns:repeat(4,1fr)}
+.ctrack.ic .u,.ctrack.ec .u{min-height:46px;min-width:0}
+.ctrack.ec .u.qt{padding:6px!important}.ctrack.ec .u.qt .uopen{display:block!important;width:auto;height:auto;font-size:inherit;top:3px;right:6px}
+.ctrack.ec .u b{overflow-wrap:anywhere}
+@media (max-width:520px){.ctrack.ec .u b,.ctrack.ic .u b{font-size:.82rem}}
+/* tab row: no scrollbars */
+.v2 .v2tabs{overflow-y:hidden!important;scrollbar-width:none;-ms-overflow-style:none}.v2 .v2tabs::-webkit-scrollbar{display:none;width:0;height:0}
 </style>
 <script id="sess-js">
 /* ===================== Session tab (iPad in clinic): Today list on the left, the picked item on the right ===================== */
@@ -16444,12 +16457,51 @@ parentSheet2=function(c){
     ${yi===null?`<p class="r2fine">Add ${esc(c.code)}'s school year (Edit) to show the year-level expectation.</p>`:""}
     <p class="r2fine">${QC_CITE}</p></div>`; };
 
+/* ---------- Choose the word: extra sentences written for this app (answer first), plus answer key for the program's own Lessons 6–15 ---------- */
+const BW_KEY={6:[0,1,0,1,1,0,0,1],7:[1,0,0,1,0,1,1,0],8:[0,1,0,0,1,1,0,1],9:[1,1,1,1,0,0,1,0],10:[1,0,0,1,1,0,1,0],11:[0,1,1,1,0,1,1,0],12:[0,1,1,1,1,0,1,0],13:[0,1,0,0,1,0,0,0],14:[0,0,1,1,0,1,0,1],15:[0,1,0,1,1,1,1,1]};
+const BW_MAZE={
+1:["It is {dishonest|subhonest} to copy a friend's work.","The shop will {discontinue|uncontinue} that toy, so buy it soon.","I was {unable|subable} to reach the top shelf.","The submarine dived and was {submerged|unmerged} under the sea.","It was freezing. The temperature dropped to {subzero|unzero}.","Tom {disliked|subliked} the taste of the soup."],
+2:["Mum lit two {matches|matching} to start the fire.","Yesterday I {attached|attaching} the photo to my email.","The clock is {ticking|ticked} loudly right now.","The bin {smells|smelling} bad today.","She is {matching|matched} the socks into pairs.","Dad {ticked|ticking} the last box and handed in the form."],
+3:["The plane {landed|landing} safely an hour ago.","We are not {allowed|allowing} to run inside.","Dad is {chopping|chopped} carrots for dinner.","The farmer {harvests|harvesting} his wheat every summer.","I love {reading|reads} books about sharks.","The referee {disallowed|suballowed} the goal because of a foul."],
+4:["The shop will {display|unplay} the new bikes in the window.","I {tasted|tasting} the soup and it was too salty.","Please {unbutton|subbutton} your coat before you take it off.","The kids are {playing|plays} outside right now.","She {totalled|totalling} up the bill last night.","He {buttons|buttoning} his shirt every morning."],
+5:["The old volcano is {inactive|deactive} and has not erupted for years.","That story is silly. It is complete {nonsense|insense}.","The train will {depart|inpart} at nine o'clock.","It rained {nonstop|destop} all weekend.","Please {defrost|infrost} the chicken before you cook it.","The answer was {incorrect|decorrect}, so I tried again."],
+16:["The news filled him with {sadness|sadly}.","It is {improbable|unprobable} that it will snow in Brisbane.","Their new lounge room is very {spacious|spaceness}.","The builders will {reconstruct|misconstruct} the bridge after the flood.","Her {happiness|happily} was easy to see when she won.","He sang {happily|happiness} all the way home."],
+17:["We sat in a {semicircle|midcircle} around the campfire.","I hope you {enjoy|midjoy} the party.","We go camping in the {midyear|semiyear} holidays.","I like {semisweet|ensweet} chocolate best.","The team made it to the {semifinals|enfinals}.","We ate lunch at {midday|semiday}."],
+18:["The {professor|professable} taught a class at the university.","The {conductor|conductible} waved her baton at the orchestra.","Is the tap water here {drinkable|drinkor}?","The jacket is {reversible|reversor}, so you can wear it inside out.","The mess in my room was {horrible|horrable}.","This couch is so {comfortable|comfortor}."],
+19:["The broken fence left the farmer {enraged|midraged}.","The sun is hottest at {midday|enday}.","Your answer is {acceptable|acceptor}.","The shop {manager|managible} helped us find the right size.","The mess was {manageable|manageor} once we all helped.","A {trucker|truckable} drives long distances."],
+20:["Mum used a fabric {softener|softness} in the wash.","The mouse was {entrapped|semitrapped} in the box.","The pool toy is {inflatable|inflator}, so blow it up.","We left at {midmorning|enmorning}, after breakfast.","Please {deflate|misflate} the pool toys before packing them.","The pillow's {softness|softly} helped me sleep."],
+21:["The Olympics is an {international|emnational} event.","Learning to read will {empower|interpower} you.","Flying is the hero's {superpower|interpower}.","She ran to {embrace|superbrace} her grandma.","The ghost story was about {supernatural|internatural} things.","The show stops for a short {intermission|emmission}."],
+22:["We waited for the {arrival|arrivement} of the train.","Pasta is the chef's {specialty|specialment}.","The clown brought a lot of {amusement|amusal}.","The joke was so {comical|comicment}.","They live in an {apartment|apartal} on the top floor.","The {enjoyment|enjoyal} on her face was clear."],
+23:["I read the {statement|statal} from the bank.","The two pictures {overlap|interlap} a little.","The burger was {supersized|emsized}.","The dog's lead is {detachable|detachment}.","We drove {interstate|superstate} from Queensland to Victoria.","The ring was too small, so Dad had it {resized|missized}."],
+24:["Wearing a hat helps with sunburn {prevention|preventment}.","She made a {commitment|commital} to practise every day.","The ship carried a large {container|containment}.","He went to a job {interview|emview}.","We watched a {preview|misview} of the new film.","The jar {contains|containing} twenty lollies."],
+25:["It is {illegal|irlegal} to drive without a licence.","His heartbeat was {irregular|ilregular}.","That plan makes no sense. It is {illogical|translogical}.","The caterpillar's {transformation|ilformation} into a butterfly took two weeks.","The bus will {transport|ilport} us to camp.","His handwriting was messy and {illegible|irlegible}."],
+26:["Be {careful|careless} when you cross the road so you stay safe.","He was {careless|careful} and spilled paint everywhere.","The doors are {automatic|automatful} and open by themselves.","The loyal dog was {faithful|faithic} to its owner.","A broken umbrella is {useless|useic} in the rain.","She made the hard trick look {effortless|effortic}."],
+27:["The old ring was {priceless|priceful} to my nan.","Arguing with him is {pointless|pointic}.","Don't give up. Stay {hopeful|hopeless}.","It was {shameful|shamic} to leave the park so dirty.","The app was {interactive|ilactive} and fun to use.","The {transaction|iraction} at the shop took one minute."],
+28:["The teacher gave a clear {explanation|explainment}.","The magician provided great {entertainment|entertainal}.","The parrot did an {imitation|imitatement} of the phone.","The show was {entertaining|entertainful}.","My legs were {aching|achement} after the long run.","The man would not stop {complaining|complainful} about the noise."],
+29:["Dad put {antifreeze|underfreeze} in the car before the snow trip.","I did not {understand|abstand} the question.","The film was {underrated|abrated}. It should be more popular.","Snow in summer is {abnormal|antinormal}.","The crowd held an {antiwar|abwar} march.","He was {underage|antiage} and could not enter."],
+30:["She is the {fastest|fastness} runner in our school.","That was the {smartest|smartful} idea of all.","We saw two {foxes|foxing} near the creek.","The band was {marching|marchest} down the street.","The school was {founded|foundest} in 1950.","This is the {coldest|coldful} day of the year."],
+31:["The firefighter was {heroic|heroful}.","It is {unfair|profair} to skip the line.","That detail is small and {unimportant|proimportant}.","She was {proactive|peractive} and started her project early.","The singer will {perform|proform} tonight.","He {slammed|slamming} the door and ran out."],
+32:["The scientists {discovered|procovered} a new planet.","I think you are {mistaken|pertaken}.","The weather here is {changeable|changeful}.","Thanks, that tip was very {helpful|helpless}.","She has a great {imagination|imaginement}.","He worked {undercover|abcover} as a spy."],
+33:["The stamp {collection|collectment} filled three books.","We had a small {disagreement|disagreeal} about the rules.","I need the key to {unlock|dislock} the door.","The puzzle was {unsolvable|unsolveful}.","The {drawing|drawment} of the horse won a prize.","My uncle is a keen coin {collector|collectable}."],
+34:["Take the {measurement|measural} of the window before buying curtains.","The lemonade stall was {profitable|profitful}.","The fire {inspector|inspectable} checked the alarms.","I was {mistaken|mistakeful} about the date.","She got {dressed|dressing} quickly and ran for the bus.","The car passed its {inspection|inspectment}."],
+35:["Leaving the tap on is {wasteful|wasteless}.","He is the {strongest|strongful} boy on the team.","My {teacher|teachment} read us a story.","Whether dogs are better than cats is {debatable|debateful}.","Exercise will {strengthen|strengthful} your legs.","The move to high school is a big {transition|transitment}."],
+36:["The new girl was shy but {friendly|friendful}.","It was an {unfriendly|disfriendly} dog, so we stayed back.","There was a {misunderstanding|ununderstanding} about the time.","I broke the cup, but it was {unintentional|disintentional}.","The radio tower sends a {transmission|transmitment}.","His {intention|intendment} was to help."],
+37:["The story was so wild it was {unbelievable|disbelievable}.","The top shelf is {unreachable|misreachable}.","His rude words were {inexcusable|unexcuseful}.","The class waited for {dismissal|dismissment} at three o'clock.","The alley was dark and {shadowy|shadowful}.","She is a strong {believer|believement} in hard work."],
+38:["The fireworks were {impressive|impressful}.","The weather was {unpredictable|dispredictable}.","I am so {forgetful|forgetless}. I left my hat behind again.","That was an {unforgettable|misforgettable} holiday.","He is the {richest|richful} man in town.","My {prediction|predictment} was right."],
+39:["The chair is {collapsible|collapseful}, so it fits in the boot.","The couch is {convertible|convertful} into a bed.","A good pet owner is {responsible|responseful}.","Grandad {retold|distold} the story again.","My little sister is in {preschool|subschool}.","It was {irresponsible|ilresponsible} to leave the gate open."],
+40:["The sign was {invisible|unvisible} in the fog.","We need an {extension|extendment} cord.","Sending a card was a {thoughtful|thoughtless} thing to do.","It was {thoughtless|thoughtful} to forget her birthday.","Don't {misjudge|disjudge} people by their clothes.","The judge made a fair {judgement|judgeal}."]};
+function bwMazeItems(n){ const own=BW_MAZE[n]; if(own) return own.map((sx,i)=>{ const m=/^(.*?)\{([^|]+)\|([^}]+)\}(.*)$/.exec(sx), flip=(n*7+i*3)%2===1; return {pre:m[1],opts:flip?[m[3],m[2]]:[m[2],m[3]],ans:flip?1:0,post:m[4]}; });
+  const t=(bwOK()&&bwL(n).text)||{}, key=BW_KEY[n]; if(t.type!=="maze"||!key) return [];
+  return t.sents.map((sx,i)=>{ const m=/^(.*?)(\S+) OR (\S+?)([.,]?)(\s.*)?$/.exec(sx); if(!m) return null; return {pre:m[1],opts:[m[2],m[3]],ans:key[i],post:(m[4]||"")+(m[5]||"")}; }).filter(Boolean); }
+function bwMazeHTML(n){ const items=bwMazeItems(n), M=BW.mz=BW.mz||{}; const done=items.filter((_,i)=>M[i]&&M[i].done).length, first=items.filter((_,i)=>M[i]&&M[i].done&&!M[i].wrong.length).length;
+  return `<p class="wkq">Choose the word to complete the sentence.${BW_MAZE[n]?"":""} <span class="spcount">${done} of ${items.length} done${done?` · ${first} first try`:""}</span></p><div class="bwsents" style="--fs:${BW.fs}"><span class="bwfs"><button data-bw="fs" data-d="-1" aria-label="Smaller text">A−</button><button data-bw="fs" data-d="1" aria-label="Bigger text">A+</button></span>${items.map((it,i)=>{ const s=M[i]||{wrong:[]}; return `<p class="${s.done?"ok":""}"><i>${i+1}</i>${esc(it.pre)}<span class="bwor">${it.opts.map((w,k)=>`<button class="${s.done&&k===it.ans?"good":s.wrong.includes(k)?"bad":s.done?"off":""}" data-bw="mzk" data-i="${i}" data-k="${k}" ${s.done||s.wrong.includes(k)?"disabled":""}>${esc(w)}</button>`).join("")}</span>${esc(it.post)}${s.done?` <b class="bwtick">✓</b>`:""}</p>`; }).join("")}</div>${done===items.length&&items.length?`<p class="bwres win">${first} of ${items.length} right first try${BW.mzSaved?" · saved":""}</p><div class="wknav"><button data-bw="mzagain">Go again</button></div>`:""}`; }
+
 /* ===================== Big words: Word Connections (Toste et al., 2023) lessons, 1:1 ===================== */
 let BW_DATA=null, BW_LOADING=null, BW=null;
 function bwLoad(){ if(BW_DATA) return Promise.resolve(BW_DATA); if(BW_LOADING) return BW_LOADING;
   BW_LOADING=fetch("wcdata.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(d=>{ BW_DATA=d||{}; return BW_DATA; }).catch(()=>{ BW_DATA={}; return BW_DATA; }); return BW_LOADING; }
 const bwOK=()=>!!(BW_DATA&&BW_DATA.lessons&&BW_DATA.lessons.length);
-function bwS(c){ const b=c.bw||{}; return {done:b.done||{},btc:b.btc||{},sp:b.sp||{},cur:b.cur||null}; }
+function bwS(c){ const b=c.bw||{}; return {done:b.done||{},btc:b.btc||{},sp:b.sp||{},mz:b.mz||{},cur:b.cur||null}; }
 function bwCur(c){ const s=bwS(c); if(s.cur) return s.cur; for(let n=1;n<=40;n++) if(!s.done[n]) return n; return 40; }
 function bwOn(c){ if(!c) return false; if(c.bw) return true; const y=typeof yIdx==="function"?yIdx(c.year):null; return y!==null&&y>=3; }
 function bwTabOn(tab){ if(tab==="bw") return true; const c=typeof clients!=="undefined"&&clients.find(x=>x.id===view.clientId); return bwOn(c); }
@@ -16458,7 +16510,7 @@ const bwL=n=>BW_DATA.lessons[n-1];
 function bwAff(n){ const pre=[],suf=[]; for(let i=1;i<=n;i++) (bwL(i).affix||[]).forEach(a=>{ (a.endsWith("-")?pre:suf).push({a,n:i}); }); return {pre,suf}; }
 const bwBare=a=>a==="-s(-es)"?"s":a.replace(/[-()]/g,"");
 function bwAffLine(L){ return L.affix&&L.affix.length?"New: "+L.affix.join("  "):(L.review||"Review"); }
-const BW_ACTS=[["warm","Warm-up","3 min"],["affix","Affix bank","3 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"]];
+const BW_ACTS=[["warm","Warm-up","3 min"],["affix","Affix bank","3 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
 function bwTileSub(c,n,a){ const L=bwL(n), s=bwS(c);
   if(a==="warm") return n>30?"none in Unit 4":n>20?"vowel mastery list":(L.warm||"vowel cards");
   if(a==="affix") return n>32?"affix mastery list":L.affix.length?L.affix.join(" "):"review";
@@ -16466,6 +16518,7 @@ function bwTileSub(c,n,a){ const L=bwL(n), s=bwS(c);
   if(a==="btc"){ const r=s.btc[n]; return r?`${r.t1}s → ${r.t2}s`:`${L.btc.length} words`; }
   if(a==="write") return n>=11?"2–3 syllable words":"2 syllable words";
   if(a==="speedy"){ const r=s.sp[n]; return r?`${r.n} words in 30s`:(L.focus||"30 seconds"); }
+  if(a==="choose"){ const r=(c.bw&&c.bw.mz||{})[n]; return r?`${r.ok} of ${r.n} first try`:`${bwMazeItems(n).length} sentences`; }
   const t=L.text||{}; return t.type==="passage"?"passage":t.type==="maze"?"choose the word":t.type==="cloze"?"missing affix":"sentences"; }
 function bwTiles(c,n){ return `<div class="bwtiles">${BW_ACTS.map(([a,t],i)=>`<button class="bwtile t${i}" data-bw="open" data-a="${a}" data-n="${n}" ${a==="warm"&&n>30?"disabled":""}><b>${t}</b><small>${esc(bwTileSub(c,n,a))}</small></button>`).join("")}${canWrite?`<button class="bwtile tdone ${bwS(c).done[n]?"on":""}" data-bw="done" data-n="${n}"><b>${bwS(c).done[n]?"✓ Lesson done":"Mark lesson done"}</b><small>${bwS(c).done[n]?"tap to undo":"moves on to the next"}</small></button>`:""}</div>`; }
 function bwSpark(pts,col,lab){ if(pts.length<1) return `<div class="bwsp"><span>${lab}</span><p class="sub">No results yet.</p></div>`;
@@ -16477,9 +16530,9 @@ function v2bw(c){ if(!BW_DATA){ bwLoad().then(()=>{ if(view.name==="client") ren
   const track=`<div class="bwtrack" role="group" aria-label="Lessons">${BW_DATA.lessons.map(l=>`<button class="${s.done[l.n]?"d":""} ${l.n===cur?"cur":""} ${l.n===n?"sel":""}" data-bw="pick" data-n="${l.n}" aria-label="Lesson ${l.n}${s.done[l.n]?", done":""}">${l.n}</button>`).join("")}</div>`;
   const nd=Object.keys(s.done).filter(k=>s.done[k]).length;
   const btc=Object.keys(s.btc).map(Number).sort((a,b)=>a-b).map(k=>[k,s.btc[k].t2]), sp=Object.keys(s.sp).map(Number).sort((a,b)=>a-b).map(k=>[k,s.sp[k].n]);
-  return `<section class="v2card bwcard"><div class="bwtop"><div><h2 class="eyebrow" style="margin:0">Big words · multisyllabic reading</h2><p class="sub" style="margin:4px 0 0">${started?`${nd} of 40 lessons done · up to Lesson ${cur}`:"Not started yet. 40 lessons, about 40 minutes each, 3 to 4 times a week."}</p></div>${!started&&canWrite?`<button class="v2b dark" data-bw="start">Start at Lesson 1</button>`:""}</div>
+  return `<section class="v2card bwcard"><div class="bwtop"><div><h2 class="eyebrow" style="margin:0">Big words · multisyllabic reading</h2><p class="sub" style="margin:4px 0 0">${started?`${nd} of 40 lessons done · up to Lesson ${cur}`:"Not started yet. Tap the lesson they should begin on, then Start."}</p></div>${!started&&canWrite?`<button class="v2b dark" data-bw="start">Start at Lesson ${n}</button>`:""}</div>
     ${track}
-    <div class="bwhead"><div><b>Lesson ${n}${L.warm?` · ${esc(L.warm)}`:""}</b><span>${esc(bwAffLine(L))} · ${esc(L.game)}</span></div><span class="bwunit">Unit ${Math.ceil(n/10)}</span></div>
+    <div class="bwhead"><div><b>Lesson ${n}${L.warm?` · ${esc(L.warm)}`:""}</b><span>${esc(bwAffLine(L))} · ${esc(L.game)}</span></div>${canWrite&&started&&n!==cur?`<button class="v2b sm bwsetcur" data-bw="cur" data-n="${n}">Make this their lesson</button>`:""}<span class="bwunit">Unit ${Math.ceil(n/10)}</span></div>
     ${bwTiles(c,n)}
     <div class="bwsps">${bwSpark(btc,"#5B4B9A","Beat the clock · second read (secs)")}${bwSpark(sp,"#2E6DA4","Speedy read · words in 30 secs")}</div>
     <p class="r2fine" style="margin-top:14px">Lessons from ${esc(BW_DATA.cite||"Word Connections")}. Free to use; please don't repost.</p></section>`; }
@@ -16531,6 +16584,7 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
     body=`<p class="wkq">Read the list together first. Then 30 seconds on their own. Tap a word they miss.</p>
       <div class="bwclock"><div class="bwtime ${st==="run"?"run":""}" id="bwtime">${st==="run"?"30":st==="idle"?"30":"0"}<small>s</small></div><div class="bwreads">${st==="done"?`<span class="got">Words read <b>${BW.last+1}</b></span><span class="got">Misses <b>${err}</b></span>`:""}${prev&&st==="idle"?`<span class="prev">Last time ${prev.n} words</span>`:""}</div><div class="bwctl">${ctl}</div></div>
       <div class="bwwords sp ${st}"><div>${L.speedy.slice(0,half).map((w,i)=>wbtn(w,i)).join("")}</div><div>${L.speedy.slice(half).map((w,i)=>wbtn(w,i+half)).join("")}</div></div>`; }
+  else if(act==="choose"||(act==="text"&&(L.text||{}).type==="maze"&&BW_KEY[n])){ printable=true; body=bwMazeHTML(n); }
   else if(act==="text"){ printable=true; const t=L.text||{};
     const fs=`<span class="bwfs"><button data-bw="fs" data-d="-1" aria-label="Smaller text">A−</button><button data-bw="fs" data-d="1" aria-label="Bigger text">A+</button></span>`;
     if(t.type==="passage") body=`<div class="bwkeys">${t.keys.map(([k,d],i)=>`<button class="${BW.ans["k"+i]?"on":""}" data-bw="key" data-i="${i}"><b>${esc(k)}</b><span>${BW.ans["k"+i]?esc(d):"tap for the meaning"}</span></button>`).join("")}</div>
@@ -16544,14 +16598,16 @@ function bwTick(){ const el=document.getElementById("bwtime"); if(!el||!BW) retu
   else { const left=30-(performance.now()-BW.t0)/1000; if(left<=0){ clearInterval(BW.iv); BW.iv=null; BW.st="pick"; bwDraw(); return; } el.firstChild.nodeValue=String(Math.ceil(left)); } }
 function bwPrintEl(c,n,act){ const L=bwL(n), d=document.createElement("div"); d.className="bwprint"; const T=(BW_ACTS.find(x=>x[0]===act)||[])[1]; let h="";
   if(act==="btc"||act==="speedy"){ const ws=act==="btc"?L.btc:L.speedy, half=Math.ceil(ws.length/2); h=`<div class="bwpw ${act}"><div>${ws.slice(0,half).map((w,i)=>`<p>${act==="speedy"?`<i>${i+1}.</i>`:""}${esc(w)}</p>`).join("")}</div><div>${ws.slice(half).map((w,i)=>`<p>${act==="speedy"?`<i>${i+half+1}.</i>`:""}${esc(w)}</p>`).join("")}</div></div>${act==="btc"?`<div class="bwpbox"><span>Read 1</span><span>Read 2</span></div>`:""}`; }
+  else if(act==="choose"||((L.text||{}).type==="maze"&&BW_KEY[n])){ h=`<h2>Choose the word</h2><p class="ins">Circle the word that completes the sentence.</p>${bwMazeItems(n).map((it,i)=>`<p class="st"><i>(${i+1})</i> ${esc(it.pre)}<b>${esc(it.opts[0])}</b> OR <b>${esc(it.opts[1])}</b>${esc(it.post)}</p>`).join("")}`; }
   else { const t=L.text||{}; if(t.type==="passage") h=`<h2>${esc(t.title)}</h2>${t.paras.map(p=>`<p class="pp">${esc(p)}</p>`).join("")}<div class="bwpk"><b>Key words</b>${t.keys.map(([k,dd])=>`<p><b>${esc(k)}</b>: ${esc(dd)}</p>`).join("")}</div>`;
     else h=`<h2>Let's read!</h2>${t.instr?`<p class="ins">${esc(t.instr)}</p>`:""}${t.bank&&t.bank.length?`<p class="bank">${t.bank.map(esc).join("&nbsp;&nbsp;&nbsp;")}</p>`:""}${(t.sents||[]).map((sx,i)=>`<p class="st"><i>(${i+1})</i> ${esc(sx).replace(/___/g,"______")}</p>`).join("")}`; }
   d.innerHTML=`<div class="bwpt"><span>${esc(T)} · Lesson ${n}</span><span>Name: ______________________</span></div>${h}<p class="bwpc">${esc(BW_DATA.cite||"")}</p>`; return d; }
 document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.closest("[data-bw]"); if(!b) return; const a=b.dataset.bw; const c=BW?BW.c:clients.find(x=>x.id===view.clientId); if(!c) return; e.preventDefault();
   const n=Number(b.dataset.n), i=Number(b.dataset.i);
   if(a==="pick"){ view.bwL=n; const y=scrollY; render(); scrollTo(0,y); return; }
-  if(a==="start"){ await bwSave(c,{cur:1}); view.bwL=1; render(); return; }
-  if(a==="done"){ const s=bwS(c), done={...s.done}; if(done[n]) delete done[n]; else done[n]=today(); let cur=null; for(let k=1;k<=40;k++) if(!done[k]){ cur=k; break; } await bwSave(c,{done,cur:cur||40}); if(done[n]&&n<40) view.bwL=cur||n; toast(done[n]?`Lesson ${n} done`:`Lesson ${n} not done`); const y=scrollY; render(); scrollTo(0,y); return; }
+  if(a==="start"){ const k=Math.max(1,Math.min(40,view.bwL||1)); await bwSave(c,{cur:k}); view.bwL=k; render(); return; }
+  if(a==="cur"){ await bwSave(c,{cur:n}); view.bwL=n; toast(`Now on Lesson ${n}`); const y=scrollY; render(); scrollTo(0,y); return; }
+  if(a==="done"){ const s=bwS(c), done={...s.done}; if(done[n]) delete done[n]; else done[n]=today(); const was=bwCur(c); const cur=done[n]&&n>=was?Math.min(40,n+1):was; await bwSave(c,{done,cur}); if(done[n]&&n<40&&n>=was) view.bwL=cur; toast(done[n]?`Lesson ${n} done`:`Lesson ${n} not done`); const y=scrollY; render(); scrollTo(0,y); return; }
   if(a==="open"){ if(!bwOK()){ await bwLoad(); } bwOpen(c,n,b.dataset.a); return; }
   if(!BW) return; const L=bwL(BW.n);
   if(a==="x") return bwClose();
@@ -16575,6 +16631,10 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   else if(a==="spagain"){ BW.st="idle"; BW.miss=new Set(); BW.last=null; }
   else if(a==="spsave"){ const s=bwS(c), err=[...BW.miss].filter(k=>k<=BW.last); await bwSave(c,{sp:{...s.sp,[BW.n]:{n:BW.last+1,err:err.length,miss:err,date:today()}}}); toast("Saved"); BW.st="idle"; BW.miss=new Set(); BW.last=null; }
   else if(a==="key"){ BW.ans["k"+i]=!BW.ans["k"+i]; }
+  else if(a==="mzk"){ const items=bwMazeItems(BW.n), it=items[i], k=Number(b.dataset.k), M=BW.mz=BW.mz||{}, st=M[i]=M[i]||{wrong:[]}; if(k===it.ans) st.done=true; else if(!st.wrong.includes(k)) st.wrong.push(k);
+    if(items.every((_,j)=>M[j]&&M[j].done)&&!BW.mzSaved&&canWrite){ BW.mzSaved=true; const s=bwS(c); bwSave(c,{mz:{...s.mz,[BW.n]:{ok:items.filter((_,j)=>!M[j].wrong.length).length,n:items.length,date:today()}}}); } }
+  else if(a==="mzagain"){ BW.mz={}; BW.mzSaved=false; }
+  else if(a==="setcur"){ }
   else if(a==="mz"){ const k=Number(b.dataset.k); BW.ans[i]=BW.ans[i]===k?null:k; }
   else if(a==="gap"){ BW.gap=i; if(BW.ans[i]){ delete BW.ans[i]; } }
   else if(a==="fill"){ if(BW.gap==null) BW.gap=0; BW.ans[BW.gap]=b.dataset.v; const total=document.querySelectorAll("#bwov .bwgap").length; let k=BW.gap; for(let j=0;j<total;j++){ k=(k+1)%total; if(!BW.ans[k]){ BW.gap=k; break; } } }
