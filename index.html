@@ -16201,14 +16201,16 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwaf{display:flex;align-items:baseline;gap:12px;padding:7px 8px;border-radius:10px}.bwaf b{font-size:1.45rem;min-width:92px}.bwaf span{color:#5B6570;font-size:1.05rem}
 .bwaf.new{background:#E9E5F5}.bwaf em{margin-left:auto;font-style:normal;font-size:.7rem;font-weight:700;background:#5B4B9A;color:#fff;border-radius:999px;padding:2px 8px;font-family:"Atkinson Hyperlegible",sans-serif}
 .bwbuilt{display:flex;justify-content:center;align-items:stretch;gap:6px;font-size:clamp(2rem,7vw,3.8rem);margin:18px 0 6px;flex-wrap:wrap}
-.bwbuilt span{border-radius:14px;padding:6px 14px;min-width:.8em}
-.bwbuilt .p{background:#DCE9E7;color:#2F6B66}.bwbuilt .s{background:#F2E1E4;color:#8A2B3D}.bwbuilt .w{background:#fff;border:3px solid #1E2226}
-.bwbuilt .e{background:transparent;border:2px dashed #D7DBD9;min-width:1.2em}
+.bwbuilt span{border-radius:14px;padding:6px 14px;flex:none;white-space:nowrap}
+.bwbuilt{font-size:clamp(1.5rem,6.2vw,3.8rem)!important;gap:4px!important}
+@media (max-width:520px){.bwbuilt span{padding:4px 8px;border-radius:10px}.bwbuilt .bb-w{border-width:2px!important}}
+.bwbuilt .bb-p{background:#DCE9E7;color:#2F6B66}.bwbuilt .bb-s{background:#F2E1E4;color:#8A2B3D}.bwbuilt .bb-w{background:#fff;border:3px solid #1E2226}
+.bwbuilt .bb-e{background:transparent;border:2px dashed #D7DBD9;min-width:1.2em}
 .bwplay{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:left;margin-top:18px}
 .bwplay h3{margin:0 0 6px;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570;font-family:"Atkinson Hyperlegible",sans-serif}
 .bwchips{display:flex;flex-wrap:wrap;gap:6px}
 .bwchips button,.bwbank button{font:inherit;font-size:1.15rem;padding:8px 13px;border-radius:12px;border:2px solid #D7DBD9;background:#fff;color:#1E2226;min-height:44px}
-.bwchips.p button.on{background:#DCE9E7;border-color:#2F6B66;color:#2F6B66}.bwchips.s button.on{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D}.bwchips.w button.on{background:#1E2226;border-color:#1E2226;color:#fff}
+.bwchips.bb-p button.on{background:#DCE9E7;border-color:#2F6B66;color:#2F6B66}.bwchips.bb-s button.on{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D}.bwchips.bb-w button.on{background:#1E2226;border-color:#1E2226;color:#fff}
 .bwclock{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;background:#fff;border:2px solid #D7DBD9;border-radius:18px;padding:12px 16px;max-width:900px;margin:0 auto 12px;position:sticky;top:0;z-index:3;font-family:"Atkinson Hyperlegible",sans-serif}
 .bwtime{font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums;min-width:128px;text-align:center;line-height:1}.bwtime small{font-size:1rem;color:#5B6570;margin-left:2px}
 .bwtime.run{color:#5B4B9A}
@@ -16265,7 +16267,7 @@ function ssItems(c){ const p=paState(c), o=okState(c), out=[];
     if(false&&p.target!==null){ const L=lv(p.target); out.push({k:"teach",col:"w",t:`Teach Level ${p.target+1}`,s:`${SKN[p.target]} · ${p.u[p.target].correct<p.u[p.target].n?"blocks or letters first":"right but slow: speed it up"}`,lvl:L,i:p.target}); }
   }
   ((o&&o.prog)||[]).forEach(u=>out.push({k:"code_"+u.id,col:"a",t:unitLabel(u),s:u.status==="progress"?"in progress":"next unit",u,g:"ph"}));
-  if(c.bw&&bwOK()){ const n=bwCur(c), L=bwL(n); out.push({k:"bw",col:"p",t:"Big words",s:`Lesson ${n} · ${L.affix.length?L.affix.join(" "):(L.review||L.game)}`,bw:n}); }
+  if(bwOn(c)&&bwOK()){ const n=bwCur(c), L=bwL(n); out.push({k:"bw",col:"p",t:"Big words",s:`${c.bw?"":"Not started · "}Lesson ${n} · ${L.affix.length?L.affix.join(" "):(L.review||L.game)}`,bw:n}); }
   ((o&&o.focus)||[]).forEach((f,i)=>out.push({k:"rule_"+f.id,col:"w",t:rulePlain(f),s:`Spelling rule · ${f.level?RSTEP[f.level-1]:"not started"}`,r:f}));
   return out; }
 function ssTrack(p,hi){ return `<div class="sstrk">${ANIMALS.map((a,i)=>`<span class="${p&&i<=p.solid?"done":""} ${i===hi?"now":""}" title="Level ${i+1}"><svg viewBox="0 0 64 64" aria-hidden="true">${a[1]}</svg></span>`).join("")}</div>`; }
@@ -16302,12 +16304,12 @@ function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some
       const ph=items.filter(x=>x.g==="ph"), rules=items.filter(x=>x.r), rest=items.filter(x=>!x.r&&x.g!=="ph"&&!x.bw), bwi=items.filter(x=>x.bw);
       return rest.map(li).join("")
         +G("ph","Phonics","a",ph,`${ph.length} unit${ph.length===1?"":"s"} on the go · ${esc(ph.map(x=>x.t.replace(/ · .*/,"")).join(", "))}`,x=>x.s)
-        +bwi.map(li).join("")
-        +G("rx","Spelling rules","w",rules,`${rules.length} target rule${rules.length===1?"":"s"} · ${esc(rules.map(x=>x.r.tile||"").filter(Boolean).join(", "))}`,x=>x.r.level?RSTEP[x.r.level-1]:"not started"); })()}
+        +G("rx","Spelling rules","w",rules,`${rules.length} target rule${rules.length===1?"":"s"} · ${esc(rules.map(x=>x.r.tile||"").filter(Boolean).join(", "))}`,x=>x.r.level?RSTEP[x.r.level-1]:"not started")
+        +bwi.map(li).join(""); })()}
     </div>
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
-v2tabs=function(tab){ let t=[["dash","▶️ Session","▶️ Session"],["pa","Phonemic awareness","PA"],["ok","Phonics","Phonics"],["bw","Big words","Big"],["sr","Spelling rules","Rules"],["home","Homework","Home"],["rep","Reports","Reports"]].filter(x=>x[0]!=="bw"||bwTabOn(tab)); if(t.length>6){ t[1][1]="Phonemic"; }
+v2tabs=function(tab){ let t=[["dash","▶️ Session","▶️ Session"],["pa","Phonemic awareness","PA"],["ok","Phonics","Phonics"],["sr","Spelling rules","Rules"],["bw","Big words","Big"],["home","Homework","Home"],["rep","Reports","Reports"]].filter(x=>x[0]!=="bw"||bwTabOn(tab)); if(t.length>6){ t[1][1]="Phonemic"; }
   return `<div class="v2tabrow"><nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav><span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button>${bwTabOn(tab)?"":`<button data-ss="bw">Big words</button>`}<button data-ss="log">Log</button></span></span></div>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
@@ -16508,9 +16510,9 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
     const chip=(k,v,lab)=>`<button class="${BW[k]===v?"on":""}" data-bw="pl" data-k="${k}" data-v="${esc(v)}">${esc(lab)}</button>`;
     const p=BW.p||"", w=BW.w||L.spot[0], s=BW.s||"";
     body=`<p class="wkq"><b>${esc(L.game)}</b> · ${HOW}</p>
-      <div class="bwbuilt"><span class="p ${p?"":"e"}">${esc(bwBare(p))||"&nbsp;"}</span><span class="w">${esc(w)}</span><span class="s ${s?"":"e"}">${esc(bwBare(s))||"&nbsp;"}</span></div>
+      <div class="bwbuilt"><span class="bb-p ${p?"":"bb-e"}">${esc(bwBare(p))||"&nbsp;"}</span><span class="bb-w">${esc(w)}</span><span class="bb-s ${s?"":"bb-e"}">${esc(bwBare(s))||"&nbsp;"}</span></div>
       <div class="wknav"><button class="go" data-bw="spin">🎲 Spin</button><button data-bw="plclr">Just the word</button></div>
-      <div class="bwplay"><div><h3>Prefixes</h3><div class="bwchips p">${A.pre.map(x=>chip("p",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div><div><h3>Spotlight words</h3><div class="bwchips w">${L.spot.map(x=>chip("w",x,x)).join("")}</div></div><div><h3>Suffixes</h3><div class="bwchips s">${A.suf.map(x=>chip("s",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div></div>
+      <div class="bwplay"><div><h3>Prefixes</h3><div class="bwchips bb-p">${A.pre.map(x=>chip("p",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div><div><h3>Spotlight words</h3><div class="bwchips bb-w">${L.spot.map(x=>chip("w",x,x)).join("")}</div></div><div><h3>Suffixes</h3><div class="bwchips bb-s">${A.suf.map(x=>chip("s",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div></div>
       <p class="wkhint">Not every combination is a real word. Ask: real or made up?</p>`; }
   else if(act==="btc"){ printable=true; const half=Math.ceil(L.btc.length/2), st=BW.st||"idle", prev=bwS(c).btc[n];
     const wbtn=(w,i)=>`<button class="${BW.miss.has(i)?"x":""}" data-bw="miss" data-i="${i}">${BW.hint?bwHL(w,n):esc(w)}</button>`;
