@@ -16201,6 +16201,12 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwqopts button{font:inherit;font-size:1.5rem;padding:14px 24px;border-radius:16px;border:3px solid #1E2226;background:#fff;color:#1E2226;box-shadow:4px 4px 0 #1E2226;min-width:120px}.bwqopts.m button{font-size:1.15rem;min-width:min(420px,90%)}
 .bwqopts button.good{background:#2F6B66;border-color:#2F6B66;color:#fff;box-shadow:4px 4px 0 #1f4a46}.bwqopts button.bad{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D;box-shadow:none}.bwqopts button.off{opacity:.4;box-shadow:none}
 .bwqbar{max-width:520px}
+.bwtile.t8{background:#E3EDF0}
+.bwrth{margin:14px 0 8px;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570;font-family:"Atkinson Hyperlegible",sans-serif;text-align:left}
+.bwrts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;text-align:left}.bwrts.new{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.bwrt{background:#fff;border:2px solid #E3E0D8;border-radius:14px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:baseline;font-family:"Atkinson Hyperlegible",sans-serif}
+.bwrt b{font-family:Andika,sans-serif;font-size:1.25rem;color:#3F3378}.bwrt span{font-size:1rem;color:#1E2226}.bwrt small{grid-column:1/-1;font-size:.86rem;color:#5B6570}.bwrt em{grid-column:1/-1;font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#7a8088}
+.bwrt.big{background:#5B4B9A;border-color:#5B4B9A;padding:16px 18px}.bwrt.big b{color:#fff;font-size:2.2rem}.bwrt.big span{color:#fff;font-size:1.3rem}.bwrt.big small{color:#E9E5F5;font-size:1rem}.bwrt.big em{color:#CFC8EA}
 .bwpl{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:center;background:#fff;border:2px solid #E3E0D8;border-radius:22px;padding:18px;margin-top:10px}
 .bwplL{min-width:0}.bwplL .bwbuilt{margin:0 0 4px;font-size:clamp(1.5rem,4.6vw,3.2rem)!important;flex-wrap:nowrap}.bwplL .bwjoin{font-size:clamp(1.4rem,3.6vw,2.3rem);min-height:1.5em;margin:6px 0 2px}.bwplL .bwjtag{min-height:34px}.bwplL .wknav{margin-top:12px}
 .bwplR{text-align:left;display:grid;gap:8px;font-family:"Atkinson Hyperlegible",sans-serif}.bwplR h3{margin:0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570}
@@ -16597,15 +16603,20 @@ function bwApplyHL(){ const o=document.getElementById("bwov"); if(!o||!BW||!BW.a
 /* quick-fire */
 const BW_GRP={not:["dis-","un-","in-","non-","im-","il-","ir-","-less","anti-"],under:["sub-","under-","mid-","inter-"],before:["pre-","fore-","pro-"],full:["-y","-ous","-ful"],about:["-al","-ic","-y"],person:["-er","-or"],thing:["-tion","-sion","-ment","-ness","-ty"],tends:["-tive","-sive","-able","-ible"],make:["-en","en-","em-"],more:["-er","super-","over-","-est"],away:["de-","ab-","dis-","mis-"],time:["-ing","-ed"],through:["trans-","per-"]};
 function bwGrp(a){ const g=Object.keys(BW_GRP).filter(k=>BW_GRP[k].includes(a)); return g.length?g:[a]; }
-function bwQfStart(c,n){ const A=bwAff(n), all=A.pre.concat(A.suf).map(x=>x.a), st=(c.bw&&c.bw.aff)||{}; if(all.length<3) return null;
-  const w=a=>{ const r=st[bwAffKey(a)]||{}; return 1+(r.no||0)*2-(Math.min(r.ok||0,3))*.25+(bwL(n).affix.includes(a)?1.5:0)+Math.random(); };
+const bwIsR=x=>x[0]==="√", bwRt=x=>(BW_DATA.roots||{})[x.slice(1)]||{f:[],m:"",x:""};
+const qM=x=>bwIsR(x)?bwRt(x).m:BW_MEAN[x], qLab=x=>bwIsR(x)?x.slice(1):x, qKey=x=>bwIsR(x)?"r_"+x.slice(1):bwAffKey(x), qSample=x=>bwIsR(x)?bwRt(x).x.split(", ")[0]:BW_DATA.sample[x];
+const qGrp=x=>bwIsR(x)?bwRt(x).m.split(/[ ,]+/).filter(t=>!["or","to","do","with","the","a"].includes(t)).map(t=>"m:"+t):bwGrp(x);
+function bwRoots(n){ const R=BW_DATA.roots||{}; return (BW_DATA.rootOrder||[]).filter(k=>R[k]&&R[k].n<=n).map(k=>({k,...R[k]})); }
+function bwQfStart(c,n){ const A=bwAff(n), all=A.pre.concat(A.suf).map(x=>x.a).concat(bwRoots(n).map(r=>"√"+r.k)), st=(c.bw&&c.bw.aff)||{}; if(all.length<3) return null;
+  const isNew=a=>bwIsR(a)?bwRt(a).n===n:bwL(n).affix.includes(a);
+  const w=a=>{ const r=st[qKey(a)]||{}; return 1+(r.no||0)*2-(Math.min(r.ok||0,3))*.25+(isNew(a)?1.5:0)+Math.random(); };
   const pick=all.slice().sort((x,y)=>w(y)-w(x)).slice(0,Math.min(10,all.length)).sort(()=>Math.random()-.5);
-  const q=pick.map((a,i)=>{ const seen=new Set(bwGrp(a)), ds=[]; all.filter(x=>x!==a).sort(()=>Math.random()-.5).forEach(x=>{ const g=bwGrp(x); if(ds.length<2&&!g.some(k=>seen.has(k))){ g.forEach(k=>seen.add(k)); ds.push(x); } });
+  const q=pick.map((a,i)=>{ const seen=new Set(qGrp(a)), ds=[]; const pool=all.filter(x=>x!==a).sort(()=>Math.random()-.5); pool.filter(x=>bwIsR(x)===bwIsR(a)).concat(pool.filter(x=>bwIsR(x)!==bwIsR(a))).forEach(x=>{ const g=qGrp(x); if(ds.length<2&&!g.some(k=>seen.has(k))){ g.forEach(k=>seen.add(k)); ds.push(x); } });
     const opts=[a].concat(ds).sort(()=>Math.random()-.5); return {a,opts,mode:i%2?"m":"a"}; });
   return {q,i:0,pick:null,ok:0,res:{},again:[]}; }
-function bwQfHTML(){ const Q=BW.qf, tot=Q.q.length; if(Q.i>=tot) return `<p class="wkq">Quick-fire done</p><div class="wkbig" style="font-size:2.6rem">${Q.ok} of ${Q.total} first try</div>${Object.keys(Q.res).filter(k=>!Q.res[k]).length?`<p class="bwmean">${Object.keys(Q.res).filter(k=>!Q.res[k]).map(a=>`<span><b>${esc(a)}</b> means ${esc(BW_MEAN[a])}</span>`).join("")}</p>`:`<p class="bwres win">All right first go!</p>`}<div class="wknav"><button class="go" data-bw="qf">Play again</button><button data-bw="sw" data-a="affix">See the affix bank</button></div>`;
-  const it=Q.q[Q.i], right=it.a; const opt=(x)=>{ const lab=it.mode==="a"?esc(x):esc(BW_MEAN[x]); const cls=Q.pick==null?"":x===right?"good":x===Q.pick?"bad":"off"; return `<button class="${cls}" data-bw="${Q.pick!=null?"qfn":"qfp"}" data-v="${esc(x)}">${lab}</button>`; };
-  return `<div class="tabar bwqbar">${Q.q.map((_,k)=>`<i class="${k<Q.i?"a":k===Q.i?"on":""}"></i>`).join("")}</div><p class="wkq">${it.mode==="a"?"Which one means":"What does this one mean?"}</p><div class="wkbig bwqq ${it.mode}">${it.mode==="a"?"“"+esc(BW_MEAN[right])+"”":esc(right)}</div><div class="bwqopts ${it.mode}">${it.opts.map(opt).join("")}</div>${Q.pick!=null?`<p class="bwres ${Q.pick===right?"win":""}">${Q.pick===right?"Yes!":"Not quite."} <b>${esc(right)}</b> means ${esc(BW_MEAN[right])}${BW_DATA.sample[right]?`, like ${esc(BW_DATA.sample[right])}`:""}.</p><div class="wknav"><button class="go" data-bw="qfn">Next ›</button></div>`:""}`; }
+function bwQfHTML(){ const Q=BW.qf, tot=Q.q.length; if(Q.i>=tot) return `<p class="wkq">Quick-fire done</p><div class="wkbig" style="font-size:2.6rem">${Q.ok} of ${Q.total} first try</div>${Object.keys(Q.res).filter(k=>!Q.res[k]).length?`<p class="bwmean">${Object.keys(Q.res).filter(k=>!Q.res[k]).map(a=>`<span><b>${esc(qLab(a))}</b> means ${esc(qM(a))}</span>`).join("")}</p>`:`<p class="bwres win">All right first go!</p>`}<div class="wknav"><button class="go" data-bw="qf">Play again</button><button data-bw="sw" data-a="affix">See the affix bank</button></div>`;
+  const it=Q.q[Q.i], right=it.a; const opt=(x)=>{ const lab=it.mode==="a"?esc(qLab(x)):esc(qM(x)); const cls=Q.pick==null?"":x===right?"good":x===Q.pick?"bad":"off"; return `<button class="${cls}" data-bw="${Q.pick!=null?"qfn":"qfp"}" data-v="${esc(x)}">${lab}</button>`; };
+  return `<div class="tabar bwqbar">${Q.q.map((_,k)=>`<i class="${k<Q.i?"a":k===Q.i?"on":""}"></i>`).join("")}</div><p class="wkq">${it.mode==="a"?"Which one means":"What does this one mean?"}</p><div class="wkbig bwqq ${it.mode}">${it.mode==="a"?"“"+esc(qM(right))+"”":esc(qLab(right))}</div><div class="bwqopts ${it.mode}">${it.opts.map(opt).join("")}</div>${Q.pick!=null?`<p class="bwres ${Q.pick===right?"win":""}">${Q.pick===right?"Yes!":"Not quite."} <b>${esc(qLab(right))}</b> means ${esc(qM(right))}${qSample(right)?`, like ${esc(qSample(right))}`:""}.</p><div class="wknav"><button class="go" data-bw="qfn">Next ›</button></div>`:""}`; }
 
 /* ---------- tap a word: split it into affixes ---------- */
 function bwAffOf(piece,pre){ const all=Object.keys(BW_MEAN); const p=piece.toLowerCase();
@@ -16645,11 +16656,12 @@ const started0=c=>!!c.bw;
 function bwAff(n){ const pre=[],suf=[]; for(let i=1;i<=n;i++) (bwL(i).affix||[]).forEach(a=>{ (a.endsWith("-")?pre:suf).push({a,n:i}); }); return {pre,suf}; }
 const bwBare=a=>a==="-s(-es)"?"s":a.replace(/[-()]/g,"");
 function bwAffLine(L){ return L.affix&&L.affix.length?"New: "+L.affix.join("  "):(L.review||"Review"); }
-const BW_ACTS=[["affix","Affix bank","3 min"],["qf","Quick-fire","2 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
+const BW_ACTS=[["affix","Affix bank","3 min"],["roots","Root bank","3 min"],["qf","Quick-fire","2 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
 function bwTileSub(c,n,a){ const L=bwL(n), s=bwS(c);
   if(a==="warm") return n>30?"none in Unit 4":n>20?"vowel mastery list":(L.warm||"vowel cards");
   if(a==="affix") return n>32?"affix mastery list":L.affix.length?L.affix.join(" "):"review";
   if(a==="qf"){ const k=Object.values(s.aff).filter(r=>r&&r.no*2>(r.ok||0)).length; return k?`${k} shaky`:"what does it mean?"; }
+  if(a==="roots"){ const nw=bwRoots(n).filter(r=>r.n===n).map(r=>r.k); return nw.length?nw.join(" · "):"review"; }
   if(a==="play") return L.game;
   if(a==="btc"){ const r=s.btc[n]; return r?`${r.t1}s → ${r.t2}s`:`${L.btc.length} words`; }
   if(a==="write") return n>=11?"2–3 syllable words":"2 syllable words";
@@ -16693,6 +16705,9 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
       if(false){ const cards=L.warmCards||[], nc=cards.length, groups={}; (L.warmNons||[]).forEach((w,k)=>{ const v=bwVow(w,cards); (groups[v.cd]=groups[v.cd]||[]).push([v.html,nc+k]); });
         body=`<p class="wkq">${esc(L.warm)} · say the sound, then read its made-up words</p><div class="bwvg">${cards.map((cd,k)=>`<div class="bwvc c${k%6}"><button class="hd" data-bw="goto" data-i="${k}">${esc(cd)}</button><div>${(groups[cd]||[]).map(([h,ix])=>`<button data-bw="goto" data-i="${ix}">${h}</button>`).join("")}</div></div>`).join("")}${groups[""]?`<div class="bwvc c5"><span class="hd">mixed</span><div>${groups[""].map(([h,ix])=>`<button data-bw="goto" data-i="${ix}">${h}</button>`).join("")}</div></div>`:""}</div><div class="wknav"><button data-bw="grid">One at a time</button></div>`; }
       else { const it=items[BW.i]||items[0], isN=BW.i>=(L.warmCards||[]).length; body=`<p class="wkq">${it[1]} · ${BW.i+1} of ${items.length}</p><div class="wkbig bwcardbig ${isN?"":"snd"}">${isN?bwVow(it[0],L.warmCards||[]).html:esc(it[0])}</div><div class="wknav"><button data-bw="prev" ${BW.i?"":"disabled"}>‹ Back</button><button class="go" data-bw="next" ${BW.i<items.length-1?"":"disabled"}>Next ›</button></div>`; } } }
+  else if(act==="roots"){ const all=bwRoots(n), nw=all.filter(r=>r.n===n), old=all.filter(r=>r.n!==n).reverse(), st=(c.bw&&c.bw.aff)||{};
+    const card=(r,big)=>{ const t=st["r_"+r.k], sh=t&&t.no*2>(t.ok||0); return `<div class="bwrt ${big?"big":""}"><b>${esc(r.f.slice().sort((a,b)=>a.length-b.length).join(" / "))}</b><span>${esc(r.m)}</span><small>${esc(r.x)}</small><em>${esc(r.o)}${sh?" · shaky":""}</em></div>`; };
+    body=`<p class="wkq">A root is the part of a word that carries the main meaning. Say it, say what it means, then find it in a word.</p>${nw.length?`<h3 class="bwrth">New this lesson</h3><div class="bwrts new">${nw.map(r=>card(r,true)).join("")}</div>`:""}${old.length?`<h3 class="bwrth">Roots so far · ${old.length}</h3><div class="bwrts">${old.map(r=>card(r)).join("")}</div>`:""}<p class="wkhint">Order follows the Logic of English Essentials vocabulary sequence, then Van Cleave\u2019s Latin bases, then Greek.</p>`; }
   else if(act==="qf"){ if(!BW.qf){ const Q=bwQfStart(c,n); if(Q){ Q.total=Q.q.length; BW.qf=Q; } } body=BW.qf?bwQfHTML():`<p class="wkq">Quick-fire starts once there are three affixes in the bank.</p>`; }
   else if(act==="affix"){ const qfb="";
     if(n>32){ body=qfb+`<p class="wkq">Affix mastery list. Read each one. Tap any they miss.</p><div class="bwgrid v">${BW_DATA.affixMastery.map((v,i)=>`<button class="${BW.miss.has(i)?"x":""}" data-bw="miss" data-i="${i}">${esc(v)}</button>`).join("")}</div><p class="wksc">${BW_DATA.affixMastery.length-BW.miss.size} of ${BW_DATA.affixMastery.length} right</p>`; }
@@ -16785,7 +16800,7 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   else if(a==="qf"){ const Q=bwQfStart(c,BW.n); if(!Q){ toast("Need at least three affixes first."); return; } Q.total=Q.q.length; BW.qf=Q; }
   else if(a==="qfx"){ BW.qf=null; }
   else if(a==="qfp"){ const Q=BW.qf, it=Q.q[Q.i], v=b.dataset.v; Q.pick=v; const ok=v===it.a; if(!(it.a in Q.res)){ Q.res[it.a]=ok; if(ok) Q.ok++; } if(!ok&&!it.re){ Q.q.push({...it,opts:it.opts.slice().sort(()=>Math.random()-.5),re:true}); } }
-  else if(a==="qfn"){ const Q=BW.qf; Q.i++; Q.pick=null; if(Q.i>=Q.q.length&&canWrite&&!Q.saved){ Q.saved=true; const aff={...bwS(c).aff}; Object.keys(Q.res).forEach(x=>{ const k=bwAffKey(x), r={ok:0,no:0,...(aff[k]||{})}; if(Q.res[x]) r.ok++; else r.no++; aff[k]=r; }); bwSave(c,{aff}); } }
+  else if(a==="qfn"){ const Q=BW.qf; Q.i++; Q.pick=null; if(Q.i>=Q.q.length&&canWrite&&!Q.saved){ Q.saved=true; const aff={...bwS(c).aff}; Object.keys(Q.res).forEach(x=>{ const k=qKey(x), r={ok:0,no:0,...(aff[k]||{})}; if(Q.res[x]) r.ok++; else r.no++; aff[k]=r; }); bwSave(c,{aff}); } }
   else if(a==="mzk"){ const items=bwMazeItems(BW.n), it=items[i], k=Number(b.dataset.k), M=BW.mz=BW.mz||{}, st=M[i]=M[i]||{wrong:[]}; if(k===it.ans) st.done=true; else if(!st.wrong.includes(k)) st.wrong.push(k);
     if(items.every((_,j)=>M[j]&&M[j].done)&&!BW.mzSaved&&canWrite){ BW.mzSaved=true; const s=bwS(c); bwSave(c,{mz:{...s.mz,[BW.n]:{ok:items.filter((_,j)=>!M[j].wrong.length).length,n:items.length,date:today()}}}); } }
   else if(a==="mzagain"){ BW.mz={}; BW.mzSaved=false; }
