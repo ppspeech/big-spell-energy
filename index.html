@@ -16201,6 +16201,9 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwqopts button{font:inherit;font-size:1.5rem;padding:14px 24px;border-radius:16px;border:3px solid #1E2226;background:#fff;color:#1E2226;box-shadow:4px 4px 0 #1E2226;min-width:120px}.bwqopts.m button{font-size:1.15rem;min-width:min(420px,90%)}
 .bwqopts button.good{background:#2F6B66;border-color:#2F6B66;color:#fff;box-shadow:4px 4px 0 #1f4a46}.bwqopts button.bad{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D;box-shadow:none}.bwqopts button.off{opacity:.4;box-shadow:none}
 .bwqbar{max-width:520px}
+.bwmxdef{height:6.8em;overflow:hidden;margin:0 0 10px;background:#FBF8F1;border-radius:12px;padding:8px 12px;text-align:left;font-family:"Atkinson Hyperlegible",sans-serif;font-size:.95rem;color:#1E2226;line-height:1.35}.bwmxdef p{margin:0}.bwmxdef p.ex{margin-top:4px;color:#5B6570;font-style:italic}.bwmxdef p.ph{color:#7a8088;text-align:center;padding-top:1.4em}.bwmxdef p.pt{color:#3d444c}.bwmxdef b{font-family:Andika,sans-serif;font-size:1.05rem}
+.bwmxfl button{font:inherit;border:0;background:#DCEDEA;color:#1f4a46;border-radius:999px;padding:4px 12px;font-family:Andika,sans-serif;font-size:1.02rem;cursor:pointer}.bwmxfl button.x{background:#fff;color:#7a8088}.bwmxfl button.on{background:#1f4a46;color:#fff}
+.bwwex{min-height:52px;margin:4px 0 10px}.bwwex>button{font:inherit;font-size:.92rem;border:1.5px dashed #B9BEC4;background:transparent;border-radius:999px;padding:6px 16px;color:#5B6570}.bwwexl{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.bwwexl span{background:#fff;border:1.5px solid #E3E0D8;border-radius:10px;padding:4px 12px;font-family:Andika,sans-serif;font-size:1.25rem}.bwwexl i{color:#7a8088}
 .bwtile.t9{background:#E9E5F5}
 .bwmxpick{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:0 0 10px}.bwmxpick button{font:inherit;font-family:Andika,sans-serif;font-size:1rem;border:2px solid #E3E0D8;background:#fff;border-radius:999px;padding:4px 14px;min-height:36px;color:#1E2226}.bwmxpick button.new{border-color:#B9791A}.bwmxpick button.on{background:#1E2226;border-color:#1E2226;color:#fff}
 .bwmx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);gap:12px;align-items:start;background:#fff;border:2px solid #E3E0D8;border-radius:22px;padding:14px}
@@ -16234,7 +16237,7 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwpl .bwbuilt .bb-sw{display:flex;gap:4px;justify-self:start;align-items:stretch}.bwpl .bwbuilt .bb-sw .bb-s{display:flex;align-items:center}
 .bwplL .bwbuilt{height:1.9em;align-items:stretch}.bwplL .bwbuilt>span{display:flex;align-items:center}.bwplL .bwjoin{height:1.6em;flex-wrap:nowrap;white-space:nowrap;overflow:hidden}.bwplL .bwjtag{height:34px;min-height:0;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}
 .bwjdef{margin:8px 0 0;height:2.6em;line-height:1.3;font-size:1rem;color:#1E2226;font-family:"Atkinson Hyperlegible",sans-serif;overflow:hidden}
-.bwpr{height:54px;min-height:0!important;overflow:hidden}.bwpr span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bwpr{height:62px;min-height:0!important;overflow:hidden}.bwpr span{display:block;overflow:hidden;line-height:1.25}.bwpr span em{display:block;font-style:normal;font-size:.8rem;color:#5B6570;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .bwpl{align-items:start}.bwpr.e{grid-template-columns:1fr!important}.bwplL .bwbuilt.md>span,.bwplL .bwbuilt.md .bb-s{font-size:.82em}.bwplL .bwbuilt.sm>span,.bwplL .bwbuilt.sm .bb-s{font-size:.64em}.bwplL .bwbuilt.sm .bb-sw,.bwplL .bwbuilt.md .bb-sw{font-size:1em!important}.bwjoin.q0 b{border-bottom-color:transparent!important}
 @media (max-width:900px){.bwplL .bwbuilt{font-size:clamp(1.3rem,3.9vw,3.2rem)!important}.bwpr{grid-template-columns:78px 1fr!important;font-size:.92rem}}
 @media (min-width:601px) and (max-width:760px){.bwplL .bwbuilt.md>span,.bwplL .bwbuilt.md .bb-s{font-size:.72em}.bwplL .bwbuilt.sm>span,.bwplL .bwbuilt.sm .bb-s{font-size:.52em}.bwplL .bwjoin{font-size:1.25rem}.bwpl{padding:12px;gap:12px}}
@@ -16609,7 +16612,7 @@ function bwMatch(w,a){ const [pl,sl]=bwSeg(w), lw=w.toLowerCase(), b=bwBare(a); 
   if(!sl) return null; const tail=lw.slice(-sl); return tail===b||(a==="-s(-es)"&&["s","es","ies"].includes(tail))?[lw.length-sl,lw.length]:null; }
 function bwPanel(n){ const A=bwAff(n), a=BW.af, chip=x=>`<button class="${a===x.a?"on":""}" data-bw="af" data-v="${esc(x.a)}">${esc(x.a)}</button>`;
   return `<aside class="bwpan" aria-label="Affix bank"><div class="bwpanh"><b>Affix bank</b><small>tap one to find it</small></div>
-    ${a?`<div class="bwpanc"><b>${esc(a)}</b> means ${esc(BW_MEAN[a]||"")}${BW_DATA.sample[a]?`<span>like ${esc(BW_DATA.sample[a])}</span>`:""}<em id="bwafn"></em></div>`:""}
+    ${a?`<div class="bwpanc"><b>${esc(a)}</b> means ${esc(BW_MEAN[a]||"")}${bwEx(a,BW.n,3).length?`<span>like ${esc(bwEx(a,BW.n,3).join(", "))}</span>`:""}<em id="bwafn"></em></div>`:""}
     <div class="bwpang"><span>Prefixes</span><div>${A.pre.map(chip).join("")||"<i>none yet</i>"}</div></div><div class="bwpang"><span>Suffixes</span><div>${A.suf.map(chip).join("")||"<i>none yet</i>"}</div></div></aside>`; }
 function bwApplyHL(){ const o=document.getElementById("bwov"); if(!o||!BW||!BW.af) return; const a=BW.af, main=o.querySelector(".bwmain"); if(!main) return; let cnt=0;
   main.querySelectorAll(".bwwords button[data-w]").forEach(b=>{ if(bwMatch(b.dataset.w,a)){ b.classList.add("bwhlb"); cnt++; } });
@@ -16624,7 +16627,7 @@ const BW_GRP2={together:["com-","con-","co-"],person:["-ist","-cian","-eer","-ia
 const BW_GRP={not:["dis-","un-","in-","non-","im-","il-","ir-","-less","anti-"],under:["sub-","under-","mid-","inter-"],before:["pre-","fore-","pro-"],full:["-y","-ous","-ful"],about:["-al","-ic","-y"],person:["-er","-or"],thing:["-tion","-sion","-ment","-ness","-ty"],tends:["-tive","-sive","-able","-ible"],make:["-en","en-","em-"],more:["-er","super-","over-","-est"],away:["de-","ab-","dis-","mis-"],time:["-ing","-ed"],through:["trans-","per-"]};
 function bwGrp(a){ const g=Object.keys(BW_GRP).filter(k=>BW_GRP[k].includes(a)).concat(Object.keys(BW_GRP2).filter(k=>BW_GRP2[k].includes(a))); return g.length?[...new Set(g)]:[a]; }
 const bwIsR=x=>x[0]==="√", bwRt=x=>(BW_DATA.roots||{})[x.slice(1)]||{f:[],m:"",x:""};
-const qM=x=>bwIsR(x)?bwRt(x).m:BW_MEAN[x], qLab=x=>bwIsR(x)?x.slice(1):x, qKey=x=>bwIsR(x)?"r_"+x.slice(1):bwAffKey(x), qSample=x=>bwIsR(x)?bwRt(x).x.split(", ")[0]:BW_DATA.sample[x];
+const qM=x=>bwIsR(x)?bwRt(x).m:BW_MEAN[x], qLab=x=>bwIsR(x)?x.slice(1):x, qKey=x=>bwIsR(x)?"r_"+x.slice(1):bwAffKey(x), qSample=x=>bwEx(x,BW?BW.n:40,3).join(", ");
 const qGrp=x=>bwIsR(x)?bwRt(x).m.split(/[ ,]+/).filter(t=>!["or","to","do","with","the","a"].includes(t)).map(t=>"m:"+t):bwGrp(x);
 function bwRoots(n){ const R=BW_DATA.roots||{}; if(n<=40) return []; return (BW_DATA.rootOrder||[]).filter(k=>R[k]&&R[k].n<=n).sort((a,b)=>R[a].n-R[b].n).map(k=>({k,...R[k]})); }
 function bwQfStart(c,n){ const A=bwAff(n), all=A.pre.concat(A.suf).map(x=>x.a).concat(bwRoots(n).map(r=>"√"+r.k)), st=(c.bw&&c.bw.aff)||{}; if(all.length<3) return null;
@@ -16672,12 +16675,23 @@ function bwMxHTML(c,n){ const list=bwMx(n); if(!list.length) return `<p class="w
     <div class="bwmxpick">${list.map(m=>`<button class="${m.id===M.id?"on":""} ${m.n===n?"new":""}" data-bw="mxm" data-v="${m.id}">${esc(m.forms[0])}</button>`).join("")}</div>
     <div class="bwmx"><div class="bwmxc pf"><h3>Beginnings</h3>${M.pre.map(x=>chip("p",x.t,x.m,X.p===x.t)).join("")}</div>
       <div class="bwmxmid"><div class="bwmxw ${word?"ok":any?"no":""}">${word?esc(word):any?esc(raw):"&nbsp;"}</div><p class="bwmxst">${word?(found.includes(word)&&X.last!==word?"✓ real word · already found":"✓ real word!"):any?"not on the list · try another":"tap a beginning or an ending"}</p>
+        <div class="bwmxdef">${(()=>{ const vw=X.view||word; if(vw){ const D=bwMxDef(vw); if(D) return `<p><b>${esc(vw)}</b> ${D.base?`comes from <b>${esc(D.base)}</b>: ${esc(D.m)}`:`means ${esc(D.m)}`}</p><p class="ex">${esc(D.s)}</p>`; } if(!any&&!vw) return `<p class="ph">Build a word to see what it means.</p>`; const pm=(M.pre.find(x=>x.t===X.p)||{}).m, sm=(M.suf.find(x=>x.t===X.s)||{}).m; return `<p class="pt">${X.p?`<b>${esc(X.p)}-</b> ${esc(pm||"")} + `:""}<b>${esc(X.f)}</b> ${esc(M.mean)}${X.s?` + <b>-${esc(X.s)}</b> ${esc(sm||"")}`:""}</p>`; })()}</div>
         <div class="bwmxroot">${M.forms.map(f=>chip("f",f,"",X.f===f)).join("")}</div><p class="bwmxmean">means <b>${esc(M.mean)}</b>${M.kind?` · ${M.kind.includes("free")&&M.kind.includes("bound")?"can stand alone in one spelling":M.kind==="free"?"can stand alone as a word":"needs a beginning or an ending"}`:""}</p>
         <div class="wknav"><button data-bw="mxclr">Clear</button></div></div>
       <div class="bwmxc sf"><h3>Endings</h3>${M.suf.map(x=>chip("s",x.t,x.m,X.s===x.t)).join("")}</div></div>
-    <div class="bwmxfound"><div class="bwmxfh"><b>${found.length} of ${total.length} found</b>${left.length?`<button data-bw="mxall">${X.all?"Hide the rest":"Show the rest"}</button>`:`<span>All found!</span>`}</div><div class="bwmxfl">${found.map(w=>`<span>${esc(w)}</span>`).join("")}${X.all?left.map(w=>`<span class="x">${esc(w)}</span>`).join(""):""}${!found.length&&!X.all?`<i>Real words you build land here.</i>`:""}</div></div>
+    <div class="bwmxfound"><div class="bwmxfh"><b>${found.length} of ${total.length} found</b>${left.length?`<button data-bw="mxall">${X.all?"Hide the rest":"Show the rest"}</button>`:`<span>All found!</span>`}</div><div class="bwmxfl">${found.map(w=>`<button class="${X.view===w?"on":""}" data-bw="mxw" data-v="${esc(w)}">${esc(w)}</button>`).join("")}${X.all?left.map(w=>`<button class="x ${X.view===w?"on":""}" data-bw="mxw" data-v="${esc(w)}">${esc(w)}</button>`).join(""):""}${!found.length&&!X.all?`<i>Real words you build land here.</i>`:""}</div></div>
     <p class="wkhint">${esc(BW_DATA.mxCite||"")}</p>`; }
 
+/* ---------- example words, meanings ---------- */
+function bwEx(a,n,k=3){ const out=[], seen=new Set(), add=w=>{ w=String(w||"").trim(); const l=w.toLowerCase(); if(l.length>3&&!seen.has(l)){ seen.add(l); out.push(w); } };
+  if(a&&a[0]==="√"){ const r=a.slice(1), R=(BW_DATA.roots||{})[r]||{}; (R.x||"").split(/,\s*/).forEach(add); Object.keys(BW_DATA.rootw||{}).filter(w=>BW_DATA.rootw[w].includes(r)).sort((x,y)=>x.length-y.length).forEach(add); return out.slice(0,k); }
+  (BW_DATA.sample[a]||"").split(/,\s*/).forEach(add);
+  const pool=[]; BW_DATA.lessons.slice(0,Math.max(n||40,40)).forEach(L=>(L.btc||[]).concat(L.speedy||[]).forEach(w=>{ if(/^[a-z]+$/i.test(w)&&bwMatch(w,a)) pool.push(w); }));
+  [...new Set(pool)].sort((x,y)=>x.length-y.length||x.localeCompare(y)).forEach(add); return out.slice(0,k); }
+const bwDefOf=w=>BW_DEF[w]||(BW_DATA.advSpot||{})[w]||"";
+const bwRealOf=w=>{ w=String(w).toLowerCase(); return BW_REAL[w]||(BW_DATA.advReal||{})[w]||((BW_DATA.mxd||{})[w]||[])[0]||""; };
+function bwMxDef(w){ const D=BW_DATA.mxd||{}; if(D[w]) return {m:D[w][0],s:D[w][1]};
+  for(const [suf,add] of [["ing",""],["ing","e"],["ed",""],["ed","e"],["d",""],["es",""],["s",""]]){ if(!w.endsWith(suf)) continue; let b=w.slice(0,-suf.length)+add; if(!D[b]&&b.length>3&&b[b.length-1]===b[b.length-2]) b=b.slice(0,-1); if(D[b]) return {m:D[b][0],s:D[b][1],base:b,suf:suf==="d"?"ed":suf}; } return null; }
 /* ===================== Big words: Word Connections (Toste et al., 2023) lessons, 1:1 ===================== */
 let BW_DATA=null, BW_LOADING=null, BW=null;
 function bwLoad(){ if(BW_DATA) return Promise.resolve(BW_DATA); if(BW_LOADING) return BW_LOADING;
@@ -16758,15 +16772,15 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
       body=qfb+`<p class="wkq">${L.affix.length?"Name it, give a word, say what it means, then they write it in their affix bank.":esc(L.review||"Review")+". Read them all together."}</p><div class="bwabs">${col("Prefixes",A.pre)}${col("Suffixes",A.suf)}</div>`; } }
   else if(act==="play"){ const A=bwAff(n), HOW={"Build-A-Word":"Read the spotlight word, add an affix, read each part, then say the whole word.","Word Train":"Prefixes are the engine, suffixes are the caboose. Hook one on and read the new word.","Quick Search":"Pick any affix and any spotlight word. Read each part, then the whole word.","Elevator Words":"Keep one spotlight word and ride it down past each affix.","Spinner Words":"Spin for a word and an affix. Read each part, then say it fast."}[L.game]||"";
     const chip=(k,v,lab)=>`<button class="${BW[k]===v||(k==="s"&&BW.s&&BW.s2===v)?"on":""}" data-bw="pl" data-k="${k}" data-v="${esc(v)}">${esc(lab)}</button>`;
-    const p=BW.p||"", w=BW.w||L.spot[0], s=BW.s||"", s2=s?(BW.s2||""):"", any=!!(p||s), j1=bwJoin(w,s), j2=s2?bwJoin(j1.word,s2):j1, full=bwBare(p)+j2.word, rd=any&&BW_REAL[full.toLowerCase()], rules=[j1.rule,s2?j2.rule:""].filter(Boolean);
+    const p=BW.p||"", w=BW.w||L.spot[0], s=BW.s||"", s2=s?(BW.s2||""):"", any=!!(p||s), j1=bwJoin(w,s), j2=s2?bwJoin(j1.word,s2):j1, full=bwBare(p)+j2.word, rd=any&&bwRealOf(full), rules=[j1.rule,s2?j2.rule:""].filter(Boolean);
     body=`<p class="wkq"><b>${esc(L.game)}</b> · ${HOW}</p>
       <div class="bwpl"><div class="bwplL"><div class="bwbuilt ${(bwBare(p)+w+bwBare(s)+bwBare(s2)).length>15?"sm":(bwBare(p)+w+bwBare(s)+bwBare(s2)).length>11?"md":""}"><span class="bb-p ${p?"":"bb-e"}">${esc(bwBare(p))||"&nbsp;"}</span><span class="bb-w">${esc(w)}</span><span class="bb-sw">${s?[s,s2].filter(Boolean).map(x=>`<span class="bb-s">${esc(bwBare(x))}</span>`).join(""):`<span class="bb-s bb-e">&nbsp;</span>`}</span></div>
       <p class="bwjoin ${any?(rd?"":"q"):"q0"}">${any?`<span>=</span><b>${esc(full)}</b>`:`<b>&nbsp;</b>`}</p>
       <p class="bwjtag">${!any?`<em class="ask">add a prefix or a suffix</em>`:(rd?`<em class="real">real word</em>`:`<em class="ask">real or made up?</em>`)+(rules.length?`<em>${esc(rules.join(", "))}</em>`:"")}</p>
       <p class="bwjdef">${rd?`<b>${esc(full)}</b> means ${esc(rd)}`:"&nbsp;"}</p>
       <div class="wknav"><button class="go" data-bw="spin">🎲 Spin</button><button data-bw="plclr">Just the word</button></div></div>
-      <div class="bwplR"><h3>What the parts mean</h3>${(()=>{ const row=(cls,k,m,ph)=>k?`<div class="bwpr ${cls}"><b>${esc(k)}</b><span>${esc(m||"")}</span></div>`:`<div class="bwpr e"><span>${ph}</span></div>`;
-        return row("pf",p,BW_MEAN[p],"no prefix yet")+row("bs",w,BW_DEF[w])+row("sf",s,BW_MEAN[s],"no suffix yet")+row("sf",s2,BW_MEAN[s2],s?"tap another suffix to stack it":""); })()}</div></div>
+      <div class="bwplR"><h3>What the parts mean</h3>${(()=>{ const row=(cls,k,m,ph)=>{ if(!k) return `<div class="bwpr e"><span>${ph}</span></div>`; const ex=cls==="bs"?[]:bwEx(k,n,3).filter(x=>x.toLowerCase()!==w.toLowerCase()); return `<div class="bwpr ${cls}"><b>${esc(k)}</b><span>${esc(m||"")}${ex.length?`<em>like ${esc(ex.join(", "))}</em>`:""}</span></div>`; };
+        return row("pf",p,BW_MEAN[p],"no prefix yet")+row("bs",w,bwDefOf(w))+row("sf",s,BW_MEAN[s],"no suffix yet")+row("sf",s2,BW_MEAN[s2],s?"tap another suffix to stack it":""); })()}</div></div>
       <div class="bwplay"><div><h3>Prefixes</h3><div class="bwchips bb-p">${A.pre.map(x=>chip("p",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div><div><h3>Spotlight words</h3><div class="bwchips bb-w">${L.spot.map(x=>chip("w",x,x)).join("")}</div></div><div><h3>Suffixes</h3><div class="bwchips bb-s">${A.suf.map(x=>chip("s",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div></div>
       <p class="wkhint">Not every combination is a real word. Ask: real or made up?</p>`; }
   else if(act==="btc"){ printable=true; const half=Math.ceil(L.btc.length/2), st=BW.st||"idle", prev=bwS(c).btc[n];
@@ -16780,7 +16794,7 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
   else if(act==="write"){ if(!BW.wset){ const A=bwAff(n), all=A.pre.concat(A.suf), nw=all.filter(x=>x.n===n).map(x=>x.a), old=all.filter(x=>x.n!==n).map(x=>x.a).sort(()=>Math.random()-.5); BW.wset=nw.concat(old).slice(0,Math.max(6,nw.length)).slice(0,all.length); BW.i=0; }
     const W=BW.wset, k=BW.i||0, bar=`<div class="tabar bwqbar">${W.map((_,q)=>`<i class="${q<k?"a":q===k?"on":""}"></i>`).join("")}</div>`;
     if(k>=W.length){ body=`${bar}<p class="wkq">Write word</p><div class="wkbig" style="font-size:2.6rem">All ${W.length} done!</div><div class="wknav"><button class="go" data-bw="wnew">${W.length} more</button></div>`; }
-    else { const a=W[k]; body=`${bar}<p class="wkq"><b>${k+1} of ${W.length}</b> · Write this affix. Add a word part to make a ${n>=11?"2 or 3":"2"} syllable word. Read it out. Real word or made up?</p><div class="wkbig bwcardbig">${esc(a)}</div><p class="bwmean"><span><b>${esc(a)}</b> means ${esc(BW_MEAN[a]||"")}${BW_DATA.sample[a]?`, like <b>${esc(BW_DATA.sample[a])}</b>`:""}</span></p><div class="wknav">${k?`<button data-bw="wback">‹ Back</button>`:""}<button class="go" data-bw="waff">${k===W.length-1?"Done ✓":"Next ›"}</button></div><p class="wkhint">Today\u2019s new affixes come first, then some from before. They write on a whiteboard or paper. Made-up words are fine.</p>`; } }
+    else { const a=W[k]; body=`${bar}<p class="wkq"><b>${k+1} of ${W.length}</b> · Write this affix. Add a word part to make a ${n>=11?"2 or 3":"2"} syllable word. Read it out. Real word or made up?</p><div class="wkbig bwcardbig">${esc(a)}</div><p class="bwmean"><span><b>${esc(a)}</b> means ${esc(BW_MEAN[a]||"")}</span></p><div class="bwwex">${BW.wex?`<div class="bwwexl">${bwEx(a,n,10).map(x=>`<span>${bwHL(x,n)}</span>`).join("")||"<i>No examples in the lessons yet.</i>"}</div>`:`<button data-bw="wex">Show example answers</button>`}</div><div class="wknav">${k?`<button data-bw="wback">‹ Back</button>`:""}<button class="go" data-bw="waff">${k===W.length-1?"Done ✓":"Next ›"}</button></div><p class="wkhint">Today\u2019s new affixes come first, then some from before. They write on a whiteboard or paper. Made-up words are fine.</p>`; } }
   else if(act==="speedy"){ printable=true; const st=BW.st||"idle", prev=bwS(c).sp[n], half=Math.ceil(L.speedy.length/2);
     const wbtn=(w,i)=>`<button class="${BW.miss.has(i)?"x":""} ${BW.last===i?"last":""} ${BW.last!=null&&i>BW.last?"dim":""}" data-bw="${st==="pick"?"splast":"miss"}" data-i="${i}" data-w="${esc(w)}"><i>${i+1}</i>${esc(w)}</button>`;
     const err=BW.last!=null?[...BW.miss].filter(i=>i<=BW.last).length:BW.miss.size;
@@ -16830,8 +16844,9 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
     if(BW.st==="done"&&BW.t2<BW.t1){ try{ const el=document.getElementById("bwtime"), r=el.getBoundingClientRect(); if(!matchMedia("(prefers-reduced-motion: reduce)").matches) confetti(document.body,r.left+r.width/2,r.top+r.height/2); }catch(_){} } return; }
   else if(a==="tagain"){ BW.t1=BW.t2=null; BW.st="idle"; BW.miss=new Set(); }
   else if(a==="tsave"){ const s=bwS(c); await bwSave(c,{btc:{...s.btc,[BW.n]:{t1:Number(bwT(BW.t1)),t2:Number(bwT(BW.t2)),miss:[...BW.miss],date:today()}}}); toast("Saved"); BW.t1=BW.t2=null; BW.st="idle"; }
-  else if(a==="waff"){ BW.i=(BW.i||0)+1; if(BW.i>=BW.wset.length&&b.getBoundingClientRect){ const r=b.getBoundingClientRect(); try{ confetti(document.getElementById("bwov"),r.left+r.width/2,r.top); }catch(e){} } }
-  else if(a==="wback"){ BW.i=Math.max(0,(BW.i||0)-1); }
+  else if(a==="wex"){ BW.wex=true; }
+  else if(a==="waff"){ BW.wex=false; BW.i=(BW.i||0)+1; if(BW.i>=BW.wset.length&&b.getBoundingClientRect){ const r=b.getBoundingClientRect(); try{ confetti(document.getElementById("bwov"),r.left+r.width/2,r.top); }catch(e){} } }
+  else if(a==="wback"){ BW.wex=false; BW.i=Math.max(0,(BW.i||0)-1); }
   else if(a==="wnew"){ const A=bwAff(BW.n), all=A.pre.concat(A.suf).map(x=>x.a), n0=BW.wset.length; BW.wset=all.filter(x=>!BW.wset.includes(x)).concat(all).sort(()=>Math.random()-.5).filter((x,i,ar)=>ar.indexOf(x)===i).slice(0,n0); BW.i=0; }
   else if(a==="spstart"){ BW.st="run"; BW.t0=performance.now(); BW.miss=new Set(); BW.last=null; bwDraw(); BW.iv=setInterval(bwTick,200); return; }
   else if(a==="spstop"){ clearInterval(BW.iv); BW.iv=null; BW.st="pick"; }
@@ -16840,9 +16855,10 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   else if(a==="spsave"){ const s=bwS(c), err=[...BW.miss].filter(k=>k<=BW.last); await bwSave(c,{sp:{...s.sp,[BW.n]:{n:BW.last+1,err:err.length,miss:err,date:today()}}}); toast("Saved"); BW.st="idle"; BW.miss=new Set(); BW.last=null; }
   else if(a==="key"){ BW.ans["k"+i]=!BW.ans["k"+i]; }
   else if(a==="mxm"){ BW.mx={id:Number(b.dataset.v),p:"",s:"",all:false}; const M=(BW_DATA.mx||[]).find(m=>m.id===BW.mx.id); BW.mx.f=M?M.forms[0]:""; }
-  else if(a==="mxclr"){ BW.mx.p=""; BW.mx.s=""; BW.mx.last=""; }
+  else if(a==="mxclr"){ BW.mx.p=""; BW.mx.s=""; BW.mx.last=""; BW.mx.view=""; }
   else if(a==="mxall"){ BW.mx.all=!BW.mx.all; }
-  else if(a==="mxk"){ const X=BW.mx, k=b.dataset.k, v=b.dataset.v; if(k==="f") X.f=v; else X[k]=X[k]===v?"":v; X.last=""; const M=(BW_DATA.mx||[]).find(m=>m.id===X.id), w=M&&M.combos[`${X.p}|${X.f}|${X.s}`]; if(w){ const F=bwMxFound(c,M.id); if(!F.includes(w)){ F.push(w); X.last=w; if(F.length===new Set(Object.values(M.combos)).size){ const r=b.getBoundingClientRect(); try{ confetti(document.getElementById("bwov"),r.left+r.width/2,r.top); }catch(e){} } } } }
+  else if(a==="mxw"){ BW.mx.view=BW.mx.view===b.dataset.v?"":b.dataset.v; }
+  else if(a==="mxk"){ const X=BW.mx, k=b.dataset.k, v=b.dataset.v; X.view=""; if(k==="f") X.f=v; else X[k]=X[k]===v?"":v; X.last=""; const M=(BW_DATA.mx||[]).find(m=>m.id===X.id), w=M&&M.combos[`${X.p}|${X.f}|${X.s}`]; if(w){ const F=bwMxFound(c,M.id); if(!F.includes(w)){ F.push(w); X.last=w; if(F.length===new Set(Object.values(M.combos)).size){ const r=b.getBoundingClientRect(); try{ confetti(document.getElementById("bwov"),r.left+r.width/2,r.top); }catch(e){} } } } }
   else if(a==="af"){ BW.af=BW.af===b.dataset.v?null:b.dataset.v; BW_AF={c:c.id,a:BW.af}; }
   else if(a==="qf"){ const Q=bwQfStart(c,BW.n); if(!Q){ toast("Need at least three affixes first."); return; } Q.total=Q.q.length; BW.qf=Q; }
   else if(a==="qfx"){ BW.qf=null; }
