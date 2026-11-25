@@ -16187,7 +16187,8 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 /* overlay */
 .bwov .wkin{max-width:1040px}
 .bwprintb{margin-left:auto}.bwprintb+.wkx{margin-left:8px}
-.bwnavrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 0 14px;padding-bottom:2px}.bwnavrow::-webkit-scrollbar{display:none}
+.bwnavwrap{display:flex;align-items:center;gap:6px;margin:0 0 14px}.bwarr{flex:none;font:inherit;font-size:1.3rem;font-weight:700;width:40px;height:40px;border-radius:50%;border:1px solid #D7DBD9;background:#fff;color:#1E2226;line-height:1}
+.bwnavrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;flex:1;min-width:0}.bwnavrow::-webkit-scrollbar{display:none}
 .bwnavrow button{font:inherit;font-size:.86rem;font-weight:700;white-space:nowrap;border:1px solid #D7DBD9;background:#fff;color:#5B6570;border-radius:999px;padding:7px 13px;min-height:38px}
 .bwnavrow button.on{background:#5B4B9A;border-color:#5B4B9A;color:#fff}.bwnavrow button:disabled{opacity:.4}
 .bwbody{font-family:Andika,"Atkinson Hyperlegible",sans-serif}
@@ -16335,7 +16336,7 @@ function ssHTML(c){ const items=ssItems(c); let sel=SS_SEL[c.id]; if(!items.some
     ${ssDetail(c,it)}</div>`; }
 v2dash=function(c){ return ssHTML(c); };
 v2tabs=function(tab){ let t=[["dash","▶️ Session","▶️ Session"],["pa","Phonemic awareness","PA"],["ok","Phonics","Phonics"],["sr","Spelling rules","Rules"],["bw","Big words","Big"],["home","Homework","Home"],["rep","Reports","Reports"]].filter(x=>x[0]!=="bw"||bwTabOn(tab)); if(t.length>6){ t[1][1]="Phonemic"; }
-  return `<div class="v2tabrow"><nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav><span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button>${bwTabOn(tab)?"":`<button data-ss="bw">Big words</button>`}<button data-ss="log">Log</button></span></span></div>`; };
+  return `<div class="v2tabrow"><nav class="v2tabs" role="tablist">${t.map(([k,l,sh])=>`<button role="tab" data-ctab="${k}" aria-selected="${tab===k}" aria-label="${l}"><span class="tbl">${l}</span><span class="tbs" aria-hidden="true">${sh}</span></button>`).join("")}</nav><span class="sstools"><button type="button" class="sstbtn" data-ss="tools" aria-haspopup="true" aria-expanded="${!!window.SS_MENU}">More ▾</button><span class="ssmenu" ${window.SS_MENU?"":"hidden"}><button data-ss="rc">Reading check</button><button data-ss="cc2">CC2 reading</button><button data-ss="st">Spelling tests</button><button data-ss="games">Games</button>${bwTabOn(tab)?"":`<button data-ss="bw">Big words</button>`}<button data-ss="log">Log</button></span></span></div>`; };
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-ss]"); if(!b) return; const c=clients.find(x=>x.id===view.clientId); if(!c) return; const a=b.dataset.ss; e.preventDefault();
   if(a==="tools"){ window.SS_MENU=!window.SS_MENU; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=!window.SS_MENU); document.querySelectorAll(".ssmenu").forEach(m=>{ m.style.left=""; m.style.right=""; if(!m.hidden){ const r=m.getBoundingClientRect(); if(r.left<8){ m.style.left="0"; m.style.right="auto"; } } }); document.querySelectorAll(".sstbtn").forEach(t=>t.setAttribute("aria-expanded",String(window.SS_MENU))); return; }
   { window.SS_MENU=false; document.querySelectorAll(".ssmenu").forEach(m=>m.hidden=true); }
@@ -16351,6 +16352,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closes
   if(a==="games"){ openGames(c); return; }
   if(a==="log"){ view={name:"client",clientId:c.id,ctab:"act"}; clientTab="act"; render(); return; }
   if(a==="bw"){ view={name:"client",clientId:c.id,ctab:"bw"}; clientTab="bw"; render(); return; }
+  if(a==="cc2"){ if(SC) ssOpenAx(c,"probe","cc2"); return; }
   if(a==="rule"){ const id=b.dataset.r; TD[id]?openRule(c,id):openRuleBasic(c,id); return; }
   if(a==="st"){ ssStPage(c); return; }
 });
@@ -16580,7 +16582,8 @@ function v2bw(c){ if(!BW_DATA){ bwLoad().then(()=>{ if(view.name==="client") ren
 function bwClose(){ if(BW&&BW.iv) clearInterval(BW.iv); BW=null; const o=document.getElementById("bwov"); if(o) o.remove(); document.body.style.overflow=""; const y=scrollY; render(); scrollTo(0,y); }
 function bwOpen(c,n,act){ if(!bwOK()) return; if(BW&&BW.iv) clearInterval(BW.iv); BW={c,n,act,i:0,grid:false,miss:new Set(),ans:{},fs:1};
   let o=document.getElementById("bwov"); if(!o){ o=document.createElement("div"); o.id="bwov"; o.className="wkov bwov"; o.setAttribute("role","dialog"); o.setAttribute("aria-modal","true"); document.body.appendChild(o); } document.body.style.overflow="hidden"; o.scrollTop=0; bwDraw(); }
-function bwHL(w,n){ const A=bwAff(n), lw=w.toLowerCase(); let p="", s="";
+function bwHL(w,n){ const sg=BW_DATA.seg&&BW_DATA.seg[w]; if(sg){ const [pl,sl]=sg; return (pl?`<u>${esc(w.slice(0,pl))}</u>`:"")+esc(w.slice(pl,w.length-sl))+(sl?`<u>${esc(w.slice(w.length-sl))}</u>`:""); }
+  const A=bwAff(n), lw=w.toLowerCase(); let p="", s="";
   A.pre.map(x=>bwBare(x.a)).sort((a,b)=>b.length-a.length).some(x=>{ if(lw.startsWith(x)&&lw.length>=x.length+3){ p=x; return true; } });
   const sf=[]; A.suf.forEach(x=>{ if(x.a==="-s(-es)") sf.push("es","s"); else sf.push(bwBare(x.a)); });
   sf.sort((a,b)=>b.length-a.length).some(x=>{ if(lw.endsWith(x)&&lw.length-p.length>=x.length+2){ s=x; return true; } });
@@ -16633,7 +16636,7 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
     else if(t.type==="cloze"){ let g=0; const gaps=[]; const html=t.sents.map((sx,i)=>`<p><i>${i+1}</i>${sx.split("___").map((part,k,arr)=>{ if(k===arr.length-1) return esc(part); const id=g++; gaps.push(id); const v=BW.ans[id]||"", suf=v.startsWith("-"), pre=v.endsWith("-"); return esc(suf?part.replace(/ $/,""):part)+`<button class="bwgap ${BW.gap===id?"sel":""} ${v?"f":""} ${suf?"suf":pre?"pre":""}" data-bw="gap" data-i="${id}">${v?esc(bwBare(v)):"?"}</button>`+(pre?"\u0001":""); }).join("").replace(/\u0001 /g,"")}</p>`).join("");
       body=`<p class="wkq">Choose the affix missing from the word. Tap a gap, then tap an affix.</p><div class="bwbank">${t.bank.map(a=>`<button data-bw="fill" data-v="${esc(a)}">${esc(a)}</button>`).join("")}</div><div class="bwsents" style="--fs:${BW.fs}">${fs}${html}</div>`; }
     else body=`<p class="wkq">Let's read!</p><div class="bwsents" style="--fs:${BW.fs}">${fs}${(t.sents||[]).map((sx,i)=>`<p><i>${i+1}</i>${esc(sx)}</p>`).join("")}</div>`; }
-  o.innerHTML=`<div class="wkin"><div class="wkhd"><b>${esc(T)}</b><span>${esc(c.code)} · Lesson ${n}</span>${printable?`<button class="v2b bwprintb" data-bw="print">Print</button>`:""}<button class="wkx" data-bw="x" aria-label="Close">✕</button></div><div class="bwnavrow">${BW_ACTS.map(([a,t])=>`<button class="${a===act?"on":""}" data-bw="sw" data-a="${a}" ${a==="warm"&&n>30?"disabled":""}>${t}</button>`).join("")}</div><div class="wkkid bwbody">${body}</div></div>`; }
+  o.innerHTML=`<div class="wkin"><div class="wkhd"><b>${esc(T)}</b><span>${esc(c.code)} · Lesson ${n}</span>${printable?`<button class="v2b bwprintb" data-bw="print">Print</button>`:""}<button class="wkx" data-bw="x" aria-label="Close">✕</button></div><div class="bwnavwrap"><button class="bwarr" data-bw="step" data-d="-1" aria-label="Previous activity">‹</button><div class="bwnavrow">${BW_ACTS.map(([a,t])=>`<button class="${a===act?"on":""}" data-bw="sw" data-a="${a}" ${a==="warm"&&n>30?"disabled":""}>${t}</button>`).join("")}</div><button class="bwarr" data-bw="step" data-d="1" aria-label="Next activity">›</button></div><div class="wkkid bwbody">${body}</div></div>`; const on=o.querySelector(".bwnavrow .on"), row=o.querySelector(".bwnavrow"); if(on&&row) row.scrollLeft=Math.max(0,on.offsetLeft-row.offsetLeft-(row.clientWidth-on.offsetWidth)/2); }
 function bwTick(){ const el=document.getElementById("bwtime"); if(!el||!BW) return; if(BW.act==="btc"){ el.firstChild.nodeValue=bwT((performance.now()-BW.t0)/1000); }
   else { const left=30-(performance.now()-BW.t0)/1000; if(left<=0){ clearInterval(BW.iv); BW.iv=null; BW.st="pick"; bwDraw(); return; } el.firstChild.nodeValue=String(Math.ceil(left)); } }
 function bwPrintEl(c,n,act){ const L=bwL(n), d=document.createElement("div"); d.className="bwprint"; const T=(BW_ACTS.find(x=>x[0]===act)||[])[1]; let h="";
@@ -16653,6 +16656,7 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   if(!BW) return; const L=bwL(BW.n);
   if(a==="x") return bwClose();
   if(a==="sw"){ return bwOpen(c,BW.n,b.dataset.a); }
+  if(a==="step"){ const ids=BW_ACTS.map(x=>x[0]).filter(x=>!(x==="warm"&&BW.n>30)); const k=(ids.indexOf(BW.act)+Number(b.dataset.d)+ids.length)%ids.length; return bwOpen(c,BW.n,ids[k]); }
   if(a==="next"){ BW.i++; } else if(a==="prev"){ BW.i=Math.max(0,BW.i-1); } else if(a==="grid"){ BW.grid=!BW.grid; } else if(a==="goto"){ BW.i=i; BW.grid=false; }
   else if(a==="miss"){ if(BW.st==="pick") return; BW.miss.has(i)?BW.miss.delete(i):BW.miss.add(i); }
   else if(a==="pl"){ const k=b.dataset.k, v=b.dataset.v; BW[k]=BW[k]===v&&k!=="w"?"":v; BW.rv=false; }
@@ -16687,11 +16691,13 @@ bwLoad().then(()=>{ try{ if(typeof view!=="undefined"&&view.name==="client"){ co
 
 /* buttons that open the assessment module (CC2, spelling session) work from the new tabs */
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("[data-oktab]"); if(!b||b.onclick) return; if(typeof view==="undefined"||view.name!=="client") return; const c=clients.find(x=>x.id===view.clientId); if(!c||!SC) return; e.preventDefault();
-  const tab=b.dataset.oktab, ax=b.dataset.ax; openSCModal(c,tab); try{ SC.open(c,tab,ax); }catch(err){ console.warn(err); }
-  const h=document.querySelector(".scmodal .scmhd b"); if(h) h.textContent=ax==="cc2"?"CC2 word reading":tab==="session"?"Spelling session":tab==="checks"?"Sounds-Write progress check":"Assessment"; });
+  ssOpenAx(c,b.dataset.oktab,b.dataset.ax); });
+function ssOpenAx(c,tab,ax){ openSCModal(c,tab); try{ SC.open(c,tab,ax); }catch(err){ console.warn(err); }
+  try{ const r=scEl.shadowRoot; if(r&&!r.getElementById("ss-only")){ const st=document.createElement("style"); st.id="ss-only"; st.textContent=':host([data-only]) .client-head,:host([data-only]) .content>.seg{display:none!important}'; r.appendChild(st); } if(ax==="cc2") scEl.setAttribute("data-only","cc2"); else scEl.removeAttribute("data-only"); }catch(e){}
+  const h=document.querySelector(".scmodal .scmhd b"); if(h) h.textContent=ax==="cc2"?"CC2 word reading":tab==="session"?"Spelling session":tab==="checks"?"Sounds-Write progress check":"Assessment"; }
 
 /* keep the assessment module on screen in its popup while it saves and redraws */
-{ const _scR=render; render=function(){ _scR.apply(this,arguments); try{ const slot=document.querySelector(".scmodal #sc-slot"); if(slot&&typeof scEl!=="undefined"&&scEl&&scEl.parentNode!==slot){ slot.innerHTML=""; slot.appendChild(scEl); scEl.style.display=""; } }catch(e){} }; }
+{ const _scR=render; render=function(){ _scR.apply(this,arguments); try{ const slot=document.querySelector(".scmodal #sc-slot"); if(slot&&typeof scEl!=="undefined"&&scEl&&scEl.parentNode!==slot){ slot.innerHTML=""; slot.appendChild(scEl); scEl.style.display=""; } if(!document.querySelector(".scmodal")&&typeof scEl!=="undefined"&&scEl) scEl.removeAttribute("data-only"); }catch(e){} }; }
 
 </script>
 </body>
