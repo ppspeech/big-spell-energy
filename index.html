@@ -16206,8 +16206,15 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwplR{text-align:left;display:grid;gap:8px;font-family:"Atkinson Hyperlegible",sans-serif}.bwplR h3{margin:0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570}
 .bwpr{display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:center;border-radius:12px;padding:8px 12px;min-height:52px;font-size:1rem;line-height:1.25;color:#1E2226}.bwpr b{font-family:Andika,sans-serif;font-size:1.2rem;overflow-wrap:anywhere}
 .bwpr.pf{background:#DCE9E7}.bwpr.pf b{color:#2F6B66}.bwpr.bs{background:#F1E8D6}.bwpr.sf{background:#F2E1E4}.bwpr.sf b{color:#8A2B3D}.bwpr.rl{background:#E9E5F5}.bwpr.rl b{color:#3F3378}
-.bwpr.e{grid-template-columns:1fr;border:2px dashed #DAD6CC;color:#7a8088;font-size:.9rem}.bwpr.e.x{border-color:transparent}.bwjoin.q0 b{border-bottom-color:transparent!important}
-@media (max-width:720px){.bwplL .bwbuilt{font-size:clamp(1.7rem,7.4vw,3.2rem)!important}.bwpl{grid-template-columns:1fr;padding:14px;gap:12px}.bwpr{min-height:46px;grid-template-columns:86px 1fr}}
+.bwpr.e{grid-template-columns:1fr;border:2px dashed #DAD6CC;color:#7a8088;font-size:.9rem}.bwpr.e.x{border-color:transparent}
+.bwpl .bwbuilt .bb-sw{display:flex;gap:4px;justify-self:start;align-items:stretch}.bwpl .bwbuilt .bb-sw .bb-s{display:flex;align-items:center}
+.bwplL .bwbuilt{height:1.9em;align-items:stretch}.bwplL .bwbuilt>span{display:flex;align-items:center}.bwplL .bwjoin{height:1.6em;flex-wrap:nowrap;white-space:nowrap;overflow:hidden}.bwplL .bwjtag{height:34px;min-height:0;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}
+.bwjdef{margin:8px 0 0;height:2.6em;line-height:1.3;font-size:1rem;color:#1E2226;font-family:"Atkinson Hyperlegible",sans-serif;overflow:hidden}
+.bwpr{height:54px;min-height:0!important;overflow:hidden}.bwpr span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bwpl{align-items:start}.bwpr.e{grid-template-columns:1fr!important}.bwplL .bwbuilt.md>span,.bwplL .bwbuilt.md .bb-s{font-size:.82em}.bwplL .bwbuilt.sm>span,.bwplL .bwbuilt.sm .bb-s{font-size:.64em}.bwplL .bwbuilt.sm .bb-sw,.bwplL .bwbuilt.md .bb-sw{font-size:1em!important}.bwjoin.q0 b{border-bottom-color:transparent!important}
+@media (max-width:900px){.bwplL .bwbuilt{font-size:clamp(1.3rem,3.9vw,3.2rem)!important}.bwpr{grid-template-columns:78px 1fr!important;font-size:.92rem}}
+@media (min-width:601px) and (max-width:760px){.bwplL .bwbuilt.md>span,.bwplL .bwbuilt.md .bb-s{font-size:.72em}.bwplL .bwbuilt.sm>span,.bwplL .bwbuilt.sm .bb-s{font-size:.52em}.bwplL .bwjoin{font-size:1.25rem}.bwpl{padding:12px;gap:12px}}
+@media (max-width:600px){.bwplL .bwbuilt{font-size:clamp(1.7rem,7.4vw,3.2rem)!important}.bwpl{grid-template-columns:1fr;padding:14px;gap:12px}.bwpr{min-height:46px;grid-template-columns:86px 1fr}}
 .bwsteps{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:left;font-family:"Atkinson Hyperlegible",sans-serif;font-size:.86rem}
 .bwsteps li{display:flex;gap:8px;align-items:flex-start;background:#EFEBE3;border-radius:12px;padding:8px 10px;color:#3d444c}.bwsteps li i{font-style:normal;font-weight:700;flex:none;width:22px;height:22px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:.78rem}
 .bwsteps li.on{background:#5B4B9A;color:#fff}.bwsteps li.on i{color:#3F3378}.bwsteps li.dn{opacity:.55}
@@ -16686,14 +16693,16 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
     else { const A=bwAff(n), col=(t,xs)=>`<div class="bwab"><h3>${t}</h3>${xs.length?xs.map(x=>`<div class="bwaf ${x.n===n?"new":""}"><b>${esc(x.a)}</b><span><i>${esc(BW_MEAN[x.a]||"")}</i>${esc(BW_DATA.sample[x.a]||"")}</span>${x.n===n?`<em>new</em>`:""}${(()=>{ const r=((c.bw&&c.bw.aff)||{})[bwAffKey(x.a)]; return r&&r.no*2>(r.ok||0)?`<em class="shaky">shaky</em>`:""; })()}</div>`).join(""):`<p class="sub">None yet.</p>`}</div>`;
       body=qfb+`<p class="wkq">${L.affix.length?"Name it, give a word, say what it means, then they write it in their affix bank.":esc(L.review||"Review")+". Read them all together."}</p><div class="bwabs">${col("Prefixes",A.pre)}${col("Suffixes",A.suf)}</div>`; } }
   else if(act==="play"){ const A=bwAff(n), HOW={"Build-A-Word":"Read the spotlight word, add an affix, read each part, then say the whole word.","Word Train":"Prefixes are the engine, suffixes are the caboose. Hook one on and read the new word.","Quick Search":"Pick any affix and any spotlight word. Read each part, then the whole word.","Elevator Words":"Keep one spotlight word and ride it down past each affix.","Spinner Words":"Spin for a word and an affix. Read each part, then say it fast."}[L.game]||"";
-    const chip=(k,v,lab)=>`<button class="${BW[k]===v?"on":""}" data-bw="pl" data-k="${k}" data-v="${esc(v)}">${esc(lab)}</button>`;
-    const p=BW.p||"", w=BW.w||L.spot[0], s=BW.s||"";
+    const chip=(k,v,lab)=>`<button class="${BW[k]===v||(k==="s"&&BW.s&&BW.s2===v)?"on":""}" data-bw="pl" data-k="${k}" data-v="${esc(v)}">${esc(lab)}</button>`;
+    const p=BW.p||"", w=BW.w||L.spot[0], s=BW.s||"", s2=s?(BW.s2||""):"", any=!!(p||s), j1=bwJoin(w,s), j2=s2?bwJoin(j1.word,s2):j1, full=bwBare(p)+j2.word, rd=any&&BW_REAL[full.toLowerCase()], rules=[j1.rule,s2?j2.rule:""].filter(Boolean);
     body=`<p class="wkq"><b>${esc(L.game)}</b> · ${HOW}</p>
-      <div class="bwpl"><div class="bwplL"><div class="bwbuilt"><span class="bb-p ${p?"":"bb-e"}">${esc(bwBare(p))||"&nbsp;"}</span><span class="bb-w">${esc(w)}</span><span class="bb-s ${s?"":"bb-e"}">${esc(bwBare(s))||"&nbsp;"}</span></div>
-      ${(()=>{ if(!(p||s)) return `<p class="bwjoin q0"><b>&nbsp;</b></p><p class="bwjtag"><em class="ask">add a prefix or a suffix</em></p>`; const j=bwJoin(w,s); const full=(bwBare(p)+j.word).toLowerCase(), rd=BW_REAL[full]; return `<p class="bwjoin ${rd?"":"q"}"><span>=</span><b>${esc(bwBare(p)+j.word)}</b></p><p class="bwjtag">${rd?`<em class="real">real word</em>`:`<em class="ask">real or made up?</em>`}${j.rule?`<em>${esc(j.rule)}</em>`:""}</p>`; })()}
+      <div class="bwpl"><div class="bwplL"><div class="bwbuilt ${(bwBare(p)+w+bwBare(s)+bwBare(s2)).length>15?"sm":(bwBare(p)+w+bwBare(s)+bwBare(s2)).length>11?"md":""}"><span class="bb-p ${p?"":"bb-e"}">${esc(bwBare(p))||"&nbsp;"}</span><span class="bb-w">${esc(w)}</span><span class="bb-sw">${s?[s,s2].filter(Boolean).map(x=>`<span class="bb-s">${esc(bwBare(x))}</span>`).join(""):`<span class="bb-s bb-e">&nbsp;</span>`}</span></div>
+      <p class="bwjoin ${any?(rd?"":"q"):"q0"}">${any?`<span>=</span><b>${esc(full)}</b>`:`<b>&nbsp;</b>`}</p>
+      <p class="bwjtag">${!any?`<em class="ask">add a prefix or a suffix</em>`:(rd?`<em class="real">real word</em>`:`<em class="ask">real or made up?</em>`)+(rules.length?`<em>${esc(rules.join(", "))}</em>`:"")}</p>
+      <p class="bwjdef">${rd?`<b>${esc(full)}</b> means ${esc(rd)}`:"&nbsp;"}</p>
       <div class="wknav"><button class="go" data-bw="spin">🎲 Spin</button><button data-bw="plclr">Just the word</button></div></div>
-      <div class="bwplR"><h3>What the parts mean</h3>${(()=>{ const row=(cls,k,m,ph)=>k?`<div class="bwpr ${cls}"><b>${esc(k)}</b><span>${esc(m||"")}</span></div>`:`<div class="bwpr e"><span>${ph}</span></div>`; const j=(p||s)?bwJoin(w,s):null, rd=j&&BW_REAL[(bwBare(p)+j.word).toLowerCase()];
-        return row("pf",p,BW_MEAN[p],"no prefix yet")+row("bs",w,BW_DEF[w])+row("sf",s,BW_MEAN[s],"no suffix yet")+(rd?`<div class="bwpr rl"><b>${esc(bwBare(p)+j.word)}</b><span>${esc(rd)}</span></div>`:`<div class="bwpr e x"><span></span></div>`); })()}</div></div>
+      <div class="bwplR"><h3>What the parts mean</h3>${(()=>{ const row=(cls,k,m,ph)=>k?`<div class="bwpr ${cls}"><b>${esc(k)}</b><span>${esc(m||"")}</span></div>`:`<div class="bwpr e"><span>${ph}</span></div>`;
+        return row("pf",p,BW_MEAN[p],"no prefix yet")+row("bs",w,BW_DEF[w])+row("sf",s,BW_MEAN[s],"no suffix yet")+row("sf",s2,BW_MEAN[s2],s?"tap another suffix to stack it":""); })()}</div></div>
       <div class="bwplay"><div><h3>Prefixes</h3><div class="bwchips bb-p">${A.pre.map(x=>chip("p",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div><div><h3>Spotlight words</h3><div class="bwchips bb-w">${L.spot.map(x=>chip("w",x,x)).join("")}</div></div><div><h3>Suffixes</h3><div class="bwchips bb-s">${A.suf.map(x=>chip("s",x.a,x.a)).join("")||`<span class="sub">none yet</span>`}</div></div></div>
       <p class="wkhint">Not every combination is a real word. Ask: real or made up?</p>`; }
   else if(act==="btc"){ printable=true; const half=Math.ceil(L.btc.length/2), st=BW.st||"idle", prev=bwS(c).btc[n];
@@ -16747,10 +16756,10 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   if(a==="step"){ const ids=BW_ACTS.map(x=>x[0]).filter(x=>!(x==="warm"&&BW.n>30)); const k=(ids.indexOf(BW.act)+Number(b.dataset.d)+ids.length)%ids.length; return bwOpen(c,BW.n,ids[k]); }
   if(a==="next"){ BW.i++; } else if(a==="prev"){ BW.i=Math.max(0,BW.i-1); } else if(a==="grid"){ BW.grid=!BW.grid; } else if(a==="goto"){ BW.i=i; BW.grid=false; }
   else if(a==="miss"){ if(BW.st==="pick") return; BW.miss.has(i)?BW.miss.delete(i):BW.miss.add(i); }
-  else if(a==="pl"){ const k=b.dataset.k, v=b.dataset.v; BW[k]=BW[k]===v&&k!=="w"?"":v; BW.rv=false; }
-  else if(a==="plclr"){ BW.p=""; BW.s=""; BW.rv=false; }
+  else if(a==="pl"){ const k=b.dataset.k, v=b.dataset.v; if(k==="s"){ if(BW.s===v){ BW.s=BW.s2||""; BW.s2=""; } else if(BW.s2===v){ BW.s2=""; } else if(!BW.s){ BW.s=v; } else { BW.s2=v; } } else BW[k]=BW[k]===v&&k!=="w"?"":v; BW.rv=false; }
+  else if(a==="plclr"){ BW.p=""; BW.s=""; BW.s2=""; BW.rv=false; }
   else if(a==="rv"){ BW.rv=!BW.rv; }
-  else if(a==="spin"){ const A=bwAff(BW.n), pick=x=>x[Math.floor(Math.random()*x.length)]; BW.w=pick(L.spot); const usePre=A.pre.length&&(!A.suf.length||Math.random()<.5); BW.p=usePre?pick(A.pre).a:""; BW.s=!usePre&&A.suf.length?pick(A.suf).a:""; BW.rv=false; }
+  else if(a==="spin"){ const A=bwAff(BW.n), pick=x=>x[Math.floor(Math.random()*x.length)]; BW.w=pick(L.spot); const usePre=A.pre.length&&(!A.suf.length||Math.random()<.5); BW.p=usePre?pick(A.pre).a:""; BW.s=!usePre&&A.suf.length?pick(A.suf).a:""; BW.s2=""; BW.rv=false; }
   else if(a==="hint"){ BW.hint=!BW.hint; }
   else if(a==="tstart"){ BW.st=BW.t1==null?"r1":"r2"; BW.t0=performance.now(); bwDraw(); BW.iv=setInterval(bwTick,100); return; }
   else if(a==="tstop"){ clearInterval(BW.iv); BW.iv=null; const t=(performance.now()-BW.t0)/1000; if(BW.st==="r1"){ BW.t1=t; BW.st="mid"; } else { BW.t2=t; BW.st="done"; } bwDraw();
