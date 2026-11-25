@@ -16201,6 +16201,20 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwqopts button{font:inherit;font-size:1.5rem;padding:14px 24px;border-radius:16px;border:3px solid #1E2226;background:#fff;color:#1E2226;box-shadow:4px 4px 0 #1E2226;min-width:120px}.bwqopts.m button{font-size:1.15rem;min-width:min(420px,90%)}
 .bwqopts button.good{background:#2F6B66;border-color:#2F6B66;color:#fff;box-shadow:4px 4px 0 #1f4a46}.bwqopts button.bad{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D;box-shadow:none}.bwqopts button.off{opacity:.4;box-shadow:none}
 .bwqbar{max-width:520px}
+.bwtile.t9{background:#E9E5F5}
+.bwmxpick{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:0 0 10px}.bwmxpick button{font:inherit;font-family:Andika,sans-serif;font-size:1rem;border:2px solid #E3E0D8;background:#fff;border-radius:999px;padding:4px 14px;min-height:36px;color:#1E2226}.bwmxpick button.new{border-color:#B9791A}.bwmxpick button.on{background:#1E2226;border-color:#1E2226;color:#fff}
+.bwmx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);gap:12px;align-items:start;background:#fff;border:2px solid #E3E0D8;border-radius:22px;padding:14px}
+.bwmxc{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px;align-content:start;text-align:left}.bwmxc h3{grid-column:1/-1;margin:0 0 2px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#5B6570;font-family:"Atkinson Hyperlegible",sans-serif}
+.bwmxc button{font:inherit;border:0;border-radius:12px;padding:7px 10px;min-height:52px;text-align:left;display:flex;flex-direction:column;justify-content:center;cursor:pointer}.bwmxc button b{font-family:Andika,sans-serif;font-size:1.2rem;line-height:1.2}.bwmxc button small{font-family:"Atkinson Hyperlegible",sans-serif;font-size:.74rem;line-height:1.2;color:#3d444c}
+.bwmxc.pf button{background:#DCE9E7}.bwmxc.pf button b{color:#2F6B66}.bwmxc.sf button{background:#F2E1E4}.bwmxc.sf button b{color:#8A2B3D}
+.bwmxc.pf button.on{background:#2F6B66}.bwmxc.sf button.on{background:#8A2B3D}.bwmxc button.on b,.bwmxc button.on small{color:#fff}
+.bwmxmid{text-align:center}.bwmxw{font-family:Andika,sans-serif;font-size:clamp(1.6rem,4.2vw,2.8rem);height:1.7em;line-height:1.7em;white-space:nowrap;overflow:hidden;border-radius:14px;background:#F6F4EE;color:#5B6570}.bwmxw.ok{background:#DCEDEA;color:#1f4a46}.bwmxw.no{background:#F6F4EE;color:#7a8088}
+.bwmxst{margin:6px 0 10px;height:1.4em;font-family:"Atkinson Hyperlegible",sans-serif;font-weight:700;font-size:.92rem;color:#5B6570}
+.bwmxroot{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.bwmxroot button{font:inherit;font-family:Andika,sans-serif;font-size:1.5rem;border:3px solid #1E2226;background:#fff;border-radius:14px;padding:6px 16px;color:#1E2226;opacity:.45}.bwmxroot button.on{opacity:1;background:#5B4B9A;border-color:#5B4B9A;color:#fff}.bwmxroot button b{font-weight:400}
+.bwmxmean{margin:8px 0 0;font-family:"Atkinson Hyperlegible",sans-serif;font-size:.95rem;color:#3d444c;min-height:2.6em}
+.bwmxfound{margin-top:12px;background:#EFEBE3;border-radius:16px;padding:12px 14px;text-align:left;font-family:"Atkinson Hyperlegible",sans-serif}.bwmxfh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.bwmxfh button{font:inherit;font-size:.86rem;border:1.5px solid #B9BEC4;background:#fff;border-radius:999px;padding:4px 12px;min-height:34px}.bwmxfh span{font-weight:700;color:#1f4a46}
+.bwmxfl{display:flex;flex-wrap:wrap;gap:6px;min-height:36px}.bwmxfl span{background:#DCEDEA;color:#1f4a46;border-radius:999px;padding:4px 12px;font-family:Andika,sans-serif;font-size:1.02rem}.bwmxfl span.x{background:#fff;color:#7a8088}.bwmxfl i{color:#5B6570;font-style:normal;font-size:.9rem}
+@media (max-width:760px){.bwmx{grid-template-columns:1fr 1fr;padding:10px}.bwmxmid{grid-column:1/-1;order:-1}.bwmxc{grid-template-columns:1fr 1fr}.bwmxc button{min-height:46px;padding:6px 8px}}
 @media (max-width:600px){.bwhead{flex-wrap:wrap;gap:8px}.bwhead>div:first-child{flex:1 1 100%}}
 .bwtl{margin:12px 0 6px;font-size:.82rem;color:#5B6570}.bwtl b{color:#1E2226;font-size:.92rem;margin-right:4px}
 .bwtrack.adv button{background:#FBF1DD;color:#6B4A12}.bwtrack.adv button.d{background:#E0A43A;color:#fff}.bwtrack.adv button.cur{border-color:#B9791A;background:#F6DFAE;color:#6B4A12}.bwtrack.adv button.cur.d{background:#E0A43A;color:#fff}.bwtrack{margin:0 0 4px}
@@ -16646,6 +16660,24 @@ document.addEventListener("click",e=>{ const old=document.getElementById("bwpop"
     if(!n||n.nodeType!==3) return; const s=n.nodeValue; let a=off,b=off; while(a>0&&/[A-Za-z]/.test(s[a-1])) a--; while(b<s.length&&/[A-Za-z]/.test(s[b])) b++; w=s.slice(a,b); }
   if(w&&w.toLowerCase()!==was) bwWordPop(w,e.clientX,e.clientY); });
 
+/* ---------- word matrix (advanced sets) ---------- */
+let BW_MXF={};
+function bwMx(n){ if(n<=40) return []; return (BW_DATA.mx||[]).filter(m=>m.n<=n).sort((a,b)=>b.n-a.n||a.id-b.id); }
+function bwMxFound(c,id){ const k=c.id+":"+id; return BW_MXF[k]||(BW_MXF[k]=[]); }
+function bwMxHTML(c,n){ const list=bwMx(n); if(!list.length) return `<p class="wkq">No word matrix for this set yet.</p>`;
+  const X=BW.mx=BW.mx||{}; let M=list.find(m=>m.id===X.id); if(!M){ M=list[0]; X.id=M.id; X.p=""; X.s=""; X.f=M.forms[0]; X.all=false; } if(!M.forms.includes(X.f)) X.f=M.forms[0];
+  const word=M.combos[`${X.p}|${X.f}|${X.s}`], any=X.p||X.s, raw=X.p+X.f+X.s, found=bwMxFound(c,M.id), total=[...new Set(Object.values(M.combos))], left=total.filter(w=>!found.includes(w));
+  const chip=(k,t,m,on)=>`<button class="${on?"on":""}" data-bw="mxk" data-k="${k}" data-v="${esc(t)}"><b>${k==="p"?esc(t)+"-":k==="s"?"-"+esc(t):esc(t)}</b>${m?`<small>${esc(m)}</small>`:""}</button>`;
+  return `<p class="wkq">Pick a beginning, the root and an ending. How many real words can you build?</p>
+    <div class="bwmxpick">${list.map(m=>`<button class="${m.id===M.id?"on":""} ${m.n===n?"new":""}" data-bw="mxm" data-v="${m.id}">${esc(m.forms[0])}</button>`).join("")}</div>
+    <div class="bwmx"><div class="bwmxc pf"><h3>Beginnings</h3>${M.pre.map(x=>chip("p",x.t,x.m,X.p===x.t)).join("")}</div>
+      <div class="bwmxmid"><div class="bwmxw ${word?"ok":any?"no":""}">${word?esc(word):any?esc(raw):"&nbsp;"}</div><p class="bwmxst">${word?(found.includes(word)&&X.last!==word?"✓ real word · already found":"✓ real word!"):any?"not on the list · try another":"tap a beginning or an ending"}</p>
+        <div class="bwmxroot">${M.forms.map(f=>chip("f",f,"",X.f===f)).join("")}</div><p class="bwmxmean">means <b>${esc(M.mean)}</b>${M.kind?` · ${M.kind.includes("free")&&M.kind.includes("bound")?"can stand alone in one spelling":M.kind==="free"?"can stand alone as a word":"needs a beginning or an ending"}`:""}</p>
+        <div class="wknav"><button data-bw="mxclr">Clear</button></div></div>
+      <div class="bwmxc sf"><h3>Endings</h3>${M.suf.map(x=>chip("s",x.t,x.m,X.s===x.t)).join("")}</div></div>
+    <div class="bwmxfound"><div class="bwmxfh"><b>${found.length} of ${total.length} found</b>${left.length?`<button data-bw="mxall">${X.all?"Hide the rest":"Show the rest"}</button>`:`<span>All found!</span>`}</div><div class="bwmxfl">${found.map(w=>`<span>${esc(w)}</span>`).join("")}${X.all?left.map(w=>`<span class="x">${esc(w)}</span>`).join(""):""}${!found.length&&!X.all?`<i>Real words you build land here.</i>`:""}</div></div>
+    <p class="wkhint">${esc(BW_DATA.mxCite||"")}</p>`; }
+
 /* ===================== Big words: Word Connections (Toste et al., 2023) lessons, 1:1 ===================== */
 let BW_DATA=null, BW_LOADING=null, BW=null;
 function bwLoad(){ if(BW_DATA) return Promise.resolve(BW_DATA); if(BW_LOADING) return BW_LOADING;
@@ -16659,17 +16691,18 @@ function bwTabOn(tab){ if(tab==="bw") return true; const c=typeof clients!=="und
 async function bwSave(c,patch){ c.bw={...bwS(c),...patch}; try{ await db.doc("clients/"+c.id).update({bw:c.bw,updatedAt:Date.now()}); }catch(e){ toast(errMsg(e)); } }
 const bwL=n=>BW_DATA.lessons[n-1];
 function bwLab(n){ n=Number(n); return n>40?"Set A"+(n-40):"Lesson "+n; }
-function bwActs(n){ const L=bwL(n)||{}; return BW_ACTS.filter(([a])=>a==="roots"?bwRoots(n).length>0:a==="text"?!!L.text:a==="choose"?bwMazeItems(n).length>0:a==="btc"?(L.btc||[]).length>0:a==="speedy"?(L.speedy||[]).length>0:true); }
+function bwActs(n){ const L=bwL(n)||{}; return BW_ACTS.filter(([a])=>a==="mx"?bwMx(n).length>0:a==="roots"?bwRoots(n).length>0:a==="text"?!!L.text:a==="choose"?bwMazeItems(n).length>0:a==="btc"?(L.btc||[]).length>0:a==="speedy"?(L.speedy||[]).length>0:true); }
 const started0=c=>!!c.bw;
 function bwAff(n){ const pre=[],suf=[]; for(let i=1;i<=n;i++) (bwL(i).affix||[]).forEach(a=>{ (a.endsWith("-")?pre:suf).push({a,n:i}); }); return {pre,suf}; }
 const bwBare=a=>a==="-s(-es)"?"s":a.replace(/[-()]/g,"");
 function bwAffLine(L){ return (L.affix&&L.affix.length?"New: "+L.affix.join("  "):(L.review||"Review"))+(L.roots&&L.roots.length?" · roots: "+L.roots.join(" "):""); }
-const BW_ACTS=[["affix","Affix bank","3 min"],["roots","Root bank","3 min"],["qf","Quick-fire","2 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
+const BW_ACTS=[["affix","Affix bank","3 min"],["roots","Root bank","3 min"],["qf","Quick-fire","2 min"],["mx","Word matrix","8 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
 function bwTileSub(c,n,a){ const L=bwL(n), s=bwS(c);
   if(a==="warm") return n>30?"none in Unit 4":n>20?"vowel mastery list":(L.warm||"vowel cards");
   if(a==="affix") return n>32&&n<=40?"affix mastery list":L.affix.length?L.affix.join(" "):"review";
   if(a==="qf"){ const k=Object.values(s.aff).filter(r=>r&&r.no*2>(r.ok||0)).length; return k?`${k} shaky`:"what does it mean?"; }
   if(a==="roots"){ const nw=bwRoots(n).filter(r=>r.n===n).map(r=>r.k); return nw.length?nw.join(" · "):"review"; }
+  if(a==="mx"){ const nw=bwMx(n).filter(m=>m.n===n).map(m=>m.forms[0]); return nw.length?"build with "+nw.join(", "):"build real words"; }
   if(a==="play") return L.game;
   if(a==="btc"){ const r=s.btc[n]; return r?`${r.t1}s → ${r.t2}s`:`${L.btc.length} words`; }
   if(a==="write") return n>=11?"2–3 syllable words":"2 syllable words";
@@ -16717,6 +16750,7 @@ function bwDraw(){ const o=document.getElementById("bwov"); if(!o||!BW) return; 
   else if(act==="roots"){ const all=bwRoots(n), nw=all.filter(r=>r.n===n), old=all.filter(r=>r.n!==n).reverse(), st=(c.bw&&c.bw.aff)||{};
     const card=(r,big)=>{ const t=st["r_"+r.k], sh=t&&t.no*2>(t.ok||0); return `<div class="bwrt ${big?"big":""}"><b>${esc(r.f.slice().sort((a,b)=>a.length-b.length).join(" / "))}</b><span>${esc(r.m)}</span><small>${esc(r.x)}</small><em>${esc(r.o)}${sh?" · shaky":""}</em></div>`; };
     body=`<p class="wkq">A root is the part of a word that carries the main meaning. Say it, say what it means, then find it in a word.</p>${nw.length?`<h3 class="bwrth">New this lesson</h3><div class="bwrts new">${nw.map(r=>card(r,true)).join("")}</div>`:""}${old.length?`<h3 class="bwrth">Roots so far · ${old.length}</h3><div class="bwrts">${old.map(r=>card(r)).join("")}</div>`:""}<p class="wkhint">Three new roots a set. Order follows the Logic of English Essentials vocabulary sequence, then common Latin and Greek roots.</p>`; }
+  else if(act==="mx"){ body=bwMxHTML(c,n); }
   else if(act==="qf"){ if(!BW.qf){ const Q=bwQfStart(c,n); if(Q){ Q.total=Q.q.length; BW.qf=Q; } } body=BW.qf?bwQfHTML():`<p class="wkq">Quick-fire starts once there are three affixes in the bank.</p>`; }
   else if(act==="affix"){ const qfb="";
     if(n>32&&n<=40){ body=qfb+`<p class="wkq">Affix mastery list. Read each one. Tap any they miss.</p><div class="bwgrid v">${BW_DATA.affixMastery.map((v,i)=>`<button class="${BW.miss.has(i)?"x":""}" data-bw="miss" data-i="${i}">${esc(v)}</button>`).join("")}</div><p class="wksc">${BW_DATA.affixMastery.length-BW.miss.size} of ${BW_DATA.affixMastery.length} right</p>`; }
@@ -16805,6 +16839,10 @@ document.addEventListener("click",async e=>{ const b=e.target.closest&&e.target.
   else if(a==="spagain"){ BW.st="idle"; BW.miss=new Set(); BW.last=null; }
   else if(a==="spsave"){ const s=bwS(c), err=[...BW.miss].filter(k=>k<=BW.last); await bwSave(c,{sp:{...s.sp,[BW.n]:{n:BW.last+1,err:err.length,miss:err,date:today()}}}); toast("Saved"); BW.st="idle"; BW.miss=new Set(); BW.last=null; }
   else if(a==="key"){ BW.ans["k"+i]=!BW.ans["k"+i]; }
+  else if(a==="mxm"){ BW.mx={id:Number(b.dataset.v),p:"",s:"",all:false}; const M=(BW_DATA.mx||[]).find(m=>m.id===BW.mx.id); BW.mx.f=M?M.forms[0]:""; }
+  else if(a==="mxclr"){ BW.mx.p=""; BW.mx.s=""; BW.mx.last=""; }
+  else if(a==="mxall"){ BW.mx.all=!BW.mx.all; }
+  else if(a==="mxk"){ const X=BW.mx, k=b.dataset.k, v=b.dataset.v; if(k==="f") X.f=v; else X[k]=X[k]===v?"":v; X.last=""; const M=(BW_DATA.mx||[]).find(m=>m.id===X.id), w=M&&M.combos[`${X.p}|${X.f}|${X.s}`]; if(w){ const F=bwMxFound(c,M.id); if(!F.includes(w)){ F.push(w); X.last=w; if(F.length===new Set(Object.values(M.combos)).size){ const r=b.getBoundingClientRect(); try{ confetti(document.getElementById("bwov"),r.left+r.width/2,r.top); }catch(e){} } } } }
   else if(a==="af"){ BW.af=BW.af===b.dataset.v?null:b.dataset.v; BW_AF={c:c.id,a:BW.af}; }
   else if(a==="qf"){ const Q=bwQfStart(c,BW.n); if(!Q){ toast("Need at least three affixes first."); return; } Q.total=Q.q.length; BW.qf=Q; }
   else if(a==="qfx"){ BW.qf=null; }
