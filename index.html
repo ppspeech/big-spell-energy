@@ -16310,7 +16310,7 @@ function ssDetail(c,it){ const p=paState(c);
       ${canWrite&&it.lvl?`<div class="ssbig"><button class="ssgo dark" data-ss="drill" data-l="${esc(it.lvl)}">▶ Start</button><button class="ssgo saf" data-ss="safari" data-l="${esc(it.lvl)}">🦘 Safari drill</button></div>${it.wl?`<button class="sswarm" data-ss="drill" data-l="${esc(it.wl)}">Warm up first · Level ${it.wi+1} · ${esc(SKN[it.wi]||"")}</button>`:""}`:""}
       <div class="sshist"><h3>Last drills at this level</h3>${ds.length?ds.map(d=>`<div class="sshr"><span>${esc(dm(d.date))}</span>${ssBars(d)}<b>${(d.results||[]).filter(v=>v!=="x").length}/${(d.results||[]).length} · ${Math.round(d.secs||0)}s</b></div>`).join(""):`<p class="sub">None yet.</p>`}</div>
       ${W?`<button class="sssaf" data-ss="album">${Object.keys(S).slice(-3).map(id=>sfMini(w,id,54)).join("")}<span>${got.length} of ${W.animals.length} spotted in ${esc(W.name)}</span><em>📖</em></button>`:""}</div>`; }
-  if(it.bw){ const n=it.bw, L=bwL(n); return `<div class="ssdet"><div class="ssdh"><h2>Big words</h2><span class="sspill sd-p">Lesson ${n}${L.warm?" · "+esc(L.warm):""}</span><button class="v2b sm" data-ss="bw">All 40 lessons</button></div><p class="sub">${esc(bwAffLine(L))} · ${esc(L.game)}</p>${bwTiles(c,n)}</div>`; }
+  if(it.bw){ const n=it.bw, L=bwL(n); return `<div class="ssdet"><div class="ssdh"><h2>Big words</h2><span class="sspill sd-p">Lesson ${n}</span><button class="v2b sm" data-ss="bw">All 40 lessons</button></div><p class="sub">${esc(bwAffLine(L))} · ${esc(L.game)}</p>${bwTiles(c,n)}</div>`; }
   if(it.u){ const u=it.u; const ds=clientOkd(c.id).filter(d=>d.kind==="code"&&d.target===u.id).slice(-3).reverse();
     return `<div class="ssdet"><div class="ssdh"><h2>${esc(unitLabel(u))}</h2><span class="sspill sd-a">Sounds-Write</span></div>
       ${canWrite?`<div class="ssbig"><button class="ssgo dark" data-ss="unit" data-u="${esc(u.id)}">Open unit</button><button class="ssgo amb" data-ss="codedrill" data-u="${esc(u.id)}">⏱ Code drill</button></div>`:""}
@@ -16551,7 +16551,7 @@ const started0=c=>!!c.bw;
 function bwAff(n){ const pre=[],suf=[]; for(let i=1;i<=n;i++) (bwL(i).affix||[]).forEach(a=>{ (a.endsWith("-")?pre:suf).push({a,n:i}); }); return {pre,suf}; }
 const bwBare=a=>a==="-s(-es)"?"s":a.replace(/[-()]/g,"");
 function bwAffLine(L){ return L.affix&&L.affix.length?"New: "+L.affix.join("  "):(L.review||"Review"); }
-const BW_ACTS=[["warm","Warm-up","3 min"],["affix","Affix bank","3 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
+const BW_ACTS=[["affix","Affix bank","3 min"],["play","Word play","5 min"],["btc","Beat the clock","8 min"],["write","Write word","8 min"],["speedy","Speedy read","5 min"],["text","Text reading","8 min"],["choose","Choose the word","5 min"]];
 function bwTileSub(c,n,a){ const L=bwL(n), s=bwS(c);
   if(a==="warm") return n>30?"none in Unit 4":n>20?"vowel mastery list":(L.warm||"vowel cards");
   if(a==="affix") return n>32?"affix mastery list":L.affix.length?L.affix.join(" "):"review";
@@ -16573,7 +16573,7 @@ function v2bw(c){ if(!BW_DATA){ bwLoad().then(()=>{ if(view.name==="client") ren
   const btc=Object.keys(s.btc).map(Number).sort((a,b)=>a-b).map(k=>[k,s.btc[k].t2]), sp=Object.keys(s.sp).map(Number).sort((a,b)=>a-b).map(k=>[k,s.sp[k].n]);
   return `<section class="v2card bwcard"><div class="bwtop"><div><h2 class="eyebrow" style="margin:0">Big words · multisyllabic reading</h2><p class="sub" style="margin:4px 0 0">${started?`${nd} of 40 lessons done · on the go: ${go.map(x=>"Lesson "+x).join(", ")}`:"Not started yet. Tap the lesson they should begin on, then Start."}</p></div>${!started&&canWrite?`<button class="v2b dark" data-bw="start">Start at Lesson ${n}</button>`:""}</div>
     ${track}
-    <div class="bwhead"><div><b>Lesson ${n}${L.warm?` · ${esc(L.warm)}`:""}</b><span>${esc(bwAffLine(L))} · ${esc(L.game)}</span></div>${canWrite&&started?(go.includes(n)?(go.length>1?`<button class="v2b sm bwsetcur" data-bw="ungo" data-n="${n}">✓ On Session · remove</button>`:`<span class="bwonses">✓ On Session</span>`):`<button class="v2b sm bwsetcur" data-bw="cur" data-n="${n}">＋ Add to Session</button>`):""}<span class="bwunit">Unit ${Math.ceil(n/10)}</span></div>
+    <div class="bwhead"><div><b>Lesson ${n}</b><span>${esc(bwAffLine(L))} · ${esc(L.game)}</span></div>${canWrite&&started?(go.includes(n)?(go.length>1?`<button class="v2b sm bwsetcur" data-bw="ungo" data-n="${n}">✓ On Session · remove</button>`:`<span class="bwonses">✓ On Session</span>`):`<button class="v2b sm bwsetcur" data-bw="cur" data-n="${n}">＋ Add to Session</button>`):""}<span class="bwunit">Unit ${Math.ceil(n/10)}</span></div>
     ${bwTiles(c,n)}
     <div class="bwsps">${bwSpark(btc,"#5B4B9A","Beat the clock · second read (secs)")}${bwSpark(sp,"#2E6DA4","Speedy read · words in 30 secs")}</div>
     <p class="r2fine" style="margin-top:14px">Lessons from ${esc(BW_DATA.cite||"Word Connections")}. Free to use; please don't repost.</p></section>`; }
