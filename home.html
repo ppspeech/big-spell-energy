@@ -2412,7 +2412,7 @@ function swSpot(){ const S=SWA, st=S.st; if(!st) return `<p class="wkq">No story
   const steps=`<div class="spsteps">${["Spot","Sort","Write"].map((s,i)=>`<span class="${i===S.stage?"on":i<S.stage?"done":""}">${i+1} ${s}</span>`).join("")}</div>`;
   const pick=S.keys.length>1?`<div class="spick">${S.keys.map(k=>`<button class="${k===S.sk?"on":""}" data-sw="spk" data-v="${k}">${esc(SPOT_STORIES[k].sound)}</button>`).join("")}</div>`:"";
   if(S.stage===0) return steps+pick+`<p class="wkq">Read the story. Tap every word with the sound <b>${esc(st.sound)}</b>. <span class="spcount">${nf} of ${total} found</span></p>
-    <div class="spstory"><h3>${esc(st.title)}</h3>${st.story.map(l=>esc(l).replace(/[A-Za-z’']+/g,w=>{ const k=spotKey(w); const f=S.found[k]; return `<span class="spw ${f?"f":""}" data-sw="spw" data-v="${esc(k)}">${f?spotMark(w,T[k]):w}</span>`; })).join(" ")}</div>
+    <div class="spstory"><h3>${esc(st.title)}</h3>${st.story.map(l=>l.split(/([A-Za-z’']+)/).map((w,i)=>{ if(!(i%2)) return esc(w); const k=spotKey(w); const f=S.found[k]; return `<span class="spw ${f?"f":""}" data-sw="spw" data-v="${esc(k)}">${f?spotMark(w,T[k]):esc(w)}</span>`; }).join("")).join(" ")}</div>
     <div class="wknav">${nf<total?`<button data-sw="sphint">Show me one</button>`:""}<button class="go" data-sw="spnext" ${nf<Math.ceil(total*.6)?"disabled":""}>Next: sort them ›</button></div>`;
   if(S.stage===1){ const left=Object.keys(S.found).filter(w=>!S.placed[w]);
     return steps+`<p class="wkq">Drag each word under its spelling. ${left.length?`<span class="spcount">${left.length} to go</span>`:"All sorted! 🎉"}</p>
