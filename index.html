@@ -16201,6 +16201,10 @@ body #app.wrap:has(>.v2){padding-top:12px!important}
 .bwqopts button{font:inherit;font-size:1.5rem;padding:14px 24px;border-radius:16px;border:3px solid #1E2226;background:#fff;color:#1E2226;box-shadow:4px 4px 0 #1E2226;min-width:120px}.bwqopts.m button{font-size:1.15rem;min-width:min(420px,90%)}
 .bwqopts button.good{background:#2F6B66;border-color:#2F6B66;color:#fff;box-shadow:4px 4px 0 #1f4a46}.bwqopts button.bad{background:#F2E1E4;border-color:#8A2B3D;color:#8A2B3D;box-shadow:none}.bwqopts button.off{opacity:.4;box-shadow:none}
 .bwqbar{max-width:520px}
+.bwpop{position:fixed;z-index:60;display:flex;gap:6px;align-items:stretch;background:#fff;border:3px solid #1E2226;border-radius:16px;padding:8px;box-shadow:4px 4px 0 #1E2226;font-family:Andika,sans-serif;max-width:calc(100vw - 16px)}
+.bwpop>div{border-radius:10px;padding:6px 12px;text-align:center;display:flex;flex-direction:column;justify-content:center}.bwpop b{font-size:1.5rem;line-height:1.2;color:#1E2226}.bwpop small{font-family:"Atkinson Hyperlegible",sans-serif;font-size:.78rem;color:#3d444c;max-width:130px}
+.bwpop .pf{background:#E9E5F5}.bwpop .pf b{color:#3F3378}.bwpop .sf{background:#DCEDEA}.bwpop .sf b{color:#1f4a46}.bwpop .bs{background:#F1E7D6}
+.bwbody .bwmain p,.bwbody .bwmain li{cursor:pointer}
 .bwqopts button.good:disabled,.bwqopts button.bad:disabled{opacity:1}.bwqopts button.bad{text-decoration:line-through}
 
 .bwprintb{margin-left:auto}.bwprintb+.wkx{margin-left:8px}
@@ -16579,6 +16583,22 @@ function bwQfStart(c,n){ const A=bwAff(n), all=A.pre.concat(A.suf).map(x=>x.a), 
 function bwQfHTML(){ const Q=BW.qf, tot=Q.q.length; if(Q.i>=tot) return `<p class="wkq">Quick-fire done</p><div class="wkbig" style="font-size:2.6rem">${Q.ok} of ${Q.total} first try</div>${Object.keys(Q.res).filter(k=>!Q.res[k]).length?`<p class="bwmean">${Object.keys(Q.res).filter(k=>!Q.res[k]).map(a=>`<span><b>${esc(a)}</b> means ${esc(BW_MEAN[a])}</span>`).join("")}</p>`:`<p class="bwres win">All right first go!</p>`}<div class="wknav"><button class="go" data-bw="qf">Play again</button><button data-bw="qfx">Back to the affix bank</button></div>`;
   const it=Q.q[Q.i], right=it.a; const opt=(x)=>{ const lab=it.mode==="a"?esc(x):esc(BW_MEAN[x]); const cls=Q.pick==null?"":x===right?"good":x===Q.pick?"bad":"off"; return `<button class="${cls}" data-bw="qfp" data-v="${esc(x)}" ${Q.pick!=null?"disabled":""}>${lab}</button>`; };
   return `<div class="tabar bwqbar">${Q.q.map((_,k)=>`<i class="${k<Q.i?"a":k===Q.i?"on":""}"></i>`).join("")}</div><p class="wkq">${it.mode==="a"?"Which one means":"What does this one mean?"}</p><div class="wkbig bwqq ${it.mode}">${it.mode==="a"?"“"+esc(BW_MEAN[right])+"”":esc(right)}</div><div class="bwqopts ${it.mode}">${it.opts.map(opt).join("")}</div>${Q.pick!=null?`<p class="bwres ${Q.pick===right?"win":""}">${Q.pick===right?"Yes!":"Not quite."} <b>${esc(right)}</b> means ${esc(BW_MEAN[right])}${BW_DATA.sample[right]?`, like ${esc(BW_DATA.sample[right])}`:""}.</p><div class="wknav"><button class="go" data-bw="qfn">Next ›</button></div>`:""}`; }
+
+/* ---------- tap a word: split it into affixes ---------- */
+function bwAffOf(piece,pre){ const all=Object.keys(BW_MEAN); const p=piece.toLowerCase();
+  if(!pre&&["s","es","ies"].includes(p)) return all.find(a=>a.startsWith("-s("))||null;
+  return all.find(a=>(pre?a.endsWith("-"):a.startsWith("-"))&&bwBare(a)===p)||null; }
+function bwWordPop(w,x,y){ const old=document.getElementById("bwpop"); if(old) old.remove(); const o=document.getElementById("bwov"); if(!o||!w||w.length<2) return;
+  const [pl,sl]=bwSeg(w), pre=w.slice(0,pl), suf=sl?w.slice(-sl):"", base=w.slice(pl,w.length-sl), pa=pre&&bwAffOf(pre,true), sa=suf&&bwAffOf(suf,false);
+  const part=(t,cls,a)=>`<div class="${cls}"><b>${esc(t)}</b>${a?`<small>${esc(BW_MEAN[a])}</small>`:cls==="bs"?`<small>base</small>`:""}</div>`;
+  const d=document.createElement("div"); d.id="bwpop"; d.className="bwpop";
+  d.innerHTML=(pre||suf)?`${pre?part(pre+"-","pf",pa):""}${part(base,"bs")}${suf?part("-"+suf,"sf",sa):""}`:`<div class="bs"><b>${esc(w)}</b><small>no prefix or suffix</small></div>`;
+  o.appendChild(d); const r=d.getBoundingClientRect(), W=innerWidth, H=innerHeight; d.style.left=Math.max(8,Math.min(W-r.width-8,x-r.width/2))+"px"; d.style.top=(y+r.height+26>H?y-r.height-16:y+18)+"px"; }
+document.addEventListener("click",e=>{ const old=document.getElementById("bwpop"); if(old) old.remove(); if(!BW||!["text","choose"].includes(BW.act)) return;
+  const t=e.target; if(!t.closest||!t.closest("#bwov .bwmain")||t.closest("button,[data-bw],.bwgap,input,textarea,.bwfs")) return; let w="";
+  const hl=t.closest(".bwhl"); if(hl) w=hl.textContent; else { let n,off; if(document.caretRangeFromPoint){ const r=document.caretRangeFromPoint(e.clientX,e.clientY); if(r){ n=r.startContainer; off=r.startOffset; } } else if(document.caretPositionFromPoint){ const r=document.caretPositionFromPoint(e.clientX,e.clientY); if(r){ n=r.offsetNode; off=r.offset; } }
+    if(!n||n.nodeType!==3) return; const s=n.nodeValue; let a=off,b=off; while(a>0&&/[A-Za-z]/.test(s[a-1])) a--; while(b<s.length&&/[A-Za-z]/.test(s[b])) b++; w=s.slice(a,b); }
+  if(w) bwWordPop(w,e.clientX,e.clientY); });
 
 /* ===================== Big words: Word Connections (Toste et al., 2023) lessons, 1:1 ===================== */
 let BW_DATA=null, BW_LOADING=null, BW=null;
